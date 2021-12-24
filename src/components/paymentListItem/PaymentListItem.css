@@ -1,0 +1,13 @@
+.payment-avatar {
+  border: 0.1rem solid var(--color-primary) !important;
+  height: 3rem !important;
+  width: 3rem !important;
+  background-color: var(--backgorund-secondary) !important;
+  color: var(--color-primary) !important;
+  margin-right: 1rem;
+}
+
+.operation-price {
+  font-size: 1rem;
+  padding-right: 0.2rem;
+}

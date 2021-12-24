@@ -1,0 +1,13 @@
+.paper-container {
+  border-radius: var(--border-radius) !important;
+  color: var(--color-primary) !important;
+  overflow: hidden;
+  margin-bottom: 0.75rem;
+  padding: 1rem;
+}
+
+.chip-container {
+  background-color: var(--backgorund-secondary) !important;
+  color: var(--color-primary) !important;
+  /* font-weight: bold; */
+}

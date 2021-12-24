@@ -1,0 +1,35 @@
+export interface IPartnerOperation {
+  dni: number;
+  lastName: string;
+  name: string;
+  birthday: string;
+  sex: string;
+  address: string;
+  addressnumber: number;
+  floor: number;
+  apartment: string;
+  tower: string;
+  cp: string;
+  phone: string;
+  email: string;
+  paiId: number;
+  districtId: number;
+  district: string;
+  localityId: number;
+  locality: string;
+  tpdId: string;
+  retired: string;
+  abroad: string;
+  clcId: number;
+  cliIdRef: number;
+  totalAmount: number;
+  mercadoPagoId: number;
+  period: number;
+  shippingType: string;
+  date: string;
+  couponDate: string;
+  phone_number: string;
+  mercadopago_id: string;
+  member_id: string;
+  partner_id: number;
+}
