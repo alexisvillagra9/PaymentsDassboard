@@ -3,6 +3,7 @@ export enum EPaymentOperationOrigin {
   RegistreNewPartner = "RNP",
   PaymentOfFees = "POF",
   SubscriptionToAD = "ADA",
+  QRPayment = "QRP",
 }
 
 export enum EPaymentOperationStatus {

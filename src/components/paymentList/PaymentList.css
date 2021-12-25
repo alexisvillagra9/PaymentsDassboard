@@ -1,4 +1,5 @@
 .payment-list-container {
   border-radius: var(--border-radius);
   overflow: hidden;
+  margin-bottom: 1rem;
 }

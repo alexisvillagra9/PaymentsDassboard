@@ -1,6 +1,7 @@
 import CreditCardOutlinedIcon from "@mui/icons-material/CreditCardOutlined";
 import EventAvailableOutlinedIcon from "@mui/icons-material/EventAvailableOutlined";
 import HowToRegOutlinedIcon from "@mui/icons-material/HowToRegOutlined";
+import QrCodeScannerOutlinedIcon from "@mui/icons-material/QrCodeScannerOutlined";
 import Avatar from "@mui/material/Avatar";
 import Chip from "@mui/material/Chip";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
@@ -12,13 +13,13 @@ import React from "react";
 import {
   EPaymentOperationOrigin,
   EPaymentOperationStatus,
+  EPaymentStatus,
 } from "../../helpers/enums";
 import { IPartnerOperation } from "../../models/apis/wallet/partnerOperation";
 import { IPaymentOperationOrigin } from "../../models/apis/wallet/paymentOperationOrigin";
 import { IPaymentOperationStatus } from "../../models/apis/wallet/paymentOperationStatus";
 import { IResult } from "../../models/apis/wallet/result";
 import "./PaymentListItem.css";
-import { EPaymentStatus } from "../../helpers/enums";
 
 export const PaymentListItem = ({
   origin: { code: originCode, description: originDesciption },
@@ -100,6 +101,9 @@ export const PaymentListItem = ({
       {originCode === EPaymentOperationOrigin.Subscription && (
         <CreditCardOutlinedIcon></CreditCardOutlinedIcon>
       )}
+      {originCode === EPaymentOperationOrigin.QRPayment && (
+        <QrCodeScannerOutlinedIcon></QrCodeScannerOutlinedIcon>
+      )}
     </>
   );
 
@@ -112,18 +116,29 @@ export const PaymentListItem = ({
         primary={title}
         secondary={susbtitle}
         primaryTypographyProps={{
-          fontSize: 14,
+          fontSize: 16,
           fontWeight: "medium",
           letterSpacing: 0,
         }}
       />
       <Stack spacing={1} alignItems="flex-end">
         <div className="operation-price">{currencyFormat()}</div>
-        <Stack direction="row" spacing={1}>
+        <Stack
+          direction="row"
+          gap="0.5rem"
+          flexWrap="wrap"
+          justifyContent="flex-end"
+        >
           {/* <Chip label="Small" size="small" /> */}
-          <Chip label={statusDesciption} size="small" color={statusColor()} />
+          <Chip
+            className="status-chip"
+            label={statusDesciption}
+            size="small"
+            color={statusColor()}
+          />
           {resultPaymentCode && (
             <Chip
+              className="status-chip"
               label={paymentStatusDesc()}
               size="small"
               variant="outlined"

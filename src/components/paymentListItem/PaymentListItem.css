@@ -11,3 +11,9 @@
   font-size: 1rem;
   padding-right: 0.2rem;
 }
+
+.status-chip {
+  border-radius: 5px !important;
+}
+.status-payment-chip {
+}
