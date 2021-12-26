@@ -142,16 +142,25 @@ export const PaymentFilters = ({
           </Stack>
         </FormGroup>
         <Divider></Divider>
-        <div className="filters-footer">
-          Total de Operaciones:{" "}
-          <Chip label={total} size="small" className="chip-container" />
-          Total Recaudado:{" "}
-          <Chip
-            label={currencyFormat(getTotalAmount())}
-            size="small"
-            className="chip-container chip-amount-container"
-          />
-        </div>
+        <Stack
+          direction="row"
+          gap="1rem"
+          flexWrap="wrap"
+          className="filters-footer"
+        >
+          <div>
+            Total de Operaciones:
+            <Chip label={total} size="small" className="chip-container" />
+          </div>
+          <div>
+            Total Recaudado:
+            <Chip
+              label={currencyFormat(getTotalAmount())}
+              size="small"
+              className="chip-container"
+            />
+          </div>
+        </Stack>
       </Paper>
     </>
   );

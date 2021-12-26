@@ -41,7 +41,7 @@ export const Payments = () => {
     };
 
     paymentInit();
-  }, []);
+  }, [setPaymentOperations]);
 
   return (
     <div className="payment-container">

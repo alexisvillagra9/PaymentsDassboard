@@ -9,7 +9,7 @@
 .chip-container {
   background-color: var(--backgorund-secondary) !important;
   color: var(--color-primary) !important;
-  margin-right: 1rem;
+  margin-left: 0.4rem;
   /* font-weight: bold; */
 }
 
