@@ -1,3 +1,22 @@
 .payment-container {
   padding-top: 1rem;
+  padding-bottom: 1rem;
+}
+
+.skeleton-container {
+  border-radius: var(--border-radius);
+  overflow: hidden;
+}
+
+.skeleton-payment-avatar {
+  height: 3.2rem !important;
+  width: 3.2rem !important;
+  margin-right: 1rem;
+}
+
+.skeleton-title {
+  max-width: 25rem;
+}
+.skeleton-subtitle {
+  max-width: 12rem;
 }
