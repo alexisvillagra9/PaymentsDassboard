@@ -31,6 +31,7 @@ export const PaymentFilters = ({
   filterByStatuses: (statusCodes: string[]) => void;
   getTotalAmount: () => number;
 }) => {
+  const [initComp, setInitComp] = useState(true);
   const [openOriginSelect, setOpenOriginSelect] = useState(false);
   const [openStatusSelect, setOpenStatusSelect] = useState(false);
   const [selectedStatuses, setSelectedStatuses] = useState<string[]>([
@@ -68,8 +69,11 @@ export const PaymentFilters = ({
   };
 
   useEffect(() => {
-    handleStatusesApply();
-  }, []);
+    if (initComp) {
+      filterByStatuses(["TER"]);
+      setInitComp(false);
+    }
+  }, [filterByStatuses, setInitComp, initComp]);
 
   return (
     <>
