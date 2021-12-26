@@ -19,7 +19,7 @@ export const PaymentDetailItems = ({
   return (
     <>
       <List>
-        <ListItem key={-1}>
+        <ListItem key={-1} className={"item-list-item"}>
           <Stack direction="row" width="100%">
             <div className="item-title">Descripcion de pago</div>
             <div className="item-quantity">Cantidad</div>
@@ -30,7 +30,7 @@ export const PaymentDetailItems = ({
         {items.map((item, idx) => {
           const { title, quantity, unit_price } = item;
           return (
-            <ListItem key={idx}>
+            <ListItem key={idx} className={"item-list-item"}>
               <Stack direction="row" width="100%">
                 <div className="item-title">{title}</div>
                 <div className="item-quantity">{quantity}</div>
@@ -40,7 +40,7 @@ export const PaymentDetailItems = ({
           );
         })}
         <Divider></Divider>
-        <ListItem key={-2}>
+        <ListItem key={-2} className={"item-list-item"}>
           <Stack direction="row" width="100%">
             <div className="item-title"></div>
             <div className="item-quantity">Subtotal</div>
@@ -49,7 +49,7 @@ export const PaymentDetailItems = ({
             </div>
           </Stack>
         </ListItem>
-        <ListItem key={-3}>
+        <ListItem key={-3} className={"item-list-item"}>
           <Stack direction="row" width="100%">
             <div className="item-title"></div>
             <div className="item-quantity">Total</div>
