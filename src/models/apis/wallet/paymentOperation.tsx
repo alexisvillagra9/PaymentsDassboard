@@ -13,7 +13,7 @@ export interface IPaymentOperation {
   items: IOperationItem[];
   point_of_sale: IPointOfSale;
   fees_payment: IFeesPayment;
-  result: IResult;
+  result?: IResult;
   origin: IPaymentOperationOrigin;
   status: IPaymentOperationStatus;
   subtotal: number;

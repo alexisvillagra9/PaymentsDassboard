@@ -15,6 +15,7 @@ import {
   EPaymentOperationStatus,
   EPaymentStatus,
 } from "../../helpers/enums";
+import { currencyFormat } from "../../helpers/general";
 import { IPartnerOperation } from "../../models/apis/wallet/partnerOperation";
 import { IPaymentOperationOrigin } from "../../models/apis/wallet/paymentOperationOrigin";
 import { IPaymentOperationStatus } from "../../models/apis/wallet/paymentOperationStatus";
@@ -40,12 +41,6 @@ export const PaymentListItem = ({
   const susbtitle = moment
     .tz(createdAt, "America/Argentina/Buenos_Aires")
     .format("DD MMMM YYYY, HH:mm:ss");
-
-  function currencyFormat() {
-    return `$ ${transaction_amount
-      .toFixed(2)
-      .replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")}`;
-  }
 
   const statusColor = () => {
     let color:
@@ -122,7 +117,9 @@ export const PaymentListItem = ({
         }}
       />
       <Stack spacing={1} alignItems="flex-end">
-        <div className="operation-price">{currencyFormat()}</div>
+        <div className="operation-price">
+          {currencyFormat(transaction_amount)}
+        </div>
         <Stack
           direction="row"
           gap="0.5rem"

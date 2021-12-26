@@ -9,5 +9,25 @@
 .chip-container {
   background-color: var(--backgorund-secondary) !important;
   color: var(--color-primary) !important;
+  margin-right: 1rem;
   /* font-weight: bold; */
+}
+
+.filters-footer {
+  margin-top: 1rem;
+}
+
+.select-button {
+  color: var(--color-primary) !important;
+  /* padding: 0; */
+}
+
+.apply-filter {
+  justify-content: center !important;
+  color: var(--color-primary) !important;
+  background-color: transparent !important;
+}
+
+.checkbox-filter {
+  color: var(--color-primary) !important;
 }

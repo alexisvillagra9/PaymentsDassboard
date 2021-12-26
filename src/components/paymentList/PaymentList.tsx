@@ -19,7 +19,7 @@ export const PaymentList = ({
             origin,
             status,
             partner,
-            result,
+            result = {},
             createdAt,
             transaction_amount,
           } = payOp;

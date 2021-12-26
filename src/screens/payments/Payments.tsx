@@ -1,15 +1,32 @@
 import React, { useEffect, useState } from "react";
+import { PaymentFilters } from "../../components/paymentFilters/PaymentFilters";
 import { PaymentList } from "../../components/paymentList/PaymentList";
+import { useFilters } from "../../hooks/useFilters";
 import { IPaymentOperation } from "../../models/apis/wallet/paymentOperation";
+import { IPaymentOperationOrigin } from "../../models/apis/wallet/paymentOperationOrigin";
+import { IPaymentOperationStatus } from "../../models/apis/wallet/paymentOperationStatus";
 import { getPaymentOperationsByFilter } from "../../services/payments";
 import "./Payments.css";
-import { PaymentFilters } from "../../components/paymentFilters/PaymentFilters";
 
 export const Payments = () => {
+  const {
+    paymentOperationsFilter,
+    setPaymentOperations,
+    getFiltersOrigin,
+    getFiltersStatus,
+    filterByOrigins,
+    filterByStatuses,
+    getTotalAmount,
+  }: {
+    paymentOperationsFilter: IPaymentOperation[];
+    setPaymentOperations: (payOps: IPaymentOperation[]) => void;
+    getFiltersOrigin: IPaymentOperationOrigin[];
+    getFiltersStatus: IPaymentOperationStatus[];
+    filterByOrigins: (originCodes: string[]) => void;
+    filterByStatuses: (statusCodes: string[]) => void;
+    getTotalAmount: () => number;
+  } = useFilters();
   const [loading, setLoading] = useState(true);
-  const [paymentOperations, setPaymentOperations] = useState<
-    IPaymentOperation[]
-  >([]);
 
   useEffect(() => {
     const paymentInit = async () => {
@@ -28,11 +45,18 @@ export const Payments = () => {
 
   return (
     <div className="payment-container">
-      <PaymentFilters total={paymentOperations.length}></PaymentFilters>
+      <PaymentFilters
+        total={paymentOperationsFilter.length}
+        filterOrigins={getFiltersOrigin}
+        filterStatuses={getFiltersStatus}
+        filterByOrigins={filterByOrigins}
+        filterByStatuses={filterByStatuses}
+        getTotalAmount={getTotalAmount}
+      ></PaymentFilters>
       {loading ? (
         <>CARGANDO</>
       ) : (
-        <PaymentList paymentOperations={paymentOperations}></PaymentList>
+        <PaymentList paymentOperations={paymentOperationsFilter}></PaymentList>
       )}
     </div>
   );
