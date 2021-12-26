@@ -2,10 +2,11 @@
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import React from "react";
+import { BrowserRouter as Router } from "react-router-dom";
 import "./App.css";
 import { Header } from "./components/header/Header";
 import { axiosInterceptors } from "./helpers/axios";
-import { Payments } from "./screens/payments/Payments";
+import { AppRoutes } from "./routes/reactRoutes";
 
 const THEME = createTheme({
   typography: {
@@ -22,7 +23,10 @@ function App() {
       <div className="App">
         <Header></Header>
         <Container maxWidth="lg">
-          <Payments></Payments>
+          <Router>
+            <AppRoutes />
+          </Router>
+          {/* <Payments></Payments> */}
         </Container>
       </div>
     </ThemeProvider>

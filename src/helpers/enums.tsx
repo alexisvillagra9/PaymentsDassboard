@@ -18,3 +18,8 @@ export enum EPaymentStatus {
   Pending = "PEN",
   Error = "NO_OK",
 }
+
+export enum EAccordionPanel {
+  items = "items",
+  partner = "partner",
+}

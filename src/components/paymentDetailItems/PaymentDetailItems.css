@@ -1,0 +1,15 @@
+.item-title {
+  flex: 0.8;
+}
+
+.item-quantity {
+  flex: 0.1;
+  text-align: end;
+  padding-right: 1rem;
+}
+
+.item-price {
+  flex: 0.1;
+  text-align: end;
+  padding-right: 1rem;
+}

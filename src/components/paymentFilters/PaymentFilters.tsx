@@ -10,7 +10,7 @@ import MenuItem from "@mui/material/MenuItem";
 import Paper from "@mui/material/Paper";
 import Select from "@mui/material/Select";
 import Stack from "@mui/material/Stack";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { IPaymentOperationOrigin } from "../../models/apis/wallet/paymentOperationOrigin";
 import { IPaymentOperationStatus } from "../../models/apis/wallet/paymentOperationStatus";
 import "./PaymenrFilters.css";
@@ -33,7 +33,9 @@ export const PaymentFilters = ({
 }) => {
   const [openOriginSelect, setOpenOriginSelect] = useState(false);
   const [openStatusSelect, setOpenStatusSelect] = useState(false);
-  const [selectedStatuses, setSelectedStatuses] = useState<string[]>([]);
+  const [selectedStatuses, setSelectedStatuses] = useState<string[]>([
+    "Finalizado",
+  ]);
   const [selectedOrigins, setSelectedOrigins] = useState<string[]>([]);
 
   const handleStatusesSelect = (event: any) => {
@@ -64,6 +66,10 @@ export const PaymentFilters = ({
     filterByStatuses(statusCodes);
     setOpenStatusSelect(false);
   };
+
+  useEffect(() => {
+    handleStatusesApply();
+  }, []);
 
   return (
     <>

@@ -36,7 +36,7 @@ export const Payments = () => {
   useEffect(() => {
     const paymentInit = async () => {
       try {
-        console.log("Cargando...", new Date());
+        // console.log("Cargando...", new Date());
         const payOps = await getPaymentOperationsByFilter();
         setPaymentOperations(payOps);
         setLoading(false);
@@ -88,7 +88,7 @@ export const Payments = () => {
   );
 
   return (
-    <div className="payment-container">
+    <div className="page-container">
       <PaymentFilters
         total={paymentOperationsFilter.length}
         filterOrigins={getFiltersOrigin}
