@@ -1,11 +1,12 @@
+import Chip from "@mui/material/Chip";
 import Divider from "@mui/material/Divider";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import Stack from "@mui/material/Stack";
 import React from "react";
+import { currencyFormat } from "../../helpers/general";
 import { IOperationItem } from "../../models/apis/wallet/operationItem";
 import "./PaymentDetailItems.css";
-import { currencyFormat } from "../../helpers/general";
 
 export const PaymentDetailItems = ({
   items,
@@ -19,7 +20,7 @@ export const PaymentDetailItems = ({
   return (
     <>
       <List>
-        <ListItem key={-1} className={"item-list-item"}>
+        <ListItem key={-1} className={"item-list-item list-item-top"}>
           <Stack direction="row" width="100%">
             <div className="item-title">Descripcion de pago</div>
             <div className="item-quantity">Cantidad</div>
@@ -34,7 +35,9 @@ export const PaymentDetailItems = ({
               <Stack direction="row" width="100%">
                 <div className="item-title">{title}</div>
                 <div className="item-quantity">{quantity}</div>
-                <div className="item-price">{currencyFormat(unit_price)}</div>
+                <div className="item-price item-price-currency">
+                  {currencyFormat(unit_price)}
+                </div>
               </Stack>
             </ListItem>
           );
@@ -44,8 +47,12 @@ export const PaymentDetailItems = ({
           <Stack direction="row" width="100%">
             <div className="item-title"></div>
             <div className="item-quantity">Subtotal</div>
-            <div className="item-price item-total">
-              {currencyFormat(subtotal)}
+            <div className="item-price ">
+              <Chip
+                label={currencyFormat(subtotal)}
+                size="small"
+                className="chip-container"
+              />
             </div>
           </Stack>
         </ListItem>
@@ -53,8 +60,12 @@ export const PaymentDetailItems = ({
           <Stack direction="row" width="100%">
             <div className="item-title"></div>
             <div className="item-quantity">Total</div>
-            <div className="item-price item-total">
-              {currencyFormat(transaction_amount)}
+            <div className="item-price ">
+              <Chip
+                label={currencyFormat(transaction_amount)}
+                size="small"
+                className="chip-container"
+              />
             </div>
           </Stack>
         </ListItem>

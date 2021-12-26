@@ -1,23 +1,42 @@
 .item-title {
   width: 60%;
+  display: flex;
+  align-items: center;
 }
 
 .item-quantity {
   width: 15%;
-  text-align: end;
   padding-right: 1rem;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  text-align: end;
 }
 
 .item-price {
   width: 25%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
   text-align: end;
 }
 
-.item-total {
-  font-weight: bold;
+.item-price-currency {
+  font-size: 0.9rem !important;
 }
 
 .item-list-item {
   padding-right: 0 !important;
   padding-left: 0 !important;
+}
+
+.list-item-top {
+  padding-top: 0 !important;
+}
+
+.chip-container {
+  background-color: var(--backgorund-secondary) !important;
+  color: var(--color-primary) !important;
+  /* margin-left: 0.4rem; */
+  /* font-weight: bold; */
 }
