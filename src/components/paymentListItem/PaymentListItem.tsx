@@ -114,9 +114,10 @@ export const PaymentListItem = ({
           fontSize: 16,
           fontWeight: "medium",
           letterSpacing: 0,
+          color: "var(--color-primary)",
         }}
       />
-      <Stack spacing={1} alignItems="flex-end">
+      <Stack spacing={1} alignItems="flex-end" marginLeft="0.5rem">
         <div className="operation-price">
           {currencyFormat(transaction_amount)}
         </div>

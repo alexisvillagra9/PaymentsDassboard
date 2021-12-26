@@ -8,12 +8,12 @@
 }
 
 .operation-price {
-  font-size: 1rem;
+  font-size: 0.9rem;
   padding-right: 0.2rem;
+  color: var(--color-primary) !important;
+  font-weight: bold;
 }
 
 .status-chip {
   border-radius: 5px !important;
-}
-.status-payment-chip {
 }
