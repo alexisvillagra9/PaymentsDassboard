@@ -1,15 +1,19 @@
 .item-title {
-  flex: 0.8;
+  width: 60%;
 }
 
 .item-quantity {
-  flex: 0.1;
+  width: 20%;
   text-align: end;
   padding-right: 1rem;
 }
 
 .item-price {
-  flex: 0.1;
+  width: 20%;
   text-align: end;
   padding-right: 1rem;
+}
+
+.item-total {
+  font-weight: bold;
 }

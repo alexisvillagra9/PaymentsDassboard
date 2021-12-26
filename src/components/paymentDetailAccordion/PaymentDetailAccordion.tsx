@@ -15,12 +15,16 @@ export const PaymentDetailAccordion = ({
   handleChange,
   defaultExpanded,
   items,
+  subtotal,
+  transaction_amount,
 }: {
   panelId: string;
   title: string;
   handleChange: (panel: string) => any;
   defaultExpanded: boolean;
   items?: IOperationItem[];
+  subtotal?: number;
+  transaction_amount?: number;
 }) => {
   return (
     <div>
@@ -39,7 +43,11 @@ export const PaymentDetailAccordion = ({
         </AccordionSummary>
         <AccordionDetails>
           {panelId === EAccordionPanel.items && (
-            <PaymentDetailItems items={items || []} />
+            <PaymentDetailItems
+              items={items || []}
+              subtotal={subtotal || 0}
+              transaction_amount={transaction_amount || 0}
+            />
           )}
         </AccordionDetails>
       </Accordion>
