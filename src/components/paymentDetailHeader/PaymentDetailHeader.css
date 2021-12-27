@@ -8,6 +8,10 @@
   overflow-wrap: anywhere;
 }
 
-.paper-container {
-  margin: 0 !important;
+.paper-container-detail {
+  border-radius: var(--border-radius) !important;
+  color: var(--color-primary) !important;
+  overflow: hidden;
+  margin-bottom: 0 !important;
+  padding: 1rem;
 }

@@ -16,7 +16,7 @@ export const PaymentDetailHeader = ({
 }) => {
   return (
     <>
-      <Paper className="paper-container" elevation={0}>
+      <Paper className="paper-container-detail" elevation={0}>
         <Stack
           gap="0.5rem"
           flexDirection="row"
