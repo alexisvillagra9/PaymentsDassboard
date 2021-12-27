@@ -72,6 +72,9 @@ export const PaymentDetailAccordion = ({
           {panelId === EAccordionPanel.partner && (
             <PaymentDetailPartner partner={partner} />
           )}
+          {panelId === EAccordionPanel.status && (
+            <PaymentDetailPartner partner={partner} />
+          )}
         </AccordionDetails>
       </Accordion>
     </div>

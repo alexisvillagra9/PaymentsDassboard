@@ -22,4 +22,5 @@ export enum EPaymentStatus {
 export enum EAccordionPanel {
   items = "items",
   partner = "partner",
+  status = "status",
 }
