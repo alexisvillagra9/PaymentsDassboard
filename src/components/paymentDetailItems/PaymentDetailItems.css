@@ -34,6 +34,10 @@
   padding-top: 0 !important;
 }
 
+.list-item-detail {
+  color: rgba(0, 0, 0, 0.6);
+}
+
 .chip-container {
   background-color: var(--backgorund-secondary) !important;
   color: var(--color-primary) !important;

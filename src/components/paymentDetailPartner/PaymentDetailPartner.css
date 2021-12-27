@@ -4,8 +4,9 @@
 }
 
 .partner-detail-item-key {
-  font-weight: bold;
+  /* font-weight: bold; */
 }
 .partner-detail-item-value {
   /* margin-left: 0.5rem; */
+  color: rgba(0, 0, 0, 0.6);
 }

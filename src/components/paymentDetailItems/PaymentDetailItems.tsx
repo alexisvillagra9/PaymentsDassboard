@@ -31,7 +31,7 @@ export const PaymentDetailItems = ({
         {items.map((item, idx) => {
           const { title, quantity, unit_price } = item;
           return (
-            <ListItem key={idx} className={"item-list-item"}>
+            <ListItem key={idx} className={"item-list-item list-item-detail"}>
               <Stack direction="row" width="100%">
                 <div className="item-title">{title}</div>
                 <div className="item-quantity">{quantity}</div>
