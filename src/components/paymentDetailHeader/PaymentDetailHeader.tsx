@@ -1,11 +1,14 @@
+import ArrowBackIosOutlinedIcon from "@mui/icons-material/ArrowBackIosOutlined";
 import PaidOutlinedIcon from "@mui/icons-material/PaidOutlined";
+import IconButton from "@mui/material/IconButton";
 import Paper from "@mui/material/Paper";
-import Typography from "@mui/material/Typography";
-import React from "react";
-import "./PaymentDetailHeader.css";
 import Stack from "@mui/material/Stack";
+import Typography from "@mui/material/Typography";
 import moment from "moment-timezone";
 import "moment/locale/es";
+import React from "react";
+import { useNavigate } from "react-router-dom";
+import "./PaymentDetailHeader.css";
 
 export const PaymentDetailHeader = ({
   paymentOperationId,
@@ -14,11 +17,12 @@ export const PaymentDetailHeader = ({
   paymentOperationId: string;
   createdAt: Date;
 }) => {
+  const navigate = useNavigate();
   return (
     <>
       <Paper className="paper-container-detail" elevation={0}>
         <Stack
-          gap="0.5rem"
+          gap="0.75rem"
           flexDirection="row"
           alignItems="center"
           flexWrap="wrap"
@@ -49,6 +53,15 @@ export const PaymentDetailHeader = ({
                 .format("DD MMMM YYYY, HH:mm:ss")}
             </div>
           </Stack>
+          <IconButton
+            color="primary"
+            aria-label="upload picture"
+            component="span"
+            sx={{ alignSelf: "baseline" }}
+            onClick={() => navigate(-1)}
+          >
+            <ArrowBackIosOutlinedIcon htmlColor="var(--color-primary)" />
+          </IconButton>
         </Stack>
       </Paper>
     </>

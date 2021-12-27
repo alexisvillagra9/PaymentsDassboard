@@ -7,7 +7,7 @@ import { IPaymentOperation } from "../../models/apis/wallet/paymentOperation";
 
 export const PaymentDetail = () => {
   const { state: paymentOperation } = useLocation();
-  const { _id, items, transaction_amount, subtotal, createdAt } =
+  const { _id, items, transaction_amount, subtotal, createdAt, partner } =
     paymentOperation as IPaymentOperation;
 
   const handleChange = (panel: string) => (event: React.SyntheticEvent) => {};
@@ -34,6 +34,7 @@ export const PaymentDetail = () => {
             title="Datos de Comprador"
             handleChange={handleChange}
             defaultExpanded={false}
+            partner={partner}
           ></PaymentDetailAccordion>
         </Stack>
       </div>

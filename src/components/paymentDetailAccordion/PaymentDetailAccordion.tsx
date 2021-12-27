@@ -8,7 +8,9 @@ import Typography from "@mui/material/Typography";
 import React from "react";
 import { EAccordionPanel } from "../../helpers/enums";
 import { IOperationItem } from "../../models/apis/wallet/operationItem";
+import { IPartnerOperation } from "../../models/apis/wallet/partnerOperation";
 import { PaymentDetailItems } from "../paymentDetailItems/PaymentDetailItems";
+import { PaymentDetailPartner } from "../paymentDetailPartner/PaymentDetailPartner";
 import "./PaymentDetailAccordion.css";
 
 export const PaymentDetailAccordion = ({
@@ -19,6 +21,7 @@ export const PaymentDetailAccordion = ({
   items,
   subtotal,
   transaction_amount,
+  partner,
 }: {
   panelId: string;
   title: string;
@@ -27,6 +30,7 @@ export const PaymentDetailAccordion = ({
   items?: IOperationItem[];
   subtotal?: number;
   transaction_amount?: number;
+  partner?: IPartnerOperation;
 }) => {
   const getHeaderIcon = () => {
     let iconTag = null;
@@ -64,6 +68,9 @@ export const PaymentDetailAccordion = ({
               subtotal={subtotal || 0}
               transaction_amount={transaction_amount || 0}
             />
+          )}
+          {panelId === EAccordionPanel.partner && (
+            <PaymentDetailPartner partner={partner} />
           )}
         </AccordionDetails>
       </Accordion>
