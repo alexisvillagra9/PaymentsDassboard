@@ -1,0 +1,7 @@
+.status-detail-item {
+  width: 13rem;
+  padding: 0.5rem;
+  border-radius: var(--border-radius);
+  background-color: #00800040;
+  color: #008000;
+}

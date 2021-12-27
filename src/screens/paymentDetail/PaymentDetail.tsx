@@ -7,8 +7,15 @@ import { IPaymentOperation } from "../../models/apis/wallet/paymentOperation";
 
 export const PaymentDetail = () => {
   const { state: paymentOperation } = useLocation();
-  const { _id, items, transaction_amount, subtotal, createdAt, partner } =
-    paymentOperation as IPaymentOperation;
+  const {
+    _id,
+    items,
+    transaction_amount,
+    subtotal,
+    createdAt,
+    partner,
+    result,
+  } = paymentOperation as IPaymentOperation;
 
   const handleChange = (panel: string) => (event: React.SyntheticEvent) => {};
 
@@ -35,6 +42,13 @@ export const PaymentDetail = () => {
             handleChange={handleChange}
             defaultExpanded={false}
             partner={partner}
+          ></PaymentDetailAccordion>
+          <PaymentDetailAccordion
+            panelId="status"
+            title="Estado de Transacciones"
+            handleChange={handleChange}
+            defaultExpanded={false}
+            result={result}
           ></PaymentDetailAccordion>
         </Stack>
       </div>

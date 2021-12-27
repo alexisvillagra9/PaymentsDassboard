@@ -3,6 +3,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import FormatListBulletedOutlinedIcon from "@mui/icons-material/FormatListBulletedOutlined";
 import Accordion from "@mui/material/Accordion";
 import AccordionDetails from "@mui/material/AccordionDetails";
+import PublishedWithChangesOutlinedIcon from "@mui/icons-material/PublishedWithChangesOutlined";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import Typography from "@mui/material/Typography";
 import React from "react";
@@ -12,6 +13,8 @@ import { IPartnerOperation } from "../../models/apis/wallet/partnerOperation";
 import { PaymentDetailItems } from "../paymentDetailItems/PaymentDetailItems";
 import { PaymentDetailPartner } from "../paymentDetailPartner/PaymentDetailPartner";
 import "./PaymentDetailAccordion.css";
+import { PaymentDetailStatus } from "../paymentDetailStatus/PaymentDetailStatus";
+import { IResult } from "../../models/apis/wallet/result";
 
 export const PaymentDetailAccordion = ({
   panelId,
@@ -22,6 +25,7 @@ export const PaymentDetailAccordion = ({
   subtotal,
   transaction_amount,
   partner,
+  result,
 }: {
   panelId: string;
   title: string;
@@ -31,11 +35,13 @@ export const PaymentDetailAccordion = ({
   subtotal?: number;
   transaction_amount?: number;
   partner?: IPartnerOperation;
+  result?: IResult;
 }) => {
   const getHeaderIcon = () => {
     let iconTag = null;
     if (panelId === "items") iconTag = <FormatListBulletedOutlinedIcon />;
     if (panelId === "partner") iconTag = <AccountCircleOutlinedIcon />;
+    if (panelId === "status") iconTag = <PublishedWithChangesOutlinedIcon />;
     return iconTag;
   };
   return (
@@ -73,7 +79,7 @@ export const PaymentDetailAccordion = ({
             <PaymentDetailPartner partner={partner} />
           )}
           {panelId === EAccordionPanel.status && (
-            <PaymentDetailPartner partner={partner} />
+            <PaymentDetailStatus result={result} />
           )}
         </AccordionDetails>
       </Accordion>

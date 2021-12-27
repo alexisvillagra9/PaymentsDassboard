@@ -56,7 +56,7 @@ export const PaymentDetailItems = ({
             </div>
           </Stack>
         </ListItem>
-        <ListItem key={-3} className={"item-list-item"}>
+        <ListItem key={-3} className={"item-list-item"} disablePadding>
           <Stack direction="row" width="100%">
             <div className="item-title"></div>
             <div className="item-quantity">Total</div>
