@@ -1,0 +1,13 @@
+.accordion-title {
+  background-color: var(--backgorund-secondary) !important;
+}
+
+.header-title {
+  font-size: 1rem;
+  /* font-weight: bold; */
+  overflow-wrap: anywhere;
+}
+
+.paper-container {
+  margin: 0 !important;
+}

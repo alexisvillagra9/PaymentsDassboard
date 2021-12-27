@@ -3,3 +3,10 @@
   overflow: hidden !important;
   color: var(--color-primary) !important;
 }
+
+.accordion-title {
+  background-color: var(--backgorund-secondary);
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}

@@ -2,11 +2,12 @@ import Stack from "@mui/material/Stack";
 import React from "react";
 import { useLocation } from "react-router-dom";
 import { PaymentDetailAccordion } from "../../components/paymentDetailAccordion/PaymentDetailAccordion";
+import { PaymentDetailHeader } from "../../components/paymentDetailHeader/PaymentDetailHeader";
 import { IPaymentOperation } from "../../models/apis/wallet/paymentOperation";
 
 export const PaymentDetail = () => {
   const { state: paymentOperation } = useLocation();
-  const { items, transaction_amount, subtotal } =
+  const { _id, items, transaction_amount, subtotal, createdAt } =
     paymentOperation as IPaymentOperation;
 
   const handleChange = (panel: string) => (event: React.SyntheticEvent) => {};
@@ -15,6 +16,10 @@ export const PaymentDetail = () => {
     <>
       <div className="page-container">
         <Stack gap="0.5rem">
+          <PaymentDetailHeader
+            paymentOperationId={_id}
+            createdAt={createdAt}
+          ></PaymentDetailHeader>
           <PaymentDetailAccordion
             panelId="items"
             title="Detalle de items"

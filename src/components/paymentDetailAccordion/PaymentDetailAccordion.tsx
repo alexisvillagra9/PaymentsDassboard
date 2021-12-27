@@ -1,13 +1,15 @@
+import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import FormatListBulletedOutlinedIcon from "@mui/icons-material/FormatListBulletedOutlined";
 import Accordion from "@mui/material/Accordion";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import Typography from "@mui/material/Typography";
 import React from "react";
-import "./PaymentDetailAccordion.css";
 import { EAccordionPanel } from "../../helpers/enums";
-import { PaymentDetailItems } from "../paymentDetailItems/PaymentDetailItems";
 import { IOperationItem } from "../../models/apis/wallet/operationItem";
+import { PaymentDetailItems } from "../paymentDetailItems/PaymentDetailItems";
+import "./PaymentDetailAccordion.css";
 
 export const PaymentDetailAccordion = ({
   panelId,
@@ -26,6 +28,12 @@ export const PaymentDetailAccordion = ({
   subtotal?: number;
   transaction_amount?: number;
 }) => {
+  const getHeaderIcon = () => {
+    let iconTag = null;
+    if (panelId === "items") iconTag = <FormatListBulletedOutlinedIcon />;
+    if (panelId === "partner") iconTag = <AccountCircleOutlinedIcon />;
+    return iconTag;
+  };
   return (
     <div>
       <Accordion
@@ -39,7 +47,15 @@ export const PaymentDetailAccordion = ({
           aria-controls={`${panelId}bh-content`}
           id={`${panelId}bh-header`}
         >
-          <Typography sx={{ width: "100%", flexShrink: 0 }}>{title}</Typography>
+          <Typography
+            sx={{ width: "fit-content", flexShrink: 0 }}
+            borderRadius={"8px"}
+            padding={"0.3rem"}
+            className="accordion-title"
+          >
+            {getHeaderIcon()}
+            {title}
+          </Typography>
         </AccordionSummary>
         <AccordionDetails>
           {panelId === EAccordionPanel.items && (
