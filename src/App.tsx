@@ -1,6 +1,6 @@
 // Material UI
 import Container from "@mui/material/Container";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { createTheme, styled, ThemeProvider } from "@mui/material/styles";
 import React from "react";
 import { BrowserRouter as Router } from "react-router-dom";
 import "./App.css";
@@ -17,16 +17,17 @@ const THEME = createTheme({
 function App() {
   // Init axios interceptors
   axiosInterceptors();
+  const Offset = styled("div")(({ theme }) => theme.mixins.toolbar);
 
   return (
     <ThemeProvider theme={THEME}>
       <div className="App">
         <Header></Header>
+        <Offset />
         <Container maxWidth="lg">
           <Router>
             <AppRoutes />
           </Router>
-          {/* <Payments></Payments> */}
         </Container>
       </div>
     </ThemeProvider>

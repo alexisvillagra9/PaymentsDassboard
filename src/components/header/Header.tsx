@@ -156,7 +156,7 @@ export const Header = () => {
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar
-        position="static"
+        position="fixed"
         elevation={0}
         sx={{ backgroundColor: "var(--color-primary)" }}
       >
