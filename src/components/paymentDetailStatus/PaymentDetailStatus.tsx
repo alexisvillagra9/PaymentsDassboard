@@ -2,6 +2,7 @@ import AttachMoneyOutlinedIcon from "@mui/icons-material/AttachMoneyOutlined";
 import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined";
 import CheckCircleOutlinedIcon from "@mui/icons-material/CheckCircleOutlined";
 import ConfirmationNumberOutlinedIcon from "@mui/icons-material/ConfirmationNumberOutlined";
+import CreditCardOutlinedIcon from "@mui/icons-material/CreditCardOutlined";
 import PeopleOutlinedIcon from "@mui/icons-material/PeopleOutlined";
 import Avatar from "@mui/material/Avatar";
 import List from "@mui/material/List";
@@ -13,6 +14,7 @@ import React from "react";
 import { IResult } from "../../models/apis/wallet/result";
 import { IStatusResult } from "../../models/apis/wallet/statusResult";
 import "./PaymentDetailStatus.css";
+
 
 export const PaymentDetailStatus = ({
   result,
@@ -28,8 +30,8 @@ export const PaymentDetailStatus = ({
       <>
         {type === "tickets" && <ConfirmationNumberOutlinedIcon />}
         {type === "payment" && <AttachMoneyOutlinedIcon />}
-        {type === "hermes" && <ConfirmationNumberOutlinedIcon />}
-        {type === "preapproval" && <PeopleOutlinedIcon />}
+        {type === "hermes" && <PeopleOutlinedIcon />}
+        {type === "preapproval" && <CreditCardOutlinedIcon />}
       </>
     );
   };

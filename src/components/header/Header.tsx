@@ -156,7 +156,11 @@ export const Header = () => {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static">
+      <AppBar
+        position="static"
+        elevation={0}
+        sx={{ backgroundColor: "var(--color-primary)" }}
+      >
         <Toolbar>
           <IconButton
             size="large"
@@ -216,7 +220,7 @@ export const Header = () => {
               <AccountCircle />
             </IconButton>
           </Box>
-          <Box sx={{ display: { xs: "flex", md: "none" } }}>
+          {/* <Box sx={{ display: { xs: "flex", md: "none" } }}>
             <IconButton
               size="large"
               aria-label="show more"
@@ -227,7 +231,7 @@ export const Header = () => {
             >
               <MoreIcon />
             </IconButton>
-          </Box>
+          </Box> */}
         </Toolbar>
       </AppBar>
       {renderMobileMenu}

@@ -1,11 +1,15 @@
 import Stack from "@mui/material/Stack";
-import React from "react";
+import React, { useState } from "react";
 import { useLocation } from "react-router-dom";
 import { PaymentDetailAccordion } from "../../components/paymentDetailAccordion/PaymentDetailAccordion";
 import { PaymentDetailHeader } from "../../components/paymentDetailHeader/PaymentDetailHeader";
 import { IPaymentOperation } from "../../models/apis/wallet/paymentOperation";
+import { IPaymentOperationAttempt } from "../../models/apis/wallet/paymentOperationAttempts";
+import { getPaymentOperationAttempts } from "../../services/payments";
 
 export const PaymentDetail = () => {
+  const [loadAttempts, setLoadAttempts] = useState(true);
+  const [attempts, setAttempts] = useState<IPaymentOperationAttempt[]>([]);
   const { state: paymentOperation } = useLocation();
   const {
     _id,
@@ -17,7 +21,21 @@ export const PaymentDetail = () => {
     result,
   } = paymentOperation as IPaymentOperation;
 
-  const handleChange = (panel: string) => (event: React.SyntheticEvent) => {};
+  // useEffect(() => {
+  //   // console.log(attempts);
+  // }, [attempts]);
+
+  const getAttempts = async () => {
+    const attemptsTemp = await getPaymentOperationAttempts(_id);
+    setAttempts(attemptsTemp);
+    setLoadAttempts(false);
+  };
+
+  const handleChange = (panel: string) => (event: React.SyntheticEvent) => {
+    if (panel === "attempts") {
+      getAttempts();
+    }
+  };
 
   return (
     <>
@@ -49,6 +67,14 @@ export const PaymentDetail = () => {
             handleChange={handleChange}
             defaultExpanded={false}
             result={result}
+          ></PaymentDetailAccordion>
+          <PaymentDetailAccordion
+            panelId="attempts"
+            title="Intentos"
+            handleChange={handleChange}
+            defaultExpanded={false}
+            attempts={attempts}
+            attemptsLoading={loadAttempts}
           ></PaymentDetailAccordion>
         </Stack>
       </div>

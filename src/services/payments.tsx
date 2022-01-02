@@ -1,7 +1,12 @@
 import axios from "axios";
 import { IPaymentOperation } from "../models/apis/wallet/paymentOperation";
+import { IPaymentOperationAttempt } from "../models/apis/wallet/paymentOperationAttempts";
 
-const WALLET_URI = process.env.REACT_APP_WALLET_URI;
+const environment = "P";
+const WALLET_URI =
+  environment === "P"
+    ? process.env.REACT_APP_WALLET_URI
+    : process.env.REACT_APP_WALLET_URI_DEV;
 
 export const getPaymentOperationsByFilter = async (
   filters: any = {}
@@ -20,6 +25,24 @@ export const getPaymentOperationsByFilter = async (
     );
 
     return paymentOperations;
+  } catch (error) {
+    console.log(JSON.stringify(error));
+    throw error;
+  }
+};
+
+export const getPaymentOperationAttempts = async (
+  paymentOperationId: string = ""
+): Promise<IPaymentOperationAttempt[]> => {
+  try {
+    const res = await axios.get(
+      `${WALLET_URI}/payment-operation/attempts/${paymentOperationId}`
+    );
+    let {
+      data: paymentOperationAttempts = [],
+    }: { data: IPaymentOperationAttempt[] } = res;
+
+    return paymentOperationAttempts;
   } catch (error) {
     console.log(JSON.stringify(error));
     throw error;

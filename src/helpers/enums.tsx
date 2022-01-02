@@ -23,4 +23,5 @@ export enum EAccordionPanel {
   items = "items",
   partner = "partner",
   status = "status",
+  attempts = "attempts",
 }
