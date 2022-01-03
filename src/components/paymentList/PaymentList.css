@@ -1,5 +1,19 @@
 .payment-list-container {
   border-radius: var(--border-radius);
   overflow: hidden;
-  margin-bottom: 1rem;
+  margin-bottom: 0.8rem;
+}
+
+.MuiPaginationItem-root {
+  color: var(--color-primary) !important;
+}
+
+.MuiPagination-ul {
+  background-color: white !important;
+  padding: 0.3rem !important;
+  border-radius: var(--border-radius) !important;
+}
+
+.MuiPaginationItem-root.Mui-selected {
+  background-color: var(--backgorund-secondary) !important;
 }

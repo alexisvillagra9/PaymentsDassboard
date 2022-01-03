@@ -9,6 +9,7 @@ import ListItemText from "@mui/material/ListItemText";
 import Skeleton from "@mui/material/Skeleton";
 import Stack from "@mui/material/Stack";
 import moment from "moment-timezone";
+import "moment/locale/es";
 import React from "react";
 import { IPaymentOperationAttempt } from "../../models/apis/wallet/paymentOperationAttempts";
 import { IStatusResult } from "../../models/apis/wallet/statusResult";
