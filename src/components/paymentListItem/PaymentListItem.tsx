@@ -1,6 +1,7 @@
 import CreditCardOutlinedIcon from "@mui/icons-material/CreditCardOutlined";
 import EventAvailableOutlinedIcon from "@mui/icons-material/EventAvailableOutlined";
 import HowToRegOutlinedIcon from "@mui/icons-material/HowToRegOutlined";
+import AddLocationOutlinedIcon from "@mui/icons-material/AddLocationOutlined";
 import QrCodeScannerOutlinedIcon from "@mui/icons-material/QrCodeScannerOutlined";
 import Avatar from "@mui/material/Avatar";
 import Chip from "@mui/material/Chip";
@@ -98,6 +99,9 @@ export const PaymentListItem = ({
       )}
       {originCode === EPaymentOperationOrigin.QRPayment && (
         <QrCodeScannerOutlinedIcon></QrCodeScannerOutlinedIcon>
+      )}
+      {originCode === EPaymentOperationOrigin.LocationBuy && (
+        <AddLocationOutlinedIcon></AddLocationOutlinedIcon>
       )}
     </>
   );

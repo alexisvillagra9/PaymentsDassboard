@@ -4,6 +4,7 @@ export enum EPaymentOperationOrigin {
   PaymentOfFees = "POF",
   SubscriptionToAD = "ADA",
   QRPayment = "QRP",
+  LocationBuy = "CDU",
 }
 
 export enum EPaymentOperationStatus {
