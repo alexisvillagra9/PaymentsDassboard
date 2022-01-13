@@ -58,7 +58,7 @@ export const PaymentDetailHeader = ({
             aria-label="upload picture"
             component="span"
             sx={{ alignSelf: "baseline" }}
-            onClick={() => navigate(-1)}
+            onClick={() => navigate("/home")}
           >
             <ArrowBackIosOutlinedIcon htmlColor="var(--color-primary)" />
           </IconButton>
