@@ -2,7 +2,6 @@
 import Container from "@mui/material/Container";
 import { createTheme, styled, ThemeProvider } from "@mui/material/styles";
 import React from "react";
-import { BrowserRouter as Router } from "react-router-dom";
 import "./App.css";
 import { Header } from "./components/header/Header";
 import { axiosInterceptors } from "./helpers/axios";
@@ -25,9 +24,7 @@ function App() {
         <Header></Header>
         <Offset />
         <Container maxWidth="lg">
-          <Router>
-            <AppRoutes />
-          </Router>
+          <AppRoutes />
         </Container>
       </div>
     </ThemeProvider>

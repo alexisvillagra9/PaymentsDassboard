@@ -23,6 +23,7 @@ export const useFilters = (initialState = []) => {
   // }, [paymentOperations]);
 
   useEffect(() => {
+    console.log("aaaa", paymentOperations);
     const origins = getOrigins(paymentOperations);
     setGetFiltersOrigin(origins);
 

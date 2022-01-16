@@ -1,27 +1,16 @@
-import { useRoutes } from "react-router-dom";
+import { Route, BrowserRouter, Routes } from "react-router-dom";
 import { PaymentDetail } from "../screens/paymentDetail/PaymentDetail";
 import { Payments } from "../screens/payments/Payments";
 
 export const AppRoutes = () => {
-  const reactRoutes = [
-    {
-      path: "/",
-      element: <Payments />,
-    },
-    {
-      path: "/home",
-      element: <Payments />,
-    },
-    {
-      path: "/*",
-      element: <Payments />,
-    },
-    {
-      path: "/payment-detail",
-      element: <PaymentDetail />,
-    },
-  ];
-
-  const routes = useRoutes(reactRoutes);
-  return routes;
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/home" element={<Payments />} />
+        <Route path="/payment-detail" element={<PaymentDetail />} />
+        <Route path="/" element={<Payments />} />
+        <Route path="/*" element={<Payments />} />
+      </Routes>
+    </BrowserRouter>
+  );
 };

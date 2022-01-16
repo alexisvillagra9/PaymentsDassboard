@@ -96,6 +96,7 @@ export const Payments = () => {
         filterByOrigins={filterByOrigins}
         filterByStatuses={filterByStatuses}
         getTotalAmount={getTotalAmount}
+        paymentOperationsFilter={paymentOperationsFilter}
       ></PaymentFilters>
       {loading ? (
         skeletonList

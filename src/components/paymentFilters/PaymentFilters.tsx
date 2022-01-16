@@ -11,10 +11,13 @@ import Paper from "@mui/material/Paper";
 import Select from "@mui/material/Select";
 import Stack from "@mui/material/Stack";
 import React, { useEffect, useState } from "react";
+import { FaRegFileExcel } from "react-icons/fa";
+import { currencyFormat } from "../../helpers/general";
+import { IPaymentOperation } from "../../models/apis/wallet/paymentOperation";
 import { IPaymentOperationOrigin } from "../../models/apis/wallet/paymentOperationOrigin";
 import { IPaymentOperationStatus } from "../../models/apis/wallet/paymentOperationStatus";
 import "./PaymenrFilters.css";
-import { currencyFormat } from "../../helpers/general";
+import XLSX from "xlsx";
 
 export const PaymentFilters = ({
   total,
@@ -23,6 +26,7 @@ export const PaymentFilters = ({
   filterByOrigins,
   filterByStatuses,
   getTotalAmount,
+  paymentOperationsFilter,
 }: {
   total: number;
   filterOrigins: IPaymentOperationOrigin[];
@@ -30,6 +34,7 @@ export const PaymentFilters = ({
   filterByOrigins: (originCodes: string[]) => void;
   filterByStatuses: (statusCodes: string[]) => void;
   getTotalAmount: () => number;
+  paymentOperationsFilter: IPaymentOperation[];
 }) => {
   const [initComp, setInitComp] = useState(true);
   const [openOriginSelect, setOpenOriginSelect] = useState(false);
@@ -66,6 +71,31 @@ export const PaymentFilters = ({
       .map((fs1) => fs1.code);
     filterByStatuses(statusCodes);
     setOpenStatusSelect(false);
+  };
+
+  const handleDownloadExcel = () => {
+    const data = paymentOperationsFilter.map((payop) => {
+      return {
+        fecha_creacion: payop.createdAt,
+        origen: payop.origin.description,
+        fecha_pago: payop.result?.payment?.date,
+        estado_pago: payop.result?.payment?.description,
+        numero_pago: payop.result?.payment?.reference,
+        susbtotal: payop.subtotal,
+        total: payop.transaction_amount,
+        nombre: payop.partner.name,
+        apellido: payop.partner.lastName,
+        nro_documento: payop.partner.dni,
+        tipo_documento: payop.partner.tpdId,
+        nro_telefono: payop.partner.phone_number,
+        sexo: payop.partner.sex,
+        fec_nacimiento: payop.partner.birthday,
+      };
+    });
+    let ws = XLSX.utils.json_to_sheet(data);
+    let wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "sheet");
+    XLSX.writeFile(wb, `operaciones.xlsx`);
   };
 
   useEffect(() => {
@@ -149,6 +179,11 @@ export const PaymentFilters = ({
                 Aplicar
               </MenuItem>
             </Select>
+            <Stack justifyContent="center" alignItems="flex-end" flex="1">
+              <Button className="icon-button" onClick={handleDownloadExcel}>
+                <FaRegFileExcel size="1.3rem" />
+              </Button>
+            </Stack>
           </Stack>
         </FormGroup>
         <Divider></Divider>
