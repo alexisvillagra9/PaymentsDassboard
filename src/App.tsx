@@ -1,11 +1,11 @@
 // Material UI
-import Container from "@mui/material/Container";
-import { createTheme, styled, ThemeProvider } from "@mui/material/styles";
-import React from "react";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+import React, { useEffect, useReducer } from "react";
 import "./App.css";
-import { Header } from "./components/header/Header";
+import { AuthContext } from "./auth/authContext";
+import { authReducer } from "./auth/authReducer";
 import { axiosInterceptors } from "./helpers/axios";
-import { AppRoutes } from "./routes/reactRoutes";
+import { AppRoutes } from "./routes/AppRoutes";
 
 const THEME = createTheme({
   typography: {
@@ -13,19 +13,35 @@ const THEME = createTheme({
   },
 });
 
+const init = () => {
+  return (
+    JSON.parse(localStorage.getItem("user") || "null") || { logged: false }
+  );
+};
+
 function App() {
   // Init axios interceptors
   axiosInterceptors();
-  const Offset = styled("div")(({ theme }) => theme.mixins.toolbar);
+
+  const [user, dispatch] = useReducer(authReducer, {}, init);
+
+  useEffect(() => {
+    if (!user) return;
+
+    localStorage.setItem("user", JSON.stringify(user));
+  }, [user]);
 
   return (
     <ThemeProvider theme={THEME}>
       <div className="App">
-        <Header></Header>
-        <Offset />
-        <Container maxWidth="lg">
+        <AuthContext.Provider
+          value={{
+            user,
+            dispatch,
+          }}
+        >
           <AppRoutes />
-        </Container>
+        </AuthContext.Provider>
       </div>
     </ThemeProvider>
   );

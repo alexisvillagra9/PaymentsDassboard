@@ -1,0 +1,40 @@
+.paper-container-login {
+  color: var(--color-primary) !important;
+  border-radius: var(--border-radius) !important;
+  overflow: hidden;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.belgrano-logo {
+  width: 6rem;
+  height: 6rem;
+}
+
+.login-title {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.login-text-field {
+  border-radius: var(--border-radius) !important;
+  overflow: hidden;
+  width: 100%;
+}
+
+.login-image {
+  background-image: url("https://cluster.uxshows.com/img/cancha.d9be00ea.png");
+  background-position: center;
+  background-size: cover;
+}
+
+.login-button {
+  background-color: var(--color-primary) !important;
+  border-radius: var(--border-radius) !important;
+  overflow: hidden;
+  font-weight: bold !important;
+  height: 3rem !important;
+}

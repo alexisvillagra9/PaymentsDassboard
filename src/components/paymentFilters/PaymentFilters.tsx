@@ -1,9 +1,11 @@
+import BarChartOutlinedIcon from "@mui/icons-material/BarChartOutlined";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import Button from "@mui/material/Button";
 import Checkbox from "@mui/material/Checkbox";
 import Chip from "@mui/material/Chip";
 import Divider from "@mui/material/Divider";
 import FormGroup from "@mui/material/FormGroup";
+import IconButton from "@mui/material/IconButton";
 import Input from "@mui/material/Input";
 import ListItemText from "@mui/material/ListItemText";
 import MenuItem from "@mui/material/MenuItem";
@@ -12,12 +14,13 @@ import Select from "@mui/material/Select";
 import Stack from "@mui/material/Stack";
 import React, { useEffect, useState } from "react";
 import { FaRegFileExcel } from "react-icons/fa";
+import XLSX from "xlsx";
 import { currencyFormat } from "../../helpers/general";
 import { IPaymentOperation } from "../../models/apis/wallet/paymentOperation";
 import { IPaymentOperationOrigin } from "../../models/apis/wallet/paymentOperationOrigin";
 import { IPaymentOperationStatus } from "../../models/apis/wallet/paymentOperationStatus";
+import { PaymentFilterModal } from "../paymentFilterModal/PaymentFilterModal";
 import "./PaymenrFilters.css";
-import XLSX from "xlsx";
 
 export const PaymentFilters = ({
   total,
@@ -43,6 +46,10 @@ export const PaymentFilters = ({
     "Finalizado",
   ]);
   const [selectedOrigins, setSelectedOrigins] = useState<string[]>([]);
+  const [open, setOpen] = useState<boolean>(false);
+
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
 
   const handleStatusesSelect = (event: any) => {
     const {
@@ -179,10 +186,28 @@ export const PaymentFilters = ({
                 Aplicar
               </MenuItem>
             </Select>
-            <Stack justifyContent="center" alignItems="flex-end" flex="1">
-              <Button className="icon-button" onClick={handleDownloadExcel}>
+            <Stack
+              flexDirection="row"
+              justifyContent="flex-end"
+              alignItems="center"
+              flex="1"
+            >
+              {/* <IconButton
+                className="icon-button"
+                aria-label="Estadisticas"
+                size="medium"
+                onClick={handleOpen}
+              >
+                <BarChartOutlinedIcon />
+              </IconButton> */}
+              <IconButton
+                className="icon-button"
+                aria-label="Descargar Excel"
+                size="medium"
+                onClick={handleDownloadExcel}
+              >
                 <FaRegFileExcel size="1.3rem" />
-              </Button>
+              </IconButton>
             </Stack>
           </Stack>
         </FormGroup>
@@ -206,6 +231,7 @@ export const PaymentFilters = ({
             />
           </div>
         </Stack>
+        <PaymentFilterModal open={open} handleClose={handleClose} />
       </Paper>
     </>
   );

@@ -1,4 +1,10 @@
 #root {
   font-family: Lato, Helvetica, sans-serif;
 }
+
+.App {
+  display: flex;
+  flex-direction: column;
+}
+
 @import url("https://fonts.googleapis.com/css2?family=Lato:wght@100;300&display=swap");

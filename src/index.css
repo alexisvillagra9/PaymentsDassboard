@@ -17,6 +17,13 @@
   background: #555;
 }
 
+html,
+#root,
+.App,
+body {
+  height: 100%;
+}
+
 :root {
   --color-primary: #009ee3;
   /* --backgrund-primary: #ededed; */
@@ -44,4 +51,7 @@ code {
 .page-container {
   padding-top: 1rem;
   padding-bottom: 1rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 }

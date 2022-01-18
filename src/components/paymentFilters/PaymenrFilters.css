@@ -24,9 +24,6 @@
 
 .icon-button {
   color: var(--color-primary) !important;
-  min-width: 0 !important;
-  border-radius: 5rem !important;
-  /* padding: 0; */
 }
 
 .apply-filter {

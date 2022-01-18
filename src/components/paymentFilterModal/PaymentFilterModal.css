@@ -1,0 +1,8 @@
+.box-container {
+  margin: 3rem;
+  padding: 2rem;
+  flex: 1;
+  border-radius: var(--border-radius);
+  background-color: white;
+  box-shadow: 24;
+}

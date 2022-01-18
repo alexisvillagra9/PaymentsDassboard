@@ -1,4 +1,5 @@
 import AccountCircle from "@mui/icons-material/AccountCircle";
+import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
 import MailIcon from "@mui/icons-material/Mail";
 import MenuIcon from "@mui/icons-material/Menu";
 import NotificationsIcon from "@mui/icons-material/Notifications";
@@ -14,6 +15,10 @@ import { alpha, styled } from "@mui/material/styles";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import * as React from "react";
+import { useContext } from "react";
+import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../../auth/authContext";
+import { types } from "../../types/types";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -56,11 +61,22 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 export const Header = () => {
+  const { user, dispatch } = useContext(AuthContext);
+  const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
+
+  const handleLogout = () => {
+    console.log(user);
+    dispatch({ type: types.logout });
+
+    navigate("/login", {
+      replace: true,
+    });
+  };
 
   const handleProfileMenuOpen = (event: any) => {
     setAnchorEl(event.currentTarget);
@@ -154,7 +170,7 @@ export const Header = () => {
   );
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
+    <Box sx={{}}>
       <AppBar
         position="fixed"
         elevation={0}
@@ -189,48 +205,17 @@ export const Header = () => {
           </Search>
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: "none", md: "flex" } }}>
-            <IconButton
-              size="large"
-              aria-label="show 4 new mails"
-              color="inherit"
-            >
-              <Badge badgeContent={4} color="error">
-                <MailIcon />
-              </Badge>
-            </IconButton>
-            <IconButton
-              size="large"
-              aria-label="show 17 new notifications"
-              color="inherit"
-            >
-              <Badge badgeContent={17} color="error">
-                <NotificationsIcon />
-              </Badge>
-            </IconButton>
-            <IconButton
-              size="large"
-              edge="end"
-              aria-label="account of current user"
-              aria-controls={menuId}
-              aria-haspopup="true"
-              onClick={handleProfileMenuOpen}
-              color="inherit"
-            >
-              <AccountCircle />
-            </IconButton>
+            {user.logged && (
+              <IconButton
+                size="large"
+                aria-label="show 4 new mails"
+                color="inherit"
+                onClick={handleLogout}
+              >
+                <LogoutOutlinedIcon />
+              </IconButton>
+            )}
           </Box>
-          {/* <Box sx={{ display: { xs: "flex", md: "none" } }}>
-            <IconButton
-              size="large"
-              aria-label="show more"
-              aria-controls={mobileMenuId}
-              aria-haspopup="true"
-              onClick={handleMobileMenuOpen}
-              color="inherit"
-            >
-              <MoreIcon />
-            </IconButton>
-          </Box> */}
         </Toolbar>
       </AppBar>
       {renderMobileMenu}
