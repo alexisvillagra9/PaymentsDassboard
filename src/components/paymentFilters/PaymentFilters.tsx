@@ -1,4 +1,3 @@
-import BarChartOutlinedIcon from "@mui/icons-material/BarChartOutlined";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import Button from "@mui/material/Button";
 import Checkbox from "@mui/material/Checkbox";
@@ -48,7 +47,7 @@ export const PaymentFilters = ({
   const [selectedOrigins, setSelectedOrigins] = useState<string[]>([]);
   const [open, setOpen] = useState<boolean>(false);
 
-  const handleOpen = () => setOpen(true);
+  // const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
   const handleStatusesSelect = (event: any) => {
