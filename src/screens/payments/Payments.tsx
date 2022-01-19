@@ -6,47 +6,63 @@ import Stack from "@mui/material/Stack";
 import React, { useEffect, useState } from "react";
 import { PaymentFilters } from "../../components/paymentFilters/PaymentFilters";
 import { PaymentList } from "../../components/paymentList/PaymentList";
+import { EPaymentOperationStatus } from "../../helpers/enums";
 import { useFilters } from "../../hooks/useFilters";
 import { IPaymentOperation } from "../../models/apis/wallet/paymentOperation";
 import { IPaymentOperationOrigin } from "../../models/apis/wallet/paymentOperationOrigin";
 import { IPaymentOperationStatus } from "../../models/apis/wallet/paymentOperationStatus";
-import { getPaymentOperationsByFilter } from "../../services/payments";
+import {
+  getPaymentOperationOrigins,
+  getPaymentOperationsByFilter,
+  getPaymentOperationStatuses,
+} from "../../services/payments";
 import "./Payments.css";
 
 export const Payments = () => {
   const {
     paymentOperationsFilter,
     setPaymentOperations,
-    getFiltersOrigin,
-    getFiltersStatus,
-    filterByOrigins,
-    filterByStatuses,
     getTotalAmount,
   }: {
     paymentOperationsFilter: IPaymentOperation[];
     setPaymentOperations: (payOps: IPaymentOperation[]) => void;
-    getFiltersOrigin: IPaymentOperationOrigin[];
-    getFiltersStatus: IPaymentOperationStatus[];
-    filterByOrigins: (originCodes: string[]) => void;
-    filterByStatuses: (statusCodes: string[]) => void;
     getTotalAmount: () => number;
   } = useFilters();
+
   const [loading, setLoading] = useState(true);
+  const [initComp, setInitComp] = useState(false);
+  const [statuses, setStatuses] = useState<IPaymentOperationStatus[]>([]);
+  const [origins, setOrigins] = useState<IPaymentOperationOrigin[]>([]);
 
   useEffect(() => {
     const paymentInit = async () => {
       try {
-        // console.log("Cargando...", new Date());
-        const payOps = await getPaymentOperationsByFilter();
-        setPaymentOperations(payOps);
-        setLoading(false);
+        if (!initComp) {
+          // console.log("Cargando...", new Date());
+          const pPayops = getPaymentOperationsByFilter({
+            statuses: [EPaymentOperationStatus.Terminated],
+          }); // Init with terminated payments only
+          const pStatuses = getPaymentOperationStatuses();
+          const pOrigins = getPaymentOperationOrigins();
+          const [payOps, sts, ors] = await Promise.all([
+            pPayops,
+            pStatuses,
+            pOrigins,
+          ]);
+
+          setPaymentOperations(payOps);
+          setStatuses(sts);
+          setOrigins(ors);
+          setInitComp(true);
+          setLoading(false);
+        }
       } catch (error) {
         console.log(error);
       }
     };
 
     paymentInit();
-  }, [setPaymentOperations]);
+  }, [setPaymentOperations, initComp, loading]);
 
   const skeletonList = (
     <>
@@ -91,12 +107,14 @@ export const Payments = () => {
     <div className="page-container">
       <PaymentFilters
         total={paymentOperationsFilter.length}
-        filterOrigins={getFiltersOrigin}
-        filterStatuses={getFiltersStatus}
-        filterByOrigins={filterByOrigins}
-        filterByStatuses={filterByStatuses}
+        filterOrigins={origins}
+        filterStatuses={statuses}
         getTotalAmount={getTotalAmount}
         paymentOperationsFilter={paymentOperationsFilter}
+        setPaymentOperations={setPaymentOperations}
+        initComp={initComp}
+        loading={loading}
+        setLoading={setLoading}
       ></PaymentFilters>
       {loading ? (
         skeletonList

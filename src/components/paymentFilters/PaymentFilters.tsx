@@ -1,4 +1,9 @@
+import BarChartOutlinedIcon from "@mui/icons-material/BarChartOutlined";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import AdapterDateFns from "@mui/lab/AdapterDateFns";
+import DatePicker from "@mui/lab/DatePicker";
+import LocalizationProvider from "@mui/lab/LocalizationProvider";
+import { CircularProgress } from "@mui/material";
 import Button from "@mui/material/Button";
 import Checkbox from "@mui/material/Checkbox";
 import Chip from "@mui/material/Chip";
@@ -11,13 +16,17 @@ import MenuItem from "@mui/material/MenuItem";
 import Paper from "@mui/material/Paper";
 import Select from "@mui/material/Select";
 import Stack from "@mui/material/Stack";
-import React, { useEffect, useState } from "react";
+import moment from "moment-timezone";
+import "moment/locale/es";
+import React, { ChangeEvent, useEffect, useState } from "react";
 import { FaRegFileExcel } from "react-icons/fa";
 import XLSX from "xlsx";
+import { EPaymentOperationStatus } from "../../helpers/enums";
 import { currencyFormat } from "../../helpers/general";
 import { IPaymentOperation } from "../../models/apis/wallet/paymentOperation";
 import { IPaymentOperationOrigin } from "../../models/apis/wallet/paymentOperationOrigin";
 import { IPaymentOperationStatus } from "../../models/apis/wallet/paymentOperationStatus";
+import { getPaymentOperationsByFilter } from "../../services/payments";
 import { PaymentFilterModal } from "../paymentFilterModal/PaymentFilterModal";
 import "./PaymenrFilters.css";
 
@@ -25,29 +34,34 @@ export const PaymentFilters = ({
   total,
   filterOrigins,
   filterStatuses,
-  filterByOrigins,
-  filterByStatuses,
   getTotalAmount,
   paymentOperationsFilter,
+  setPaymentOperations,
+  initComp,
+  loading,
+  setLoading,
 }: {
   total: number;
   filterOrigins: IPaymentOperationOrigin[];
   filterStatuses: IPaymentOperationStatus[];
-  filterByOrigins: (originCodes: string[]) => void;
-  filterByStatuses: (statusCodes: string[]) => void;
   getTotalAmount: () => number;
   paymentOperationsFilter: IPaymentOperation[];
+  setPaymentOperations: (payOps: IPaymentOperation[]) => void;
+  initComp: boolean;
+  loading: boolean;
+  setLoading: (loading: boolean) => void;
 }) => {
-  const [initComp, setInitComp] = useState(true);
   const [openOriginSelect, setOpenOriginSelect] = useState(false);
   const [openStatusSelect, setOpenStatusSelect] = useState(false);
-  const [selectedStatuses, setSelectedStatuses] = useState<string[]>([
-    "Finalizado",
-  ]);
+  const [selectedStatuses, setSelectedStatuses] = useState<string[]>([]);
   const [selectedOrigins, setSelectedOrigins] = useState<string[]>([]);
   const [open, setOpen] = useState<boolean>(false);
+  const [dateFrom, setDateFrom] = useState<Date | null>(null);
+  const [dateTo, setDateTo] = useState<Date | null>(null);
+  const [openStartDate, setOpenStartDate] = useState<boolean>(false);
+  const [openEndDate, setOpenEndDate] = useState<boolean>(false);
 
-  // const handleOpen = () => setOpen(true);
+  const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
   const handleStatusesSelect = (event: any) => {
@@ -64,19 +78,45 @@ export const PaymentFilters = ({
     setSelectedOrigins(value);
   };
 
-  const handleOriginsApply = () => {
-    const originCodes = filterOrigins
-      .filter((fo) => selectedOrigins.includes(fo.description))
-      .map((fo1) => fo1.code);
-    filterByOrigins(originCodes);
-    setOpenOriginSelect(false);
-  };
-  const handleStatusesApply = () => {
-    const statusCodes = filterStatuses
+  const handleApply = async () => {
+    setLoading(true);
+
+    const statuses = filterStatuses
       .filter((fs) => selectedStatuses.includes(fs.description))
       .map((fs1) => fs1.code);
-    filterByStatuses(statusCodes);
-    setOpenStatusSelect(false);
+
+    const origins = filterOrigins
+      .filter((fo) => selectedOrigins.includes(fo.description))
+      .map((fo1) => fo1.code);
+
+    const payops = await getPaymentOperationsByFilter({
+      statuses,
+      origins,
+      dateFrom,
+      dateTo,
+    });
+    setPaymentOperations(payops);
+    setLoading(false);
+  };
+
+  const handleSelectAllOrigins = (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.target.checked) {
+      setSelectedOrigins(
+        filterOrigins.map((po) => po.description).concat(["all-origins"])
+      );
+    } else {
+      setSelectedOrigins([]);
+    }
+  };
+
+  const handleSelectAllStatuses = (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.target.checked) {
+      setSelectedStatuses(
+        filterStatuses.map((po) => po.description).concat(["all-statuses"])
+      );
+    } else {
+      setSelectedStatuses([]);
+    }
   };
 
   const handleDownloadExcel = () => {
@@ -104,12 +144,30 @@ export const PaymentFilters = ({
     XLSX.writeFile(wb, `operaciones.xlsx`);
   };
 
+  const iconFilter = () => {
+    return (
+      <>
+        {initComp ? (
+          <KeyboardArrowDownIcon htmlColor="var(--primary-color)" />
+        ) : (
+          <CircularProgress className="filter-circular-progress" />
+        )}
+      </>
+    );
+  };
+
   useEffect(() => {
     if (initComp) {
-      filterByStatuses(["TER"]);
-      setInitComp(false);
+      setSelectedStatuses([
+        filterStatuses.find(
+          (po) => po.code === EPaymentOperationStatus.Terminated
+        )?.description || "",
+      ]);
+      setSelectedOrigins(
+        filterOrigins.map((po) => po.description).concat(["all-origins"])
+      );
     }
-  }, [filterByStatuses, setInitComp, initComp]);
+  }, [initComp, filterOrigins, filterStatuses]);
 
   return (
     <>
@@ -120,10 +178,11 @@ export const PaymentFilters = ({
               id="openOriginSelect"
               onClick={() => setOpenOriginSelect(true)}
               className="select-button"
+              disabled={!initComp}
             >
-              Origen<KeyboardArrowDownIcon></KeyboardArrowDownIcon>
+              Origen
+              {iconFilter()}
             </Button>
-
             <Select
               multiple
               input={<Input id="select-multiple-origin" />}
@@ -135,8 +194,16 @@ export const PaymentFilters = ({
               MenuProps={{
                 anchorEl: document.getElementById("openOriginSelect"),
               }}
-              // onChange={}
             >
+              <MenuItem key={"ORI"} value={"all-origins"}>
+                <ListItemText primary={"Todos"} />
+                <Checkbox
+                  checked={selectedOrigins.includes("all-origins")}
+                  className="checkbox-filter"
+                  onChange={handleSelectAllOrigins}
+                />
+              </MenuItem>
+              <Divider />
               {filterOrigins.map((filOri) => (
                 <MenuItem key={filOri.code} value={filOri.description}>
                   <ListItemText primary={filOri.description} />
@@ -146,19 +213,16 @@ export const PaymentFilters = ({
                   />
                 </MenuItem>
               ))}
-              <MenuItem className="apply-filter" onClick={handleOriginsApply}>
-                Aplicar
-              </MenuItem>
             </Select>
-
             <Button
               id="openStatusSelect"
               onClick={() => setOpenStatusSelect(true)}
               className="select-button"
+              disabled={!initComp}
             >
-              Estado<KeyboardArrowDownIcon></KeyboardArrowDownIcon>
+              Estado
+              {iconFilter()}
             </Button>
-
             <Select
               multiple
               input={<Input id="select-multiple-statuses" />}
@@ -172,6 +236,15 @@ export const PaymentFilters = ({
               }}
               // onChange={}
             >
+              <MenuItem key={"STS"} value={"all-statuses"}>
+                <ListItemText primary={"Todos"} />
+                <Checkbox
+                  checked={selectedStatuses.includes("all-statuses")}
+                  className="checkbox-filter"
+                  onChange={handleSelectAllStatuses}
+                />
+              </MenuItem>
+              <Divider />
               {filterStatuses.map((filSta) => (
                 <MenuItem key={filSta.code} value={filSta.description}>
                   <ListItemText primary={filSta.description} />
@@ -181,24 +254,81 @@ export const PaymentFilters = ({
                   />
                 </MenuItem>
               ))}
-              <MenuItem className="apply-filter" onClick={handleStatusesApply}>
-                Aplicar
-              </MenuItem>
             </Select>
+            <Button
+              id="openStarDate"
+              onClick={() => setOpenStartDate(true)}
+              className="select-button"
+              disabled={!initComp}
+            >
+              {dateFrom
+                ? `Desde: ${moment
+                    .tz(dateFrom, "America/Argentina/Buenos_Aires")
+                    .format("DD/MM/YYYY")}`
+                : "Fecha Desde"}
+              {iconFilter()}
+            </Button>
+            <LocalizationProvider dateAdapter={AdapterDateFns}>
+              <DatePicker
+                value={dateFrom}
+                onChange={(newDate) => setDateFrom(newDate)}
+                onClose={() => setOpenStartDate(false)}
+                open={openStartDate}
+                renderInput={() => <></>}
+                PopperProps={{
+                  anchorEl: document.getElementById("openStarDate"),
+                }}
+              />
+            </LocalizationProvider>
+            <Button
+              id="openEndDate"
+              onClick={() => setOpenEndDate(true)}
+              className="select-button"
+              disabled={!initComp}
+            >
+              {dateTo
+                ? `Hasta: ${moment
+                    .tz(dateTo, "America/Argentina/Buenos_Aires")
+                    .format("DD/MM/YYYY")}`
+                : "Fecha Hasta"}
+              {iconFilter()}
+            </Button>
+            <LocalizationProvider dateAdapter={AdapterDateFns}>
+              <DatePicker
+                value={dateTo}
+                onChange={(newDate) => setDateTo(newDate)}
+                onClose={() => setOpenEndDate(false)}
+                open={openEndDate}
+                renderInput={() => <></>}
+                PopperProps={{
+                  anchorEl: document.getElementById("openEndDate"),
+                }}
+              />
+            </LocalizationProvider>
+            <Button
+              id="openStarDate"
+              onClick={handleApply}
+              variant="contained"
+              disableElevation
+              className="select-button select-button-apply"
+              disabled={!initComp}
+            >
+              Aplicar
+            </Button>
             <Stack
               flexDirection="row"
               justifyContent="flex-end"
               alignItems="center"
               flex="1"
             >
-              {/* <IconButton
+              <IconButton
                 className="icon-button"
                 aria-label="Estadisticas"
                 size="medium"
                 onClick={handleOpen}
               >
                 <BarChartOutlinedIcon />
-              </IconButton> */}
+              </IconButton>
               <IconButton
                 className="icon-button"
                 aria-label="Descargar Excel"

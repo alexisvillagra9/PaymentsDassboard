@@ -13,7 +13,7 @@ export const PaymentFilterModal = ({
   return (
     <Modal open={open} onClose={handleClose} sx={{ display: "flex" }}>
       <Box className="box-container">
-        <>Hola mundo</>
+        <>En construccion</>
       </Box>
     </Modal>
   );

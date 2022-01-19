@@ -7,6 +7,7 @@ export const PaymentRoutes = () => {
     <Routes>
       <Route path="/home" element={<Payments />} />
       <Route path="/payment-detail" element={<PaymentDetail />} />
+      <Route path="/*" element={<Payments />} />
     </Routes>
   );
 };

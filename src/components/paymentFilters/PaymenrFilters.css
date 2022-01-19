@@ -18,8 +18,11 @@
 }
 
 .select-button {
-  color: var(--color-primary) !important;
-  /* padding: 0; */
+  border-radius: var(--border-radius) !important;
+}
+
+.select-button-apply {
+  background-color: var(--color-primary) !important;
 }
 
 .icon-button {
@@ -34,4 +37,11 @@
 
 .checkbox-filter {
   color: var(--color-primary) !important;
+}
+
+.filter-circular-progress {
+  width: 1rem !important;
+  height: 1rem !important;
+  color: var(--color-primary) !important;
+  margin-left: 0.5rem;
 }

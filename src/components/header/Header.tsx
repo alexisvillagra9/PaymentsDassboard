@@ -70,7 +70,6 @@ export const Header = () => {
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
   const handleLogout = () => {
-    console.log(user);
     dispatch({ type: types.logout });
 
     navigate("/login", {
