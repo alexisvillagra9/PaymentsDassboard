@@ -123,7 +123,9 @@ export const PaymentFilters = ({
   const handleDownloadExcel = () => {
     const data = paymentOperationsFilter.map((payop) => {
       return {
-        fecha_creacion: payop.createdAt,
+        fecha_creacion: moment
+          .tz(payop.createdAt, "America/Argentina/Buenos_Aires")
+          .format("DD MMMM YYYY, HH:mm:ss"),
         origen: payop.origin.description,
         fecha_pago: payop.result?.payment?.date,
         estado_pago: payop.result?.payment?.description,
