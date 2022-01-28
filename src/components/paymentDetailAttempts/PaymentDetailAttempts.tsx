@@ -42,7 +42,7 @@ export const PaymentDetailAttempts = ({
           primary={`${description}`}
           secondary={moment
             .tz(createdAt, "America/Argentina/Buenos_Aires")
-            .format("DD MMMM YYYY, HH:mm:ss")}
+            .format()}
           primaryTypographyProps={{
             fontSize: 16,
             fontWeight: "medium",
