@@ -125,7 +125,7 @@ export const PaymentFilters = ({
       return {
         fecha_creacion: moment
           .tz(payop.createdAt, "America/Argentina/Buenos_Aires")
-          .format("DD MMMM YYYY, HH:mm:ss"),
+          .format(),
         origen: payop.origin.description,
         fecha_pago: payop.result?.payment?.date,
         estado_pago: payop.result?.payment?.description,
