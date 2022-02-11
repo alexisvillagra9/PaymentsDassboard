@@ -12,9 +12,11 @@ import "./PaymentDetailHeader.css";
 
 export const PaymentDetailHeader = ({
   paymentOperationId,
+  paymentReference,
   createdAt,
 }: {
   paymentOperationId: string;
+  paymentReference: string;
   createdAt: Date;
 }) => {
   const navigate = useNavigate();
@@ -45,7 +47,9 @@ export const PaymentDetailHeader = ({
             justifyContent="space-between"
             minWidth="15rem"
           >
-            <div className="header-title"># {paymentOperationId}</div>
+            <div className="header-title">
+              # {`${paymentOperationId} - MP Nro: ${paymentReference}`}
+            </div>
             <div className="header-title">
               Creada el{" "}
               {moment

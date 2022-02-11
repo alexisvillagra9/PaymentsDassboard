@@ -19,6 +19,7 @@ export const PaymentDetail = () => {
     createdAt,
     partner,
     result,
+    result: { payment: { reference: paymentReference = "" } = {} } = {},
   } = paymentOperation as IPaymentOperation;
 
   // useEffect(() => {
@@ -43,6 +44,7 @@ export const PaymentDetail = () => {
         <Stack gap="0.5rem">
           <PaymentDetailHeader
             paymentOperationId={_id}
+            paymentReference={paymentReference}
             createdAt={createdAt}
           ></PaymentDetailHeader>
           <PaymentDetailAccordion
