@@ -6,9 +6,12 @@ import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import moment from "moment-timezone";
 import "moment/locale/es";
-import React from "react";
+import ContentCopyIcon from "@mui/icons-material/ContentCopy";
+import CheckBoxOutlinedIcon from "@mui/icons-material/CheckBoxOutlined";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./PaymentDetailHeader.css";
+import Button from "@mui/material/Button";
 
 export const PaymentDetailHeader = ({
   paymentOperationId,
@@ -20,6 +23,12 @@ export const PaymentDetailHeader = ({
   createdAt: Date;
 }) => {
   const navigate = useNavigate();
+  const [copied, setCopied] = useState(false);
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText(paymentReference);
+    setCopied(true);
+  };
   return (
     <>
       <Paper className="paper-container-detail" elevation={0}>
@@ -47,7 +56,25 @@ export const PaymentDetailHeader = ({
             justifyContent="space-between"
             minWidth="15rem"
           >
-            <div className="header-title"># {`${paymentOperationId}`}</div>
+            <div className="header-title">
+              {`# ${paymentOperationId}`}
+              <Button
+                endIcon={
+                  copied ? (
+                    <CheckBoxOutlinedIcon
+                      sx={{ fontSize: "0.85rem!important" }}
+                    />
+                  ) : (
+                    <ContentCopyIcon sx={{ fontSize: "0.85rem!important" }} />
+                  )
+                }
+                sx={{ padding: 0 }}
+                onClick={handleCopy}
+                onMouseOver={() => setCopied(false)}
+              >
+                {`MP#: ${paymentReference}`}
+              </Button>
+            </div>
             <div className="header-title">
               Creada el{" "}
               {moment

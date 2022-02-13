@@ -18,6 +18,7 @@ import * as React from "react";
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/auth/authContext";
+import { GeneralContext } from "../../context/general/generalContext";
 import { types } from "../../types/types";
 
 const Search = styled("div")(({ theme }) => ({
@@ -65,6 +66,10 @@ export const Header = () => {
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
+  const {
+    paymentOperations: payOpsContext,
+    setPaymentOperationsFiltered: setPaymentOperationsFilteredContext,
+  } = useContext(GeneralContext);
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -88,6 +93,29 @@ export const Header = () => {
   const handleMenuClose = () => {
     setAnchorEl(null);
     handleMobileMenuClose();
+  };
+
+  const handleSearch = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const filterString = `${event.currentTarget.value}`.toUpperCase();
+    if (filterString.length) {
+      const payOpsFil = (payOpsContext || [])?.filter(
+        (payOp) =>
+          payOp.partner.name.toUpperCase().includes(filterString) ||
+          payOp.partner.lastName.toUpperCase().includes(filterString) ||
+          (payOp.result?.payment?.reference || "")
+            .toUpperCase()
+            .includes(filterString) ||
+          payOp.transaction_amount
+            .toString()
+            .toUpperCase()
+            .includes(filterString)
+      );
+      setPaymentOperationsFilteredContext(payOpsFil);
+    } else {
+      setPaymentOperationsFilteredContext(payOpsContext);
+    }
   };
 
   // const handleMobileMenuOpen = (event: any) => {
@@ -198,8 +226,9 @@ export const Header = () => {
               <SearchIcon />
             </SearchIconWrapper>
             <StyledInputBase
-              placeholder="Search…"
+              placeholder="Buscar"
               inputProps={{ "aria-label": "search" }}
+              onChange={(e) => handleSearch(e)}
             />
           </Search>
           <Box sx={{ flexGrow: 1 }} />

@@ -32,6 +32,9 @@ function App() {
   const [paymentOperations, setPaymentOperations] = useState<
     IPaymentOperation[] | null
   >(null);
+  const [paymentOperationsFiltered, setPaymentOperationsFiltered] = useState<
+    IPaymentOperation[] | null
+  >(null);
   const [operationStatuses, setOperationStatuses] = useState<
     IPaymentOperationStatus[]
   >([]);
@@ -51,10 +54,12 @@ function App() {
         <GeneralContext.Provider
           value={{
             paymentOperations,
+            paymentOperationsFiltered,
             operationStatuses,
             operationOrigins,
             actualPage,
             setPaymentOperations,
+            setPaymentOperationsFiltered,
             setOperationStatuses,
             setOperationOrigins,
             setActualPage,

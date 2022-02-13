@@ -27,9 +27,11 @@ export const Payments = () => {
   const [initComp, setInitComp] = useState(false);
   const {
     paymentOperations: payOpsContext,
+    paymentOperationsFiltered: payOpsFilteredContext,
     operationStatuses: operationStatusesContext,
     operationOrigins: operationOriginsContext,
     setPaymentOperations: setPaymentOperationsContext,
+    setPaymentOperationsFiltered: setPaymentOperationsFilteredContext,
     setOperationStatuses: setOperationStatusesContex,
     setOperationOrigins: setOperationOriginsContext,
   } = useContext(GeneralContext);
@@ -54,6 +56,7 @@ export const Payments = () => {
             ]);
 
             setPaymentOperationsContext(payOps);
+            setPaymentOperationsFilteredContext(payOps);
             setOperationStatusesContex(sts);
             setOperationOriginsContext(ors);
           }
@@ -70,6 +73,7 @@ export const Payments = () => {
   }, [
     payOpsContext,
     setPaymentOperationsContext,
+    setPaymentOperationsFilteredContext,
     setOperationStatusesContex,
     setOperationOriginsContext,
     initComp,
@@ -118,11 +122,11 @@ export const Payments = () => {
   return (
     <div className="page-container">
       <PaymentFilters
-        total={(payOpsContext || []).length}
+        total={(payOpsFilteredContext || []).length}
         filterOrigins={operationOriginsContext}
         filterStatuses={operationStatusesContext}
         getTotalAmount={getTotalAmount}
-        paymentOperationsFilter={payOpsContext || []}
+        paymentOperationsFilter={payOpsFilteredContext || []}
         initComp={initComp}
         loading={loading}
         setLoading={setLoading}
@@ -130,7 +134,9 @@ export const Payments = () => {
       {loading ? (
         skeletonList
       ) : (
-        <PaymentList paymentOperations={payOpsContext || []}></PaymentList>
+        <PaymentList
+          paymentOperations={payOpsFilteredContext || []}
+        ></PaymentList>
       )}
     </div>
   );

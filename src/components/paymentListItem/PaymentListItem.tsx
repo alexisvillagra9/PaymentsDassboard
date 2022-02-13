@@ -3,7 +3,7 @@ import EventAvailableOutlinedIcon from "@mui/icons-material/EventAvailableOutlin
 import HowToRegOutlinedIcon from "@mui/icons-material/HowToRegOutlined";
 import AddLocationOutlinedIcon from "@mui/icons-material/AddLocationOutlined";
 import QrCodeScannerOutlinedIcon from "@mui/icons-material/QrCodeScannerOutlined";
-import CreditScoreOutlinedIcon from '@mui/icons-material/CreditScoreOutlined';
+import CreditScoreOutlinedIcon from "@mui/icons-material/CreditScoreOutlined";
 import Avatar from "@mui/material/Avatar";
 import Chip from "@mui/material/Chip";
 import ListItemAvatar from "@mui/material/ListItemAvatar";

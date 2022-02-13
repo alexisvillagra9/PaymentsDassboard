@@ -6,7 +6,10 @@
   font-size: 1rem;
   color: rgba(0, 0, 0, 0.6);
   /* font-weight: bold; */
-  overflow-wrap: anywhere;
+  /* overflow-wrap: anywhere; */
+  flex-wrap: wrap;
+  display: flex;
+  gap: 0.75rem;
 }
 
 .paper-container-detail {
