@@ -6,7 +6,10 @@ export const PaymentRoutes = () => {
   return (
     <Routes>
       <Route path="/home" element={<Payments />} />
-      <Route path="/payment-detail" element={<PaymentDetail />} />
+      <Route
+        path="/payment-detail/:payment_operation_id"
+        element={<PaymentDetail />}
+      />
       <Route path="/*" element={<Payments />} />
     </Routes>
   );

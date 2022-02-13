@@ -1,33 +1,30 @@
+import Paper from "@mui/material/Paper";
 import Stack from "@mui/material/Stack";
-import React, { useState } from "react";
-import { useLocation } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import { PaymentDetailAccordion } from "../../components/paymentDetailAccordion/PaymentDetailAccordion";
 import { PaymentDetailHeader } from "../../components/paymentDetailHeader/PaymentDetailHeader";
 import { IPaymentOperation } from "../../models/apis/wallet/paymentOperation";
 import { IPaymentOperationAttempt } from "../../models/apis/wallet/paymentOperationAttempts";
-import { getPaymentOperationAttempts } from "../../services/payments";
+import {
+  getPaymentOperationAttempts,
+  getPaymentOperationById,
+} from "../../services/payments";
+import "./PaymentDetail.css";
+import Skeleton from "@mui/material/Skeleton";
 
 export const PaymentDetail = () => {
   const [loadAttempts, setLoadAttempts] = useState(true);
   const [attempts, setAttempts] = useState<IPaymentOperationAttempt[]>([]);
-  const { state: paymentOperation } = useLocation();
-  const {
-    _id,
-    items,
-    transaction_amount,
-    subtotal,
-    createdAt,
-    partner,
-    result,
-    result: { payment: { reference: paymentReference = "" } = {} } = {},
-  } = paymentOperation as IPaymentOperation;
+  const [paymentOperation, setPaymentOperation] =
+    useState<IPaymentOperation | null>();
 
-  // useEffect(() => {
-  //   // console.log(attempts);
-  // }, [attempts]);
+  const { payment_operation_id } = useParams();
 
   const getAttempts = async () => {
-    const attemptsTemp = await getPaymentOperationAttempts(_id);
+    const attemptsTemp = await getPaymentOperationAttempts(
+      payment_operation_id
+    );
     setAttempts(attemptsTemp);
     setLoadAttempts(false);
   };
@@ -38,47 +35,90 @@ export const PaymentDetail = () => {
     }
   };
 
+  const SkeletonDetail = () => {
+    return (
+      <>
+        <Stack gap="0.5rem">
+          <Paper className="paper-container-detail" elevation={0}>
+            <Skeleton
+              animation="wave"
+              width={"7rem"}
+              height={"3rem"}
+              sx={{ borderRadius: "8px" }}
+            />
+          </Paper>
+          <Paper
+            className="paper-container-detail"
+            elevation={0}
+            sx={{ height: "20rem" }}
+          >
+            <Skeleton
+              animation="wave"
+              height={"3rem"}
+              width={"7rem"}
+              sx={{ borderRadius: "8px" }}
+            />
+          </Paper>
+        </Stack>
+      </>
+    );
+  };
+
+  useEffect(() => {
+    const init = async () => {
+      const payOp = await getPaymentOperationById(payment_operation_id);
+      setPaymentOperation(payOp);
+    };
+    init();
+  }, [payment_operation_id]);
+
   return (
     <>
       <div className="page-container">
-        <Stack gap="0.5rem">
-          <PaymentDetailHeader
-            paymentOperationId={_id}
-            paymentReference={paymentReference}
-            createdAt={createdAt}
-          ></PaymentDetailHeader>
-          <PaymentDetailAccordion
-            panelId="items"
-            title="Detalle de items"
-            handleChange={handleChange}
-            defaultExpanded={true}
-            items={items}
-            subtotal={subtotal}
-            transaction_amount={transaction_amount}
-          ></PaymentDetailAccordion>
-          <PaymentDetailAccordion
-            panelId="partner"
-            title="Datos de Comprador"
-            handleChange={handleChange}
-            defaultExpanded={false}
-            partner={partner}
-          ></PaymentDetailAccordion>
-          <PaymentDetailAccordion
-            panelId="status"
-            title="Estado de Transacciones"
-            handleChange={handleChange}
-            defaultExpanded={false}
-            result={result}
-          ></PaymentDetailAccordion>
-          <PaymentDetailAccordion
-            panelId="attempts"
-            title="Intentos"
-            handleChange={handleChange}
-            defaultExpanded={false}
-            attempts={attempts}
-            attemptsLoading={loadAttempts}
-          ></PaymentDetailAccordion>
-        </Stack>
+        {paymentOperation ? (
+          <Stack gap="0.5rem">
+            <PaymentDetailHeader
+              paymentOperationId={paymentOperation._id}
+              paymentReference={
+                paymentOperation.result?.payment?.reference || ""
+              }
+              createdAt={paymentOperation.createdAt}
+            ></PaymentDetailHeader>
+            <PaymentDetailAccordion
+              panelId="items"
+              title="Detalle de items"
+              handleChange={handleChange}
+              defaultExpanded={true}
+              items={paymentOperation.items}
+              subtotal={paymentOperation.subtotal}
+              transaction_amount={paymentOperation.transaction_amount}
+            ></PaymentDetailAccordion>
+            <PaymentDetailAccordion
+              panelId="partner"
+              title="Datos de Comprador"
+              handleChange={handleChange}
+              defaultExpanded={false}
+              partner={paymentOperation.partner}
+            ></PaymentDetailAccordion>
+            <PaymentDetailAccordion
+              panelId="status"
+              title="Estado de Transacciones"
+              handleChange={handleChange}
+              defaultExpanded={false}
+              result={paymentOperation.result}
+            ></PaymentDetailAccordion>
+            <PaymentDetailAccordion
+              panelId="attempts"
+              title="Intentos"
+              handleChange={handleChange}
+              defaultExpanded={false}
+              attempts={attempts}
+              attemptsLoading={loadAttempts}
+            ></PaymentDetailAccordion>
+          </Stack>
+        ) : (
+          <SkeletonDetail />
+        )}
       </div>
     </>
   );

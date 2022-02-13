@@ -3,11 +3,12 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
-import React, { useEffect, useState, ChangeEvent } from "react";
+import React, { useEffect, useState, ChangeEvent, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { IPaymentOperation } from "../../models/apis/wallet/paymentOperation";
 import { PaymentListItem } from "../paymentListItem/PaymentListItem";
 import "./PaymentList.css";
+import { GeneralContext } from "../../context/general/generalContext";
 
 export const PaymentList = ({
   paymentOperations,
@@ -17,17 +18,18 @@ export const PaymentList = ({
   const [paymentOperationsShow, setPaymentOperationsShow] = useState<
     IPaymentOperation[]
   >([]);
-  const [page, setPage] = useState(1);
   const navigate = useNavigate();
+  const { actualPage: actualPageContext, setActualPage: setActualPageContext } =
+    useContext(GeneralContext);
 
   useEffect(() => {
-    const end = page * 10;
+    const end = actualPageContext * 10;
     const start = end - 10;
     setPaymentOperationsShow(paymentOperations.slice(start, end));
-  }, [page, paymentOperations]);
+  }, [actualPageContext, paymentOperations]);
 
-  const handlePaymentDetail = (operation: IPaymentOperation) => {
-    navigate("/payment-detail", { state: operation });
+  const handlePaymentDetail = (paymentOperationId: string) => {
+    navigate(`/payment-detail/${paymentOperationId}`);
   };
 
   const getCount = (pageSize: number) => {
@@ -36,7 +38,7 @@ export const PaymentList = ({
   };
 
   const handlePagination = (event: ChangeEvent<any>, pageSelect: number) => {
-    setPage(pageSelect);
+    setActualPageContext(pageSelect);
   };
 
   return (
@@ -61,7 +63,7 @@ export const PaymentList = ({
                     divider={idx + 1 < paymentOperationsShow.length}
                     disablePadding
                   >
-                    <ListItemButton onClick={() => handlePaymentDetail(payOp)}>
+                    <ListItemButton onClick={() => handlePaymentDetail(_id)}>
                       <PaymentListItem
                         origin={origin}
                         status={status}
@@ -83,7 +85,7 @@ export const PaymentList = ({
         <Pagination
           count={getCount(10)}
           // color="primary"
-          page={page}
+          page={actualPageContext}
           onChange={handlePagination}
         />
       </Stack>

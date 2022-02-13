@@ -17,7 +17,7 @@ import Typography from "@mui/material/Typography";
 import * as React from "react";
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { AuthContext } from "../../auth/authContext";
+import { AuthContext } from "../../context/auth/authContext";
 import { types } from "../../types/types";
 
 const Search = styled("div")(({ theme }) => ({

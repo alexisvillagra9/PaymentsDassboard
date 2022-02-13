@@ -3,14 +3,12 @@ import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 import Skeleton from "@mui/material/Skeleton";
 import Stack from "@mui/material/Stack";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { PaymentFilters } from "../../components/paymentFilters/PaymentFilters";
 import { PaymentList } from "../../components/paymentList/PaymentList";
+import { GeneralContext } from "../../context/general/generalContext";
 import { EPaymentOperationStatus } from "../../helpers/enums";
 import { useFilters } from "../../hooks/useFilters";
-import { IPaymentOperation } from "../../models/apis/wallet/paymentOperation";
-import { IPaymentOperationOrigin } from "../../models/apis/wallet/paymentOperationOrigin";
-import { IPaymentOperationStatus } from "../../models/apis/wallet/paymentOperationStatus";
 import {
   getPaymentOperationOrigins,
   getPaymentOperationsByFilter,
@@ -20,39 +18,46 @@ import "./Payments.css";
 
 export const Payments = () => {
   const {
-    paymentOperationsFilter,
-    setPaymentOperations,
     getTotalAmount,
   }: {
-    paymentOperationsFilter: IPaymentOperation[];
-    setPaymentOperations: (payOps: IPaymentOperation[]) => void;
     getTotalAmount: () => number;
   } = useFilters();
 
   const [loading, setLoading] = useState(true);
   const [initComp, setInitComp] = useState(false);
-  const [statuses, setStatuses] = useState<IPaymentOperationStatus[]>([]);
-  const [origins, setOrigins] = useState<IPaymentOperationOrigin[]>([]);
+  const {
+    paymentOperations: payOpsContext,
+    operationStatuses: operationStatusesContext,
+    operationOrigins: operationOriginsContext,
+    setPaymentOperations: setPaymentOperationsContext,
+    setOperationStatuses: setOperationStatusesContex,
+    setOperationOrigins: setOperationOriginsContext,
+  } = useContext(GeneralContext);
 
   useEffect(() => {
     const paymentInit = async () => {
       try {
         if (!initComp) {
           // console.log("Cargando...", new Date());
-          const pPayops = getPaymentOperationsByFilter({
-            statuses: [EPaymentOperationStatus.Terminated],
-          }); // Init with terminated payments only
-          const pStatuses = getPaymentOperationStatuses();
-          const pOrigins = getPaymentOperationOrigins();
-          const [payOps, sts, ors] = await Promise.all([
-            pPayops,
-            pStatuses,
-            pOrigins,
-          ]);
 
-          setPaymentOperations(payOps);
-          setStatuses(sts);
-          setOrigins(ors);
+          if (!payOpsContext) {
+            console.log("Entra por carga");
+            const pStatuses = getPaymentOperationStatuses();
+            const pOrigins = getPaymentOperationOrigins();
+            const pPayOps = getPaymentOperationsByFilter({
+              statuses: [EPaymentOperationStatus.Terminated],
+            }); // Init with terminated payments only
+            const [payOps, sts, ors] = await Promise.all([
+              pPayOps,
+              pStatuses,
+              pOrigins,
+            ]);
+
+            setPaymentOperationsContext(payOps);
+            setOperationStatusesContex(sts);
+            setOperationOriginsContext(ors);
+          }
+
           setInitComp(true);
           setLoading(false);
         }
@@ -62,7 +67,14 @@ export const Payments = () => {
     };
 
     paymentInit();
-  }, [setPaymentOperations, initComp, loading]);
+  }, [
+    payOpsContext,
+    setPaymentOperationsContext,
+    setOperationStatusesContex,
+    setOperationOriginsContext,
+    initComp,
+    loading,
+  ]);
 
   const skeletonList = (
     <>
@@ -106,12 +118,11 @@ export const Payments = () => {
   return (
     <div className="page-container">
       <PaymentFilters
-        total={paymentOperationsFilter.length}
-        filterOrigins={origins}
-        filterStatuses={statuses}
+        total={(payOpsContext || []).length}
+        filterOrigins={operationOriginsContext}
+        filterStatuses={operationStatusesContext}
         getTotalAmount={getTotalAmount}
-        paymentOperationsFilter={paymentOperationsFilter}
-        setPaymentOperations={setPaymentOperations}
+        paymentOperationsFilter={payOpsContext || []}
         initComp={initComp}
         loading={loading}
         setLoading={setLoading}
@@ -119,7 +130,7 @@ export const Payments = () => {
       {loading ? (
         skeletonList
       ) : (
-        <PaymentList paymentOperations={paymentOperationsFilter}></PaymentList>
+        <PaymentList paymentOperations={payOpsContext || []}></PaymentList>
       )}
     </div>
   );

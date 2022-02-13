@@ -1,7 +1,7 @@
 import { Button, Paper, Stack, TextField } from "@mui/material";
 import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { AuthContext } from "../../auth/authContext";
+import { AuthContext } from "../../context/auth/authContext";
 import { types } from "../../types/types";
 import "./Login.css";
 import { loginValid } from "../../services/login";

@@ -47,9 +47,7 @@ export const PaymentDetailHeader = ({
             justifyContent="space-between"
             minWidth="15rem"
           >
-            <div className="header-title">
-              # {`${paymentOperationId} - MP Nro: ${paymentReference}`}
-            </div>
+            <div className="header-title"># {`${paymentOperationId}`}</div>
             <div className="header-title">
               Creada el{" "}
               {moment

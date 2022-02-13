@@ -1,10 +1,10 @@
 import BarChartOutlinedIcon from "@mui/icons-material/BarChartOutlined";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import RestartAltIcon from "@mui/icons-material/RestartAlt";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import DatePicker from "@mui/lab/DatePicker";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import { CircularProgress } from "@mui/material";
-import RestartAltIcon from "@mui/icons-material/RestartAlt";
 import Button from "@mui/material/Button";
 import Checkbox from "@mui/material/Checkbox";
 import Chip from "@mui/material/Chip";
@@ -19,9 +19,10 @@ import Select from "@mui/material/Select";
 import Stack from "@mui/material/Stack";
 import moment from "moment-timezone";
 import "moment/locale/es";
-import React, { ChangeEvent, useEffect, useState } from "react";
+import React, { ChangeEvent, useContext, useEffect, useState } from "react";
 import { FaRegFileExcel } from "react-icons/fa";
 import XLSX from "xlsx";
+import { GeneralContext } from "../../context/general/generalContext";
 import { EPaymentOperationStatus } from "../../helpers/enums";
 import { currencyFormat } from "../../helpers/general";
 import { IPaymentOperation } from "../../models/apis/wallet/paymentOperation";
@@ -37,7 +38,6 @@ export const PaymentFilters = ({
   filterStatuses,
   getTotalAmount,
   paymentOperationsFilter,
-  setPaymentOperations,
   initComp,
   loading,
   setLoading,
@@ -47,11 +47,15 @@ export const PaymentFilters = ({
   filterStatuses: IPaymentOperationStatus[];
   getTotalAmount: () => number;
   paymentOperationsFilter: IPaymentOperation[];
-  setPaymentOperations: (payOps: IPaymentOperation[]) => void;
   initComp: boolean;
   loading: boolean;
   setLoading: (loading: boolean) => void;
 }) => {
+  const {
+    setActualPage: setActualPageContext,
+    setPaymentOperations: setPaymentOperationsContext,
+  } = useContext(GeneralContext);
+
   const [openOriginSelect, setOpenOriginSelect] = useState(false);
   const [openStatusSelect, setOpenStatusSelect] = useState(false);
   const [selectedStatuses, setSelectedStatuses] = useState<string[]>([]);
@@ -96,7 +100,7 @@ export const PaymentFilters = ({
       dateFrom,
       dateTo,
     });
-    setPaymentOperations(payops);
+    setPaymentOperationsContext(payops);
     setLoading(false);
   };
 
@@ -165,7 +169,7 @@ export const PaymentFilters = ({
       statuses: [EPaymentOperationStatus.Terminated],
     }); // Init with terminated payments only
 
-    setPaymentOperations(payops);
+    setPaymentOperationsContext(payops);
     setSelectedStatuses([
       filterStatuses.find(
         (po) => po.code === EPaymentOperationStatus.Terminated
@@ -177,6 +181,7 @@ export const PaymentFilters = ({
     setDateTo(null);
     setDateFrom(null);
     setLoading(false);
+    setActualPageContext(1);
   };
 
   useEffect(() => {

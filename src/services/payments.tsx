@@ -10,22 +10,46 @@ const WALLET_URI =
     ? process.env.REACT_APP_WALLET_URI
     : process.env.REACT_APP_WALLET_URI_DEV;
 
+export const getPaymentOperationById = async (
+  paymentOperationId: string = ""
+): Promise<IPaymentOperation> => {
+  try {
+    const res = await axios.get(
+      `${WALLET_URI}/payment-operation/${paymentOperationId}`
+    );
+    let { data: paymentOperation }: { data: IPaymentOperation } = res;
+    return paymentOperation;
+  } catch (error) {
+    throw error;
+  }
+};
+
 export const getPaymentOperationsByFilter = async (
   filters: any = {}
 ): Promise<IPaymentOperation[]> => {
   try {
+    let { dateFrom, dateTo }: { dateFrom: Date; dateTo: Date } = filters;
+
+    // Fix Filter by date
+    if (dateFrom) {
+      dateFrom.setHours(0);
+      dateFrom.setMinutes(0);
+      dateFrom.setSeconds(0);
+      filters = { ...filters, dateFrom };
+    }
+
+    if (dateTo) {
+      dateTo.setHours(23);
+      dateTo.setMinutes(59);
+      dateTo.setSeconds(59);
+      filters = { ...filters, dateTo };
+    }
+
     const res = await axios.post(
       `${WALLET_URI}/payment-operation/filters`,
       filters
     );
     let { data: paymentOperations = [] }: { data: IPaymentOperation[] } = res;
-
-    // Sort array ba date desc
-    paymentOperations = paymentOperations.sort(
-      (a: IPaymentOperation, b: IPaymentOperation) =>
-        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-    );
-
     return paymentOperations;
   } catch (error) {
     console.log(JSON.stringify(error));
