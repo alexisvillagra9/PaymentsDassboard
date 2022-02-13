@@ -104,6 +104,9 @@ export const Header = () => {
         (payOp) =>
           payOp.partner.name.toUpperCase().includes(filterString) ||
           payOp.partner.lastName.toUpperCase().includes(filterString) ||
+          payOp.partner.email.toUpperCase().includes(filterString) ||
+          payOp.partner.dni.toString().toUpperCase().includes(filterString) ||
+          payOp.partner.phone_number.toUpperCase().includes(filterString) ||
           (payOp.result?.payment?.reference || "")
             .toUpperCase()
             .includes(filterString) ||

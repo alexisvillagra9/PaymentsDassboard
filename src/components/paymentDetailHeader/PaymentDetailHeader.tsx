@@ -58,22 +58,24 @@ export const PaymentDetailHeader = ({
           >
             <div className="header-title">
               {`# ${paymentOperationId}`}
-              <Button
-                endIcon={
-                  copied ? (
-                    <CheckBoxOutlinedIcon
-                      sx={{ fontSize: "0.85rem!important" }}
-                    />
-                  ) : (
-                    <ContentCopyIcon sx={{ fontSize: "0.85rem!important" }} />
-                  )
-                }
-                sx={{ padding: 0 }}
-                onClick={handleCopy}
-                onMouseOver={() => setCopied(false)}
-              >
-                {`MP#: ${paymentReference}`}
-              </Button>
+              {paymentReference && (
+                <Button
+                  endIcon={
+                    copied ? (
+                      <CheckBoxOutlinedIcon
+                        sx={{ fontSize: "0.85rem!important" }}
+                      />
+                    ) : (
+                      <ContentCopyIcon sx={{ fontSize: "0.85rem!important" }} />
+                    )
+                  }
+                  sx={{ padding: 0 }}
+                  onClick={handleCopy}
+                  onMouseOver={() => setCopied(false)}
+                >
+                  {`MP#: ${paymentReference}`}
+                </Button>
+              )}
             </div>
             <div className="header-title">
               Creada el{" "}

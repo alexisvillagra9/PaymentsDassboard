@@ -54,6 +54,7 @@ export const PaymentFilters = ({
   const {
     setActualPage: setActualPageContext,
     setPaymentOperations: setPaymentOperationsContext,
+    setPaymentOperationsFiltered: setPaymentOperationsFilteredContext,
   } = useContext(GeneralContext);
 
   const [openOriginSelect, setOpenOriginSelect] = useState(false);
@@ -101,6 +102,7 @@ export const PaymentFilters = ({
       dateTo,
     });
     setPaymentOperationsContext(payops);
+    setPaymentOperationsFilteredContext(payops);
     setLoading(false);
   };
 
@@ -170,6 +172,7 @@ export const PaymentFilters = ({
     }); // Init with terminated payments only
 
     setPaymentOperationsContext(payops);
+    setPaymentOperationsFilteredContext(payops);
     setSelectedStatuses([
       filterStatuses.find(
         (po) => po.code === EPaymentOperationStatus.Terminated

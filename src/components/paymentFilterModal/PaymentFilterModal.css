@@ -5,4 +5,5 @@
   border-radius: var(--border-radius);
   background-color: white;
   box-shadow: 24;
+  display: flex;
 }
