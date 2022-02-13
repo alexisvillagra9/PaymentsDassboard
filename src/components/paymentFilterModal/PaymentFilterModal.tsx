@@ -65,6 +65,8 @@ export const PaymentFilterModal = ({
     maintainAspectRatio: false,
   };
 
+  console.log((payOpsFilteredContext || [])?.length);
+
   return (
     <Modal open={open} onClose={handleClose} sx={{ display: "flex" }}>
       <Box className="box-container">
