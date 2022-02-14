@@ -9,15 +9,14 @@ import {
   LineElement,
   PointElement,
 } from "chart.js";
+import _ from "lodash";
 import moment from "moment-timezone";
 import "moment/locale/es";
 import React, { useContext } from "react";
 import { Line } from "react-chartjs-2";
 import { AuthContext } from "../../context/auth/authContext";
 import { GeneralContext } from "../../context/general/generalContext";
-import { IPaymentOperation } from "../../models/apis/wallet/paymentOperation";
 import "./PaymentFilterModal.css";
-import _ from "lodash";
 export const PaymentFilterModal = ({
   open,
   handleClose,
