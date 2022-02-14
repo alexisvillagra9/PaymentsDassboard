@@ -232,6 +232,9 @@ export const Header = () => {
               placeholder="Buscar"
               inputProps={{ "aria-label": "search" }}
               onChange={(e) => handleSearch(e)}
+              onKeyPress={(event) => {
+                if (event.key === "Enter") navigate("/");
+              }}
             />
           </Search>
           <Box sx={{ flexGrow: 1 }} />
