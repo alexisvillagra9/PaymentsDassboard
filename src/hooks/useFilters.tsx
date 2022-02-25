@@ -7,7 +7,11 @@ export const useFilters = (initialState = []) => {
 
   const getTotalAmount = () => {
     const total = (payOpsFilteredContext || [])
-      .filter((po) => po?.result?.payment?.code === "OK")
+      .filter(
+        (po) =>
+          (((po?.result?.payment?.code || "") === "OK" && po?.status?.code) ||
+            "") === "TER"
+      )
       .reduce((sum: number, po1) => sum + po1?.transaction_amount || 0, 0);
     return total;
   };
