@@ -8,16 +8,19 @@ import AccordionDetails from "@mui/material/AccordionDetails";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import Typography from "@mui/material/Typography";
 import React from "react";
+import { FaRegHandshake } from "react-icons/fa";
 import { EAccordionPanel } from "../../helpers/enums";
+import { IMercadopagoPayment } from "../../models/apis/mercadopago/payment";
 import { IOperationItem } from "../../models/apis/wallet/operationItem";
 import { IPartnerOperation } from "../../models/apis/wallet/partnerOperation";
+import { IPaymentOperationAttempt } from "../../models/apis/wallet/paymentOperationAttempts";
 import { IResult } from "../../models/apis/wallet/result";
 import { PaymentDetailAttempts } from "../paymentDetailAttempts/PaymentDetailAttempts";
 import { PaymentDetailItems } from "../paymentDetailItems/PaymentDetailItems";
+import { PaymentDetailMercadopago } from "../paymentDetailMercadopago/PaymentDetailMercadopago";
 import { PaymentDetailPartner } from "../paymentDetailPartner/PaymentDetailPartner";
 import { PaymentDetailStatus } from "../paymentDetailStatus/PaymentDetailStatus";
 import "./PaymentDetailAccordion.css";
-import { IPaymentOperationAttempt } from "../../models/apis/wallet/paymentOperationAttempts";
 
 export const PaymentDetailAccordion = ({
   panelId,
@@ -31,6 +34,7 @@ export const PaymentDetailAccordion = ({
   result,
   attempts,
   attemptsLoading,
+  paymentMercadopago,
 }: {
   panelId: string;
   title: string;
@@ -43,6 +47,7 @@ export const PaymentDetailAccordion = ({
   result?: IResult;
   attempts?: IPaymentOperationAttempt[];
   attemptsLoading?: boolean;
+  paymentMercadopago?: IMercadopagoPayment | null;
 }) => {
   const getHeaderIcon = () => {
     let iconTag = null;
@@ -50,6 +55,7 @@ export const PaymentDetailAccordion = ({
     if (panelId === "partner") iconTag = <AccountCircleOutlinedIcon />;
     if (panelId === "status") iconTag = <PublishedWithChangesOutlinedIcon />;
     if (panelId === "attempts") iconTag = <ReplayOutlinedIcon />;
+    if (panelId === "mercadopago") iconTag = <FaRegHandshake size="1.5rem" />;
     return iconTag;
   };
   return (
@@ -95,6 +101,9 @@ export const PaymentDetailAccordion = ({
               attempts={attempts || []}
               loading={attemptsLoading || false}
             />
+          )}
+          {panelId === EAccordionPanel.mercadopago && (
+            <PaymentDetailMercadopago payment={paymentMercadopago || null} />
           )}
         </AccordionDetails>
       </Accordion>

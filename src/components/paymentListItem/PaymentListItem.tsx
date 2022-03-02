@@ -4,6 +4,7 @@ import HowToRegOutlinedIcon from "@mui/icons-material/HowToRegOutlined";
 import AddLocationOutlinedIcon from "@mui/icons-material/AddLocationOutlined";
 import QrCodeScannerOutlinedIcon from "@mui/icons-material/QrCodeScannerOutlined";
 import CreditScoreOutlinedIcon from "@mui/icons-material/CreditScoreOutlined";
+import ModelTrainingOutlinedIcon from "@mui/icons-material/ModelTrainingOutlined";
 import Avatar from "@mui/material/Avatar";
 import Chip from "@mui/material/Chip";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
@@ -106,6 +107,9 @@ export const PaymentListItem = ({
       )}
       {originCode === EPaymentOperationOrigin.LocationBuy && (
         <AddLocationOutlinedIcon></AddLocationOutlinedIcon>
+      )}
+      {originCode === EPaymentOperationOrigin.Reactivate && (
+        <ModelTrainingOutlinedIcon></ModelTrainingOutlinedIcon>
       )}
     </>
   );

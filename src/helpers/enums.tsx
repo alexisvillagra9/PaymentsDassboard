@@ -5,6 +5,7 @@ export enum EPaymentOperationOrigin {
   SubscriptionToAD = "ADA",
   QRPayment = "QRP",
   LocationBuy = "CDU",
+  Reactivate = "RIP",
 }
 
 export enum EPaymentOperationStatus {
@@ -25,4 +26,5 @@ export enum EAccordionPanel {
   partner = "partner",
   status = "status",
   attempts = "attempts",
+  mercadopago = "mercadopago",
 }

@@ -158,7 +158,7 @@ export const PaymentFilters = ({
     return (
       <>
         {initComp ? (
-          <KeyboardArrowDownIcon htmlColor="var(--primary-color)" />
+          <KeyboardArrowDownIcon htmlColor="var(--color-primary)" />
         ) : (
           <CircularProgress className="filter-circular-progress" />
         )}

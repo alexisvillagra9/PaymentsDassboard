@@ -12,10 +12,14 @@ import {
 } from "../../services/payments";
 import "./PaymentDetail.css";
 import Skeleton from "@mui/material/Skeleton";
+import { getPaymentMercadopagoById } from "../../services/payments";
+import { IMercadopagoPayment } from "../../models/apis/mercadopago/payment";
 
 export const PaymentDetail = () => {
   const [loadAttempts, setLoadAttempts] = useState(true);
   const [attempts, setAttempts] = useState<IPaymentOperationAttempt[]>([]);
+  const [mercadopagoPayment, setMercadopagoPayment] =
+    useState<IMercadopagoPayment | null>(null);
   const [paymentOperation, setPaymentOperation] =
     useState<IPaymentOperation | null>();
 
@@ -27,6 +31,11 @@ export const PaymentDetail = () => {
     );
     setAttempts(attemptsTemp);
     setLoadAttempts(false);
+  };
+
+  const getPaymentMercadopago = async (paymentId: string | number) => {
+    const payMP = await getPaymentMercadopagoById(paymentId);
+    setMercadopagoPayment(payMP);
   };
 
   const handleChange = (panel: string) => (event: React.SyntheticEvent) => {
@@ -72,6 +81,16 @@ export const PaymentDetail = () => {
     init();
   }, [payment_operation_id]);
 
+  useEffect(() => {
+    if (paymentOperation) {
+      const { result: { payment: { reference: mpPaymentID = "" } = {} } = {} } =
+        paymentOperation;
+
+      console.log(mpPaymentID);
+      getPaymentMercadopago(mpPaymentID);
+    }
+  }, [paymentOperation]);
+
   return (
     <>
       <div className="page-container">
@@ -114,6 +133,13 @@ export const PaymentDetail = () => {
               defaultExpanded={false}
               attempts={attempts}
               attemptsLoading={loadAttempts}
+            ></PaymentDetailAccordion>
+            <PaymentDetailAccordion
+              panelId="mercadopago"
+              title="Mercadopago"
+              handleChange={handleChange}
+              defaultExpanded={false}
+              paymentMercadopago={mercadopagoPayment}
             ></PaymentDetailAccordion>
           </Stack>
         ) : (

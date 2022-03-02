@@ -3,6 +3,7 @@ import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined";
 import CheckCircleOutlinedIcon from "@mui/icons-material/CheckCircleOutlined";
 import ConfirmationNumberOutlinedIcon from "@mui/icons-material/ConfirmationNumberOutlined";
 import CreditCardOutlinedIcon from "@mui/icons-material/CreditCardOutlined";
+import MoneyOffCsredOutlinedIcon from "@mui/icons-material/MoneyOffCsredOutlined";
 import PeopleOutlinedIcon from "@mui/icons-material/PeopleOutlined";
 import Avatar from "@mui/material/Avatar";
 import List from "@mui/material/List";
@@ -14,7 +15,6 @@ import React from "react";
 import { IResult } from "../../models/apis/wallet/result";
 import { IStatusResult } from "../../models/apis/wallet/statusResult";
 import "./PaymentDetailStatus.css";
-
 
 export const PaymentDetailStatus = ({
   result,
@@ -32,6 +32,7 @@ export const PaymentDetailStatus = ({
         {type === "payment" && <AttachMoneyOutlinedIcon />}
         {type === "hermes" && <PeopleOutlinedIcon />}
         {type === "preapproval" && <CreditCardOutlinedIcon />}
+        {type === "hermes_forgiveness" && <MoneyOffCsredOutlinedIcon />}
       </>
     );
   };
@@ -42,6 +43,7 @@ export const PaymentDetailStatus = ({
     if (type === "payment") typeText = "PAGO";
     if (type === "preapproval") typeText = "SUSCRIPCION";
     if (type === "hermes") typeText = "HERMES";
+    if (type === "hermes_forgiveness") typeText = "HERMES MORATORIA";
     return typeText;
   };
 
