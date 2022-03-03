@@ -26,7 +26,11 @@ body {
 
 :root {
   --color-primary: #009ee3;
-  /* --backgrund-primary: #ededed; */
+  --color-success: green;
+  --color-error: #b30000;
+
+  --background-success: #d2ffd4;
+  --background-error: #ffe5e5;
   --backgrund-primary: #dddddd;
   --backgorund-secondary: #e5f7ff;
   --border-radius: 0.8rem;

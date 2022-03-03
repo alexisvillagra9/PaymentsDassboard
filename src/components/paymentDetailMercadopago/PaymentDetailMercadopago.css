@@ -1,0 +1,21 @@
+.list-item-icon {
+  color: var(--color-primary) !important;
+  min-width: 2rem !important;
+}
+
+.list-item-icon-success {
+  color: var(--color-success) !important;
+}
+
+.list-item-icon-error {
+  color: var(--color-error) !important;
+}
+
+.box-mercadopago {
+  flex: 1 1;
+  border-color: var(--color-primary);
+  border-radius: var(--border-radius);
+  min-width: 300px;
+  border: 1px dashed;
+  padding: 0.8rem;
+}

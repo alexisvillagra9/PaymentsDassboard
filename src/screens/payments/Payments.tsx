@@ -43,7 +43,7 @@ export const Payments = () => {
           // console.log("Cargando...", new Date());
 
           if (!payOpsContext) {
-            console.log("Entra por carga");
+            // console.log("Entra por carga");
             const pStatuses = getPaymentOperationStatuses();
             const pOrigins = getPaymentOperationOrigins();
             const pPayOps = getPaymentOperationsByFilter({

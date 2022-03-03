@@ -1,5 +1,7 @@
 .accordion-title {
   background-color: var(--backgorund-secondary) !important;
+  display: flex;
+  gap: 0.4rem;
 }
 
 .header-title {

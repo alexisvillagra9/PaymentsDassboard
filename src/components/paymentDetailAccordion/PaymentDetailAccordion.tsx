@@ -8,6 +8,8 @@ import AccordionDetails from "@mui/material/AccordionDetails";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import Typography from "@mui/material/Typography";
 import React from "react";
+import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined";
+import CheckCircleOutlineOutlinedIcon from "@mui/icons-material/CheckCircleOutlineOutlined";
 import { FaRegHandshake } from "react-icons/fa";
 import { EAccordionPanel } from "../../helpers/enums";
 import { IMercadopagoPayment } from "../../models/apis/mercadopago/payment";
@@ -49,6 +51,13 @@ export const PaymentDetailAccordion = ({
   attemptsLoading?: boolean;
   paymentMercadopago?: IMercadopagoPayment | null;
 }) => {
+  const getEqualAmounts = () => {
+    return (
+      (transaction_amount || 0) ===
+      (paymentMercadopago?.transaction_amount || 0)
+    );
+  };
+
   const getHeaderIcon = () => {
     let iconTag = null;
     if (panelId === "items") iconTag = <FormatListBulletedOutlinedIcon />;
@@ -75,11 +84,29 @@ export const PaymentDetailAccordion = ({
             sx={{ width: "fit-content", flexShrink: 0 }}
             borderRadius={"8px"}
             padding={"0.3rem"}
-            className="accordion-title"
+            className="accordion-title-acc"
           >
             {getHeaderIcon()}
             {title}
           </Typography>
+          {panelId === EAccordionPanel.mercadopago && (
+            <Typography
+              sx={{ width: "fit-content", flexShrink: 0 }}
+              borderRadius="8px"
+              padding="0.3rem"
+              marginLeft="0.5rem"
+              className={`accordion-title-acc accordion-title-acc-${
+                getEqualAmounts() ? "success" : "error"
+              }`}
+            >
+              {getEqualAmounts() ? (
+                <CheckCircleOutlineOutlinedIcon />
+              ) : (
+                <CancelOutlinedIcon />
+              )}
+              {getEqualAmounts() ? "Conciliado" : "No Conciliado"}
+            </Typography>
+          )}
         </AccordionSummary>
         <AccordionDetails>
           {panelId === EAccordionPanel.items && (

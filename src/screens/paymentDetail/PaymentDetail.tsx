@@ -86,7 +86,7 @@ export const PaymentDetail = () => {
       const { result: { payment: { reference: mpPaymentID = "" } = {} } = {} } =
         paymentOperation;
 
-      console.log(mpPaymentID);
+      // console.log(mpPaymentID);
       getPaymentMercadopago(mpPaymentID);
     }
   }, [paymentOperation]);
@@ -139,6 +139,7 @@ export const PaymentDetail = () => {
               title="Mercadopago"
               handleChange={handleChange}
               defaultExpanded={false}
+              transaction_amount={paymentOperation.transaction_amount}
               paymentMercadopago={mercadopagoPayment}
             ></PaymentDetailAccordion>
           </Stack>

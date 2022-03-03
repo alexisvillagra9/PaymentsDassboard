@@ -44,3 +44,8 @@
   /* margin-left: 0.4rem; */
   /* font-weight: bold; */
 }
+
+.chip-container-fee {
+  background-color: var(--background-error) !important;
+  color: var(--color-error) !important;
+}

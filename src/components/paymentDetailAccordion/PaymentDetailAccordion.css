@@ -4,9 +4,19 @@
   color: var(--color-primary) !important;
 }
 
-.accordion-title {
+.accordion-title-acc {
   background-color: var(--backgorund-secondary);
   display: flex;
   align-items: center;
   gap: 0.4rem;
+}
+
+.accordion-title-acc-error {
+  color: var(--color-error) !important;
+  background-color: var(--background-error) !important;
+}
+
+.accordion-title-acc-success {
+  color: var(--color-success) !important;
+  background-color: var(--background-success) !important;
 }

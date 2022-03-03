@@ -28,3 +28,26 @@ export enum EAccordionPanel {
   attempts = "attempts",
   mercadopago = "mercadopago",
 }
+
+export enum EPaymenMethodId {
+  cordobesa = "Cordobesa",
+  diners = "Dinner",
+  debcabal = "Cabal",
+  cabal = "Cabal",
+  cencosud = "Cencosud",
+  debmaster = "Mastercard",
+  master = "Mastercard",
+  debvisa = "Visa",
+  naranja = "Naranja",
+  maestro = "Maestro",
+  cmr = "CMR",
+  visa = "Visa",
+  amex = "American Express",
+  tarshop = "Tarjeta Shopping",
+  argencard = "Argencard",
+}
+
+export enum EPaymenTypeId {
+  credit_card = "tarjeta de crédito",
+  debit_card = "tarjeta de débito",
+}
