@@ -1,8 +1,10 @@
+import AlarmOnIcon from "@mui/icons-material/AlarmOn";
 import CheckCircleOutlineOutlinedIcon from "@mui/icons-material/CheckCircleOutlineOutlined";
+import CreditCardOutlinedIcon from "@mui/icons-material/CreditCardOutlined";
+import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import NotInterestedOutlinedIcon from "@mui/icons-material/NotInterestedOutlined";
 import PaidOutlinedIcon from "@mui/icons-material/PaidOutlined";
 import PriceCheckOutlinedIcon from "@mui/icons-material/PriceCheckOutlined";
-import CreditCardOutlinedIcon from "@mui/icons-material/CreditCardOutlined";
 import { Chip, ListItemIcon, SvgIconTypeMap } from "@mui/material";
 import Box from "@mui/material/Box";
 import List from "@mui/material/List";
@@ -10,13 +12,14 @@ import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 import { OverridableComponent } from "@mui/material/OverridableComponent";
 import Stack from "@mui/material/Stack";
+import moment from "moment-timezone";
+import "moment/locale/es";
 import React from "react";
 import { GiReceiveMoney } from "react-icons/gi";
+import { EPaymenMethodId, EPaymenTypeId } from "../../helpers/enums";
 import { currencyFormat } from "../../helpers/general";
 import { IMercadopagoPayment } from "../../models/apis/mercadopago/payment";
 import "./PaymentDetailMercadopago.css";
-import { EPaymenMethodId, EPaymenTypeId } from "../../helpers/enums";
-
 export const PaymentDetailMercadopago = ({
   payment,
 }: {
@@ -30,6 +33,8 @@ export const PaymentDetailMercadopago = ({
     payment_method_id = "",
     payment_type_id = "",
     card: { first_six_digits = "", last_four_digits = "" } = {},
+    date_created,
+    external_reference,
   } = payment || {};
 
   console.log(payment_method_id);
@@ -135,6 +140,28 @@ export const PaymentDetailMercadopago = ({
                 {<CreditCardOutlinedIcon fontSize="small" />}
               </ListItemIcon>
               <ListItemText primary={cardDetail} />
+            </ListItem>
+          </List>
+        </Box>
+        <Box className="box-mercadopago">
+          <List disablePadding={true}>
+            <ListItem key={-1} disablePadding={true}>
+              <ListItemIcon className={`list-item-icon`}>
+                {<AlarmOnIcon fontSize="small" />}
+              </ListItemIcon>
+              <ListItemText
+                primary={`Creado el ${moment
+                  .tz(date_created, "America/Argentina/Buenos_Aires")
+                  .format("DD MMMM YYYY, HH:mm:ss")}`}
+              />
+            </ListItem>
+            <ListItem key={-2} disablePadding={true}>
+              <ListItemIcon className={`list-item-icon`}>
+                {<InfoOutlinedIcon fontSize="small" />}
+              </ListItemIcon>
+              <ListItemText
+                primary={`Referencia Externa: ${external_reference}`}
+              />
             </ListItem>
           </List>
         </Box>
