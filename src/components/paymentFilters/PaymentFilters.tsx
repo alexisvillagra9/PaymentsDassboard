@@ -104,6 +104,7 @@ export const PaymentFilters = ({
     setPaymentOperationsContext(payops);
     setPaymentOperationsFilteredContext(payops);
     setLoading(false);
+    setActualPageContext(1);
   };
 
   const handleSelectAllOrigins = (e: ChangeEvent<HTMLInputElement>) => {

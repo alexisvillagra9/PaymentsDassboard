@@ -101,6 +101,9 @@ export const PaymentDetail = () => {
               paymentReference={
                 paymentOperation.result?.payment?.reference || ""
               }
+              statusDescription={paymentOperation.status.description}
+              resultPaymentCode={paymentOperation.result?.payment?.code}
+              statusCode={paymentOperation.status.code}
               createdAt={paymentOperation.createdAt}
             ></PaymentDetailHeader>
             <PaymentDetailAccordion

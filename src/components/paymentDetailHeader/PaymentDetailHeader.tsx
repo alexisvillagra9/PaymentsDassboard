@@ -1,25 +1,38 @@
 import ArrowBackIosOutlinedIcon from "@mui/icons-material/ArrowBackIosOutlined";
+import CheckBoxOutlinedIcon from "@mui/icons-material/CheckBoxOutlined";
+import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import PaidOutlinedIcon from "@mui/icons-material/PaidOutlined";
+import Button from "@mui/material/Button";
+import Chip from "@mui/material/Chip";
 import IconButton from "@mui/material/IconButton";
 import Paper from "@mui/material/Paper";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import moment from "moment-timezone";
 import "moment/locale/es";
-import ContentCopyIcon from "@mui/icons-material/ContentCopy";
-import CheckBoxOutlinedIcon from "@mui/icons-material/CheckBoxOutlined";
 import React, { useState } from "react";
+import { FaRegHandshake } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import {
+  operationStatusColor,
+  paymentStatusColor,
+  paymentStatusDesc,
+} from "../../helpers/payments";
 import "./PaymentDetailHeader.css";
-import Button from "@mui/material/Button";
 
 export const PaymentDetailHeader = ({
   paymentOperationId,
   paymentReference,
+  statusDescription,
+  resultPaymentCode,
+  statusCode,
   createdAt,
 }: {
   paymentOperationId: string;
   paymentReference: string;
+  statusDescription: string;
+  resultPaymentCode: string | undefined;
+  statusCode: string;
   createdAt: Date;
 }) => {
   const navigate = useNavigate();
@@ -76,6 +89,30 @@ export const PaymentDetailHeader = ({
                   {`MP#: ${paymentReference}`}
                 </Button>
               )}
+              <Stack
+                direction="row"
+                gap="0.5rem"
+                flexWrap="wrap"
+                justifyContent="flex-end"
+              >
+                {/* <Chip label="Small" size="small" /> */}
+                <Chip
+                  className="status-chip"
+                  label={statusDescription}
+                  size="small"
+                  icon={<PaidOutlinedIcon style={{ color: "unset" }} />}
+                  sx={operationStatusColor(statusCode)}
+                />
+                {resultPaymentCode && (
+                  <Chip
+                    className="status-chip"
+                    label={paymentStatusDesc(resultPaymentCode)}
+                    size="small"
+                    sx={paymentStatusColor(resultPaymentCode)}
+                    icon={<FaRegHandshake style={{ color: "unset" }} />}
+                  />
+                )}
+              </Stack>
             </div>
             <div className="header-title">
               Creada el{" "}

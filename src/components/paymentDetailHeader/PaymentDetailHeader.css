@@ -1,5 +1,5 @@
 .accordion-title {
-  background-color: var(--backgorund-secondary) !important;
+  background-color: var(--background-secondary) !important;
   display: flex;
   gap: 0.4rem;
 }

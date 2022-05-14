@@ -2,7 +2,7 @@
   border: 0.1rem solid var(--color-primary) !important;
   height: 3rem !important;
   width: 3rem !important;
-  background-color: var(--backgorund-secondary) !important;
+  background-color: var(--background-secondary) !important;
   color: var(--color-primary) !important;
   margin-right: 1rem;
 }
@@ -15,5 +15,7 @@
 }
 
 .status-chip {
-  border-radius: 5px !important;
+  font-weight: bold;
+  /* background-color: var(--background-secondary) !important;
+  color: var(--color-primary) !important; */
 }

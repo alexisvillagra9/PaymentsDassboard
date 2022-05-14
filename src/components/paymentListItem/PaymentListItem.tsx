@@ -1,10 +1,11 @@
+import AddLocationOutlinedIcon from "@mui/icons-material/AddLocationOutlined";
 import CreditCardOutlinedIcon from "@mui/icons-material/CreditCardOutlined";
+import CreditScoreOutlinedIcon from "@mui/icons-material/CreditScoreOutlined";
 import EventAvailableOutlinedIcon from "@mui/icons-material/EventAvailableOutlined";
 import HowToRegOutlinedIcon from "@mui/icons-material/HowToRegOutlined";
-import AddLocationOutlinedIcon from "@mui/icons-material/AddLocationOutlined";
-import QrCodeScannerOutlinedIcon from "@mui/icons-material/QrCodeScannerOutlined";
-import CreditScoreOutlinedIcon from "@mui/icons-material/CreditScoreOutlined";
 import ModelTrainingOutlinedIcon from "@mui/icons-material/ModelTrainingOutlined";
+import PaidOutlinedIcon from "@mui/icons-material/PaidOutlined";
+import QrCodeScannerOutlinedIcon from "@mui/icons-material/QrCodeScannerOutlined";
 import Avatar from "@mui/material/Avatar";
 import Chip from "@mui/material/Chip";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
@@ -13,12 +14,14 @@ import Stack from "@mui/material/Stack";
 import moment from "moment-timezone";
 import "moment/locale/es";
 import React from "react";
-import {
-  EPaymentOperationOrigin,
-  EPaymentOperationStatus,
-  EPaymentStatus,
-} from "../../helpers/enums";
+import { FaRegHandshake } from "react-icons/fa";
+import { EPaymentOperationOrigin } from "../../helpers/enums";
 import { currencyFormat } from "../../helpers/general";
+import {
+  operationStatusColor,
+  paymentStatusColor,
+  paymentStatusDesc,
+} from "../../helpers/payments";
 import { IPartnerOperation } from "../../models/apis/wallet/partnerOperation";
 import { IPaymentOperationOrigin } from "../../models/apis/wallet/paymentOperationOrigin";
 import { IPaymentOperationStatus } from "../../models/apis/wallet/paymentOperationStatus";
@@ -44,49 +47,6 @@ export const PaymentListItem = ({
   const susbtitle = moment
     .tz(createdAt, "America/Argentina/Buenos_Aires")
     .format("DD MMMM YYYY, HH:mm:ss");
-
-  const statusColor = () => {
-    let color:
-      | "default"
-      | "primary"
-      | "secondary"
-      | "info"
-      | "error"
-      | "success"
-      | "warning"
-      | undefined = "default";
-    if (statusCode === EPaymentOperationStatus.Generated) color = "info";
-    if (statusCode === EPaymentOperationStatus.VoluntarilyCanceled)
-      color = "warning";
-    if (statusCode === EPaymentOperationStatus.Terminated) color = "success";
-    if (statusCode === EPaymentOperationStatus.PendingSubscription)
-      color = "secondary";
-    return color;
-  };
-
-  const paymentStatusColor = () => {
-    let color:
-      | "default"
-      | "primary"
-      | "secondary"
-      | "info"
-      | "error"
-      | "success"
-      | "warning"
-      | undefined = "default";
-    if (resultPaymentCode === EPaymentStatus.Error) color = "error";
-    if (resultPaymentCode === EPaymentStatus.Success) color = "success";
-    if (resultPaymentCode === EPaymentStatus.Pending) color = "warning";
-    return color;
-  };
-
-  const paymentStatusDesc = () => {
-    let description = "Error en el Pago";
-    if (resultPaymentCode === EPaymentStatus.Success) description = "Pagado";
-    if (resultPaymentCode === EPaymentStatus.Pending)
-      description = "Pago Pendiente";
-    return description;
-  };
 
   const iconSelect = (
     <>
@@ -144,15 +104,16 @@ export const PaymentListItem = ({
             className="status-chip"
             label={statusDesciption}
             size="small"
-            color={statusColor()}
+            icon={<PaidOutlinedIcon style={{ color: "unset" }} />}
+            sx={operationStatusColor(statusCode)}
           />
           {resultPaymentCode && (
             <Chip
               className="status-chip"
-              label={paymentStatusDesc()}
+              label={paymentStatusDesc(resultPaymentCode)}
               size="small"
-              variant="outlined"
-              color={paymentStatusColor()}
+              sx={paymentStatusColor(resultPaymentCode)}
+              icon={<FaRegHandshake style={{ color: "unset" }} />}
             />
           )}
         </Stack>

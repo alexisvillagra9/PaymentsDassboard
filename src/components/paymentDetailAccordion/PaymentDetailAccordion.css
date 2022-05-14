@@ -5,7 +5,7 @@
 }
 
 .accordion-title-acc {
-  background-color: var(--backgorund-secondary);
+  background-color: var(--background-secondary);
   display: flex;
   align-items: center;
   gap: 0.4rem;

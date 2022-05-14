@@ -1,4 +1,5 @@
 import AccountCircle from "@mui/icons-material/AccountCircle";
+import HomeIcon from "@mui/icons-material/Home";
 import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
 import MailIcon from "@mui/icons-material/Mail";
 import MenuIcon from "@mui/icons-material/Menu";
@@ -7,6 +8,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import AppBar from "@mui/material/AppBar";
 import Badge from "@mui/material/Badge";
 import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import InputBase from "@mui/material/InputBase";
 import Menu from "@mui/material/Menu";
@@ -102,15 +104,22 @@ export const Header = () => {
     if (filterString.length) {
       const payOpsFil = (payOpsContext || [])?.filter(
         (payOp) =>
-          payOp.partner.name.toUpperCase().includes(filterString) ||
-          payOp.partner.lastName.toUpperCase().includes(filterString) ||
-          payOp.partner.email.toUpperCase().includes(filterString) ||
-          payOp.partner.dni.toString().toUpperCase().includes(filterString) ||
-          payOp.partner.phone_number.toUpperCase().includes(filterString) ||
+          (payOp?.partner?.name || "").toUpperCase().includes(filterString) ||
+          (payOp?.partner?.lastName || "")
+            .toUpperCase()
+            .includes(filterString) ||
+          (payOp?.partner?.email || "").toUpperCase().includes(filterString) ||
+          (payOp?.partner?.dni || "")
+            .toString()
+            .toUpperCase()
+            .includes(filterString) ||
+          (payOp?.partner?.phone_number || "")
+            .toUpperCase()
+            .includes(filterString) ||
           (payOp.result?.payment?.reference || "")
             .toUpperCase()
             .includes(filterString) ||
-          payOp.transaction_amount
+          (payOp?.transaction_amount || "")
             .toString()
             .toUpperCase()
             .includes(filterString)
@@ -216,14 +225,17 @@ export const Header = () => {
           >
             <MenuIcon />
           </IconButton>
-          <Typography
-            variant="h6"
-            noWrap
-            component="div"
-            sx={{ display: { xs: "none", sm: "block" } }}
-          >
-            PAYMENT APP
-          </Typography>
+          <Button sx={{ color: "white" }} onClick={() => navigate("/home")}>
+            <HomeIcon sx={{ mr: 1 }} />
+            <Typography
+              variant="h6"
+              noWrap
+              component="div"
+              sx={{ display: { xs: "none", sm: "block" } }}
+            >
+              PAYMENT APP
+            </Typography>
+          </Button>
           <Search>
             <SearchIconWrapper>
               <SearchIcon />

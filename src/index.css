@@ -26,13 +26,17 @@ body {
 
 :root {
   --color-primary: #009ee3;
-  --color-success: green;
+  --color-success: #2fa84f;
   --color-error: #b30000;
+  --color-warn: #ffa63a;
+  --color-default: #5e5e63;
 
-  --background-success: #d2ffd4;
+  --background-success: #dcf7e3;
   --background-error: #ffe5e5;
-  --backgrund-primary: #dddddd;
-  --backgorund-secondary: #e5f7ff;
+  --background-primary: #dddddd;
+  --background-secondary: #e5f7ff;
+  --background-warn: #ffeed6;
+  --background-default: #e9e9ea;
   --border-radius: 0.8rem;
 }
 
@@ -44,7 +48,7 @@ body {
     sans-serif; */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: var(--backgrund-primary);
+  background-color: var(--background-primary);
 }
 
 code {

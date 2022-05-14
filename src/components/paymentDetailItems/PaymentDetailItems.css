@@ -39,7 +39,7 @@
 }
 
 .chip-container {
-  background-color: var(--backgorund-secondary) !important;
+  background-color: var(--background-secondary) !important;
   color: var(--color-primary) !important;
   /* margin-left: 0.4rem; */
   /* font-weight: bold; */

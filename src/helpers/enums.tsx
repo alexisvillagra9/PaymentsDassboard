@@ -13,6 +13,9 @@ export enum EPaymentOperationStatus {
   Terminated = "TER",
   VoluntarilyCanceled = "CAN",
   PendingSubscription = "SPE",
+  Error = "ERR",
+  Retry = "RET",
+  Test = "TES",
 }
 
 export enum EPaymentStatus {

@@ -59,7 +59,7 @@ export const PaymentList = ({
               return (
                 <>
                   <ListItem
-                    key={_id}
+                    key={idx.toString()}
                     divider={idx + 1 < paymentOperationsShow.length}
                     disablePadding
                   >
