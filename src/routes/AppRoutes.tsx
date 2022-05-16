@@ -62,7 +62,7 @@ export const AppRoutes = () => {
             key={1}
             component={Link}
             to={"/home"}
-            onClick={() => isMaxWidthDrawer && setOpenDrawer(false)}
+            onClick={() => setOpenDrawer(false)}
             sx={{ color: "var(--color-primary)!important" }}
             color="primary"
           >
