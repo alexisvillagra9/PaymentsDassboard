@@ -71,7 +71,7 @@ export const PaymentList = ({
                         result={result}
                         transaction_amount={transaction_amount}
                         createdAt={createdAt}
-                        key={_id}
+                        key={idx.toString()}
                       ></PaymentListItem>
                     </ListItemButton>
                   </ListItem>

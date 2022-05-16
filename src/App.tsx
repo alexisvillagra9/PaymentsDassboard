@@ -26,7 +26,6 @@ const init = () => {
 function App() {
   // Init axios interceptors
   axiosInterceptors();
-
   const [user, dispatch] = useReducer(authReducer, {}, init);
   const [actualPage, setActualPage] = useState(1);
   const [paymentOperations, setPaymentOperations] = useState<

@@ -37,8 +37,6 @@ export const PaymentDetailMercadopago = ({
     external_reference,
   } = payment || {};
 
-  console.log(payment_method_id);
-
   const cardDetail = `Operó con ${
     EPaymenTypeId[payment_type_id as keyof typeof EPaymenTypeId]
   } ${
