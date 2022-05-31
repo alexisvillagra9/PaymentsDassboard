@@ -6,6 +6,7 @@ export enum EPaymentOperationOrigin {
   QRPayment = "QRP",
   LocationBuy = "CDU",
   Reactivate = "RIP",
+  ActivateChip = "ACH",
 }
 
 export enum EPaymentOperationStatus {

@@ -6,6 +6,7 @@ import HowToRegOutlinedIcon from "@mui/icons-material/HowToRegOutlined";
 import ModelTrainingOutlinedIcon from "@mui/icons-material/ModelTrainingOutlined";
 import PaidOutlinedIcon from "@mui/icons-material/PaidOutlined";
 import QrCodeScannerOutlinedIcon from "@mui/icons-material/QrCodeScannerOutlined";
+import SimCardOutlinedIcon from "@mui/icons-material/SimCardOutlined";
 import Avatar from "@mui/material/Avatar";
 import Chip from "@mui/material/Chip";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
@@ -13,14 +14,13 @@ import ListItemText from "@mui/material/ListItemText";
 import Stack from "@mui/material/Stack";
 import moment from "moment-timezone";
 import "moment/locale/es";
-import React from "react";
 import { FaRegHandshake } from "react-icons/fa";
 import { EPaymentOperationOrigin } from "../../helpers/enums";
 import { currencyFormat } from "../../helpers/general";
 import {
   operationStatusColor,
   paymentStatusColor,
-  paymentStatusDesc,
+  paymentStatusDesc
 } from "../../helpers/payments";
 import { IPartnerOperation } from "../../models/apis/wallet/partnerOperation";
 import { IPaymentOperationOrigin } from "../../models/apis/wallet/paymentOperationOrigin";
@@ -70,6 +70,9 @@ export const PaymentListItem = ({
       )}
       {originCode === EPaymentOperationOrigin.Reactivate && (
         <ModelTrainingOutlinedIcon></ModelTrainingOutlinedIcon>
+      )}
+      {originCode === EPaymentOperationOrigin.ActivateChip && (
+        <SimCardOutlinedIcon></SimCardOutlinedIcon>
       )}
     </>
   );
