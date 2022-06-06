@@ -1,4 +1,23 @@
-import { EPaymentOperationStatus, EPaymentStatus } from "./enums";
+import AttachMoneyOutlinedIcon from "@mui/icons-material/AttachMoneyOutlined";
+import DoDisturbOutlinedIcon from "@mui/icons-material/DoDisturbOutlined";
+import DoneAllOutlinedIcon from "@mui/icons-material/DoneAllOutlined";
+import MoneyOffCsredOutlinedIcon from "@mui/icons-material/MoneyOffCsredOutlined";
+import PriceCheckOutlinedIcon from "@mui/icons-material/PriceCheckOutlined";
+import QueryBuilderOutlinedIcon from "@mui/icons-material/QueryBuilderOutlined";
+import RemoveDoneOutlinedIcon from "@mui/icons-material/RemoveDoneOutlined";
+import ReplayIcon from "@mui/icons-material/Replay";
+import StartIcon from "@mui/icons-material/Start";
+import {
+  TbDatabase,
+  TbDatabaseOff,
+  TbTicket,
+  TbTicketOff,
+} from "react-icons/tb";
+import {
+  EPaymentOperationLifecycleType,
+  EPaymentOperationStatus,
+  EPaymentStatus,
+} from "./enums";
 
 export const operationStatusColor = (statusCode: string) => {
   let colorStyle = {
@@ -62,4 +81,37 @@ export const paymentStatusDesc = (resultPaymentCode: string) => {
   if (resultPaymentCode === EPaymentStatus.Pending)
     description = "Pago Pendiente";
   return description;
+};
+
+export const getIconAndColorLifecycle = (type: string) => {
+  let iconsAndColors: [JSX.Element, string] = [<></>, "secondary"];
+  if (type === EPaymentOperationLifecycleType.OpCreation)
+    iconsAndColors = [<StartIcon />, "secondary"];
+  if (type === EPaymentOperationLifecycleType.OpRetry)
+    iconsAndColors = [<ReplayIcon />, "default"];
+  if (type === EPaymentOperationLifecycleType.OpCanceled)
+    iconsAndColors = [<DoDisturbOutlinedIcon />, "warn"];
+  if (type === EPaymentOperationLifecycleType.OpTerminated)
+    iconsAndColors = [<DoneAllOutlinedIcon />, "success"];
+  if (type === EPaymentOperationLifecycleType.OpTerminatedError)
+    iconsAndColors = [<RemoveDoneOutlinedIcon />, "error"];
+  if (type === EPaymentOperationLifecycleType.CreationPayment)
+    iconsAndColors = [<AttachMoneyOutlinedIcon />, "secondary"];
+  if (type === EPaymentOperationLifecycleType.RejectedPayment)
+    iconsAndColors = [<MoneyOffCsredOutlinedIcon />, "error"];
+  if (type === EPaymentOperationLifecycleType.PendingPayment)
+    iconsAndColors = [<QueryBuilderOutlinedIcon />, "warn"];
+  if (type === EPaymentOperationLifecycleType.TerminatedPayment)
+    iconsAndColors = [<PriceCheckOutlinedIcon />, "success"];
+  if (type === EPaymentOperationLifecycleType.HermesIp)
+    iconsAndColors = [<TbDatabase />, "success"];
+  if (type === EPaymentOperationLifecycleType.ErrHermesImp)
+    iconsAndColors = [<TbDatabaseOff />, "error"];
+  if (type === EPaymentOperationLifecycleType.CreationTkt)
+    iconsAndColors = [<TbTicket />, "success"];
+  if (type === EPaymentOperationLifecycleType.ErrCreationTkt)
+    iconsAndColors = [<TbTicketOff />, "error"];
+  if (type === EPaymentOperationLifecycleType.InitRetry)
+    iconsAndColors = [<StartIcon />, "default"];
+  return iconsAndColors;
 };

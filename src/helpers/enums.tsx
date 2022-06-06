@@ -19,6 +19,23 @@ export enum EPaymentOperationStatus {
   Test = "TES",
 }
 
+export enum EPaymentOperationLifecycleType {
+  OpTerminated = "OPF",
+  OpCreation = "CDO",
+  OpTerminatedError = "OPE",
+  OpRetry = "OPR",
+  OpCanceled = "OCA",
+  PendingPayment = "PPE",
+  RejectedPayment = "PRE",
+  CreationPayment = "CDP",
+  TerminatedPayment = "PFI",
+  InitRetry = "IDR",
+  CreationTkt = "CDT",
+  ErrCreationTkt = "ECT",
+  HermesIp = "IEH",
+  ErrHermesImp = "EIH",
+}
+
 export enum EPaymentStatus {
   Success = "OK",
   Pending = "PEN",
@@ -31,6 +48,7 @@ export enum EAccordionPanel {
   status = "status",
   attempts = "attempts",
   mercadopago = "mercadopago",
+  lifecycle = "lifecycle",
 }
 
 export enum EPaymenMethodId {

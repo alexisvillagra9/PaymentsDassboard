@@ -20,3 +20,7 @@
   color: var(--color-success) !important;
   background-color: var(--background-success) !important;
 }
+
+p svg path {
+  stroke: unset;
+}

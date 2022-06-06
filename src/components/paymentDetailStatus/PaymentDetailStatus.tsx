@@ -28,7 +28,7 @@ export const PaymentDetailStatus = ({
   const iconSelect = (type: string) => {
     return (
       <>
-        {type === "tickets" && <ConfirmationNumberOutlinedIcon />}
+        {type === "ticket" && <ConfirmationNumberOutlinedIcon />}
         {type === "payment" && <AttachMoneyOutlinedIcon />}
         {type === "hermes" && <PeopleOutlinedIcon />}
         {type === "preapproval" && <CreditCardOutlinedIcon />}

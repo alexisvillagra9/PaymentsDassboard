@@ -4,6 +4,7 @@ import { IPaymentOperationAttempt } from "../models/apis/wallet/paymentOperation
 import { IPaymentOperationOrigin } from "../models/apis/wallet/paymentOperationOrigin";
 import { IPaymentOperationStatus } from "../models/apis/wallet/paymentOperationStatus";
 import { IMercadopagoPayment } from "../models/apis/mercadopago/payment";
+import { IPaymentOperationLifecycle } from "../models/apis/wallet/paymentOperationLifecycle";
 
 const environment = "P";
 const WALLET_URI =
@@ -70,6 +71,24 @@ export const getPaymentOperationAttempts = async (
     }: { data: IPaymentOperationAttempt[] } = res;
 
     return paymentOperationAttempts;
+  } catch (error) {
+    console.log(JSON.stringify(error));
+    throw error;
+  }
+};
+
+export const getPaymentOperationLifecycle = async (
+  paymentOperationId: string = ""
+): Promise<IPaymentOperationLifecycle[]> => {
+  try {
+    const res = await axios.get(
+      `${WALLET_URI}/payment-operation/lifecycle/${paymentOperationId}`
+    );
+    let {
+      data: paymentOperationLifecycle = [],
+    }: { data: IPaymentOperationLifecycle[] } = res;
+
+    return paymentOperationLifecycle;
   } catch (error) {
     console.log(JSON.stringify(error));
     throw error;

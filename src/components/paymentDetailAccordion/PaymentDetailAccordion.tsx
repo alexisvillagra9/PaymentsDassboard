@@ -11,6 +11,7 @@ import React from "react";
 import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined";
 import CheckCircleOutlineOutlinedIcon from "@mui/icons-material/CheckCircleOutlineOutlined";
 import { FaRegHandshake } from "react-icons/fa";
+import { GrCycle } from "react-icons/gr";
 import { EAccordionPanel } from "../../helpers/enums";
 import { IMercadopagoPayment } from "../../models/apis/mercadopago/payment";
 import { IOperationItem } from "../../models/apis/wallet/operationItem";
@@ -23,6 +24,8 @@ import { PaymentDetailMercadopago } from "../paymentDetailMercadopago/PaymentDet
 import { PaymentDetailPartner } from "../paymentDetailPartner/PaymentDetailPartner";
 import { PaymentDetailStatus } from "../paymentDetailStatus/PaymentDetailStatus";
 import "./PaymentDetailAccordion.css";
+import { IPaymentOperationLifecycle } from "../../models/apis/wallet/paymentOperationLifecycle";
+import { PaymentDetailLifecycle } from "../paymentDetailLifecycle/paymentDetailLifecycle";
 
 export const PaymentDetailAccordion = ({
   panelId,
@@ -36,6 +39,8 @@ export const PaymentDetailAccordion = ({
   result,
   attempts,
   attemptsLoading,
+  lifecycle,
+  lifecycleLoading,
   paymentMercadopago,
 }: {
   panelId: string;
@@ -49,6 +54,8 @@ export const PaymentDetailAccordion = ({
   result?: IResult;
   attempts?: IPaymentOperationAttempt[];
   attemptsLoading?: boolean;
+  lifecycle?: IPaymentOperationLifecycle[];
+  lifecycleLoading?: boolean;
   paymentMercadopago?: IMercadopagoPayment | null;
 }) => {
   const getEqualAmounts = () => {
@@ -64,6 +71,7 @@ export const PaymentDetailAccordion = ({
     if (panelId === "partner") iconTag = <AccountCircleOutlinedIcon />;
     if (panelId === "status") iconTag = <PublishedWithChangesOutlinedIcon />;
     if (panelId === "attempts") iconTag = <ReplayOutlinedIcon />;
+    if (panelId === "lifecycle") iconTag = <GrCycle size="1.4rem" />;
     if (panelId === "mercadopago") iconTag = <FaRegHandshake size="1.5rem" />;
     return iconTag;
   };
@@ -119,6 +127,14 @@ export const PaymentDetailAccordion = ({
           {panelId === EAccordionPanel.partner && (
             <PaymentDetailPartner partner={partner} />
           )}
+
+          {panelId === EAccordionPanel.lifecycle && (
+            <PaymentDetailLifecycle
+              lifecycle={lifecycle || []}
+              loading={lifecycleLoading || false}
+            />
+          )}
+
           {panelId === EAccordionPanel.status && (
             <PaymentDetailStatus result={result} />
           )}

@@ -12,12 +12,18 @@ import {
 } from "../../services/payments";
 import "./PaymentDetail.css";
 import Skeleton from "@mui/material/Skeleton";
-import { getPaymentMercadopagoById } from "../../services/payments";
+import {
+  getPaymentMercadopagoById,
+  getPaymentOperationLifecycle,
+} from "../../services/payments";
 import { IMercadopagoPayment } from "../../models/apis/mercadopago/payment";
+import { IPaymentOperationLifecycle } from "../../models/apis/wallet/paymentOperationLifecycle";
 
 export const PaymentDetail = () => {
   const [loadAttempts, setLoadAttempts] = useState(true);
+  const [loadLifecycle, setLoadLoadLifecycle] = useState(true);
   const [attempts, setAttempts] = useState<IPaymentOperationAttempt[]>([]);
+  const [lifecycle, setLifecycle] = useState<IPaymentOperationLifecycle[]>([]);
   const [mercadopagoPayment, setMercadopagoPayment] =
     useState<IMercadopagoPayment | null>(null);
   const [paymentOperation, setPaymentOperation] =
@@ -33,6 +39,14 @@ export const PaymentDetail = () => {
     setLoadAttempts(false);
   };
 
+  const getLifecycle = async () => {
+    const lifecycleTemp = await getPaymentOperationLifecycle(
+      payment_operation_id
+    );
+    setLifecycle(lifecycleTemp);
+    setLoadLoadLifecycle(false);
+  };
+
   const getPaymentMercadopago = async (paymentId: string | number) => {
     const payMP = await getPaymentMercadopagoById(paymentId);
     setMercadopagoPayment(payMP);
@@ -41,6 +55,10 @@ export const PaymentDetail = () => {
   const handleChange = (panel: string) => (event: React.SyntheticEvent) => {
     if (panel === "attempts") {
       getAttempts();
+    }
+
+    if (panel === "lifecycle") {
+      getLifecycle();
     }
   };
 
@@ -121,6 +139,14 @@ export const PaymentDetail = () => {
               handleChange={handleChange}
               defaultExpanded={false}
               partner={paymentOperation.partner}
+            ></PaymentDetailAccordion>
+            <PaymentDetailAccordion
+              panelId="lifecycle"
+              title="Ciclo de vida"
+              handleChange={handleChange}
+              defaultExpanded={false}
+              lifecycle={lifecycle}
+              lifecycleLoading={loadLifecycle}
             ></PaymentDetailAccordion>
             <PaymentDetailAccordion
               panelId="status"

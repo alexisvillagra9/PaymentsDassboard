@@ -1,0 +1,27 @@
+.archer-container {
+  display: flex;
+  justify-content: space-between;
+  padding-left: 2rem;
+  padding-right: 2rem;
+  flex-wrap: wrap;
+  gap: 3rem;
+}
+
+.archer-avatar {
+  height: fit-content;
+  margin-bottom: 6rem;
+  cursor: pointer;
+}
+
+.archer-detail {
+  position: absolute;
+  max-width: 7rem;
+  margin-top: 0.2rem;
+  margin-left: -1.8rem;
+  text-align: center;
+  color: var(--color-default);
+}
+
+.archer-dateil-title {
+  font-weight: bold;
+}
