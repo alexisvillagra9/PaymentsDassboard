@@ -4,6 +4,7 @@ import CreditScoreOutlinedIcon from "@mui/icons-material/CreditScoreOutlined";
 import EventAvailableOutlinedIcon from "@mui/icons-material/EventAvailableOutlined";
 import HowToRegOutlinedIcon from "@mui/icons-material/HowToRegOutlined";
 import ModelTrainingOutlinedIcon from "@mui/icons-material/ModelTrainingOutlined";
+import SellOutlinedIcon from "@mui/icons-material/SellOutlined";
 import PaidOutlinedIcon from "@mui/icons-material/PaidOutlined";
 import QrCodeScannerOutlinedIcon from "@mui/icons-material/QrCodeScannerOutlined";
 import SimCardOutlinedIcon from "@mui/icons-material/SimCardOutlined";
@@ -20,7 +21,7 @@ import { currencyFormat } from "../../helpers/general";
 import {
   operationStatusColor,
   paymentStatusColor,
-  paymentStatusDesc
+  paymentStatusDesc,
 } from "../../helpers/payments";
 import { IPartnerOperation } from "../../models/apis/wallet/partnerOperation";
 import { IPaymentOperationOrigin } from "../../models/apis/wallet/paymentOperationOrigin";
@@ -73,6 +74,9 @@ export const PaymentListItem = ({
       )}
       {originCode === EPaymentOperationOrigin.ActivateChip && (
         <SimCardOutlinedIcon></SimCardOutlinedIcon>
+      )}
+      {originCode === EPaymentOperationOrigin.ExtraordinaryPayment && (
+        <SellOutlinedIcon></SellOutlinedIcon>
       )}
     </>
   );
