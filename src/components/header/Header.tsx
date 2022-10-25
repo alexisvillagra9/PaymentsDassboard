@@ -9,10 +9,9 @@ import { alpha, styled } from "@mui/material/styles";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import * as React from "react";
-import { useContext, SetStateAction, Dispatch } from "react";
+import { Dispatch, SetStateAction, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/auth/authContext";
-import { GeneralContext } from "../../context/general/generalContext";
 import { types } from "../../types/types";
 
 const Search = styled("div")(({ theme }) => ({
@@ -64,10 +63,6 @@ export const Header = ({
 }) => {
   const { user, dispatch } = useContext(AuthContext);
   const navigate = useNavigate();
-  const {
-    paymentOperations: payOpsContext,
-    setPaymentOperationsFiltered: setPaymentOperationsFilteredContext,
-  } = useContext(GeneralContext);
 
   const handleLogout = () => {
     dispatch({ type: types.logout });
@@ -81,33 +76,6 @@ export const Header = ({
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const filterString = `${event.currentTarget.value}`.toUpperCase();
-    if (filterString.length) {
-      const payOpsFil = (payOpsContext || [])?.filter(
-        (payOp) =>
-          (payOp?.partner?.name || "").toUpperCase().includes(filterString) ||
-          (payOp?.partner?.lastName || "")
-            .toUpperCase()
-            .includes(filterString) ||
-          (payOp?.partner?.email || "").toUpperCase().includes(filterString) ||
-          (payOp?.partner?.dni || "")
-            .toString()
-            .toUpperCase()
-            .includes(filterString) ||
-          (payOp?.partner?.phone_number || "")
-            .toUpperCase()
-            .includes(filterString) ||
-          (payOp.result?.payment?.reference || "")
-            .toUpperCase()
-            .includes(filterString) ||
-          (payOp?.transaction_amount || "")
-            .toString()
-            .toUpperCase()
-            .includes(filterString)
-      );
-      setPaymentOperationsFilteredContext(payOpsFil);
-    } else {
-      setPaymentOperationsFilteredContext(payOpsContext);
-    }
   };
 
   return (

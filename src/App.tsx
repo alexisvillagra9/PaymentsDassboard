@@ -1,14 +1,10 @@
 // Material UI
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import React, { useEffect, useReducer, useState } from "react";
+import { useEffect, useReducer } from "react";
 import "./App.css";
 import { AuthContext } from "./context/auth/authContext";
 import { authReducer } from "./context/auth/authReducer";
-import { GeneralContext } from "./context/general/generalContext";
 import { axiosInterceptors } from "./helpers/axios";
-import { IPaymentOperation } from "./models/apis/wallet/paymentOperation";
-import { IPaymentOperationOrigin } from "./models/apis/wallet/paymentOperationOrigin";
-import { IPaymentOperationStatus } from "./models/apis/wallet/paymentOperationStatus";
 import { AppRoutes } from "./routes/AppRoutes";
 
 const THEME = createTheme({
@@ -27,19 +23,6 @@ function App() {
   // Init axios interceptors
   axiosInterceptors();
   const [user, dispatch] = useReducer(authReducer, {}, init);
-  const [actualPage, setActualPage] = useState(1);
-  const [paymentOperations, setPaymentOperations] = useState<
-    IPaymentOperation[] | null
-  >(null);
-  const [paymentOperationsFiltered, setPaymentOperationsFiltered] = useState<
-    IPaymentOperation[] | null
-  >(null);
-  const [operationStatuses, setOperationStatuses] = useState<
-    IPaymentOperationStatus[]
-  >([]);
-  const [operationOrigins, setOperationOrigins] = useState<
-    IPaymentOperationOrigin[]
-  >([]);
 
   useEffect(() => {
     if (!user) return;
@@ -50,29 +33,14 @@ function App() {
   return (
     <ThemeProvider theme={THEME}>
       <div className="App">
-        <GeneralContext.Provider
+        <AuthContext.Provider
           value={{
-            paymentOperations,
-            paymentOperationsFiltered,
-            operationStatuses,
-            operationOrigins,
-            actualPage,
-            setPaymentOperations,
-            setPaymentOperationsFiltered,
-            setOperationStatuses,
-            setOperationOrigins,
-            setActualPage,
+            user,
+            dispatch,
           }}
         >
-          <AuthContext.Provider
-            value={{
-              user,
-              dispatch,
-            }}
-          >
-            <AppRoutes />
-          </AuthContext.Provider>
-        </GeneralContext.Provider>
+          <AppRoutes />
+        </AuthContext.Provider>
       </div>
     </ThemeProvider>
   );

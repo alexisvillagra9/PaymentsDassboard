@@ -14,6 +14,7 @@ import { PublicRoute } from "./PublicRoute";
 
 export const AppRoutes = () => {
   const [openDrawer, setOpenDrawer] = useState(false);
+  const [search, setSearch] = useState("second");
   const Offset = styled("div")(({ theme }) => theme.mixins.toolbar);
   const drawerWidth = 240;
   const maxWidthDrawer = 760;

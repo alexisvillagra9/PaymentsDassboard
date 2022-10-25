@@ -19,51 +19,62 @@ import Select from "@mui/material/Select";
 import Stack from "@mui/material/Stack";
 import moment from "moment-timezone";
 import "moment/locale/es";
-import React, { ChangeEvent, useContext, useEffect, useState } from "react";
+import {
+  ChangeEvent,
+  Dispatch,
+  SetStateAction,
+  useEffect,
+  useState,
+} from "react";
 import { FaRegFileExcel } from "react-icons/fa";
-import XLSX from "xlsx";
-import { GeneralContext } from "../../context/general/generalContext";
 import { EPaymentOperationStatus } from "../../helpers/enums";
 import { currencyFormat } from "../../helpers/general";
-import { IPaymentOperation } from "../../models/apis/wallet/paymentOperation";
+import { IPaymentOperationFilter } from "../../models/apis/wallet/paymentOperationFilter";
 import { IPaymentOperationOrigin } from "../../models/apis/wallet/paymentOperationOrigin";
 import { IPaymentOperationStatus } from "../../models/apis/wallet/paymentOperationStatus";
-import { getPaymentOperationsByFilter } from "../../services/payments";
 import { PaymentFilterModal } from "../paymentFilterModal/PaymentFilterModal";
 import "./PaymenrFilters.css";
 
 export const PaymentFilters = ({
-  total,
-  filterOrigins,
-  filterStatuses,
-  getTotalAmount,
-  paymentOperationsFilter,
-  initComp,
-  loading,
-  setLoading,
+  totalCount,
+  totalAmount,
+  pageSize,
+  operationStatuses,
+  operationOrigins,
+  operationStatusesFilter,
+  operationOriginsFilter,
+  search,
+  dateTo,
+  dateFrom,
+  setDateTo,
+  setDateFrom,
+  setOperationOriginsFilter,
+  setOperationStatusesFilter,
+  setSearch,
+  getOperations,
 }: {
-  total: number;
-  filterOrigins: IPaymentOperationOrigin[];
-  filterStatuses: IPaymentOperationStatus[];
-  getTotalAmount: () => number;
-  paymentOperationsFilter: IPaymentOperation[];
-  initComp: boolean;
-  loading: boolean;
-  setLoading: (loading: boolean) => void;
+  totalCount: number;
+  totalAmount: number;
+  pageSize: number;
+  operationStatuses: IPaymentOperationStatus[];
+  operationOrigins: IPaymentOperationOrigin[];
+  operationStatusesFilter: string[] | null;
+  operationOriginsFilter: string[] | null;
+  search: string;
+  dateTo: Date | null;
+  dateFrom: Date | null;
+  setDateTo: Dispatch<SetStateAction<Date | null>>;
+  setDateFrom: Dispatch<SetStateAction<Date | null>>;
+  setOperationOriginsFilter: Dispatch<SetStateAction<string[] | null>>;
+  setOperationStatusesFilter: Dispatch<SetStateAction<string[] | null>>;
+  setSearch: Dispatch<SetStateAction<string>>;
+  getOperations: (e: IPaymentOperationFilter) => void;
 }) => {
-  const {
-    setActualPage: setActualPageContext,
-    setPaymentOperations: setPaymentOperationsContext,
-    setPaymentOperationsFiltered: setPaymentOperationsFilteredContext,
-  } = useContext(GeneralContext);
-
   const [openOriginSelect, setOpenOriginSelect] = useState(false);
   const [openStatusSelect, setOpenStatusSelect] = useState(false);
   const [selectedStatuses, setSelectedStatuses] = useState<string[]>([]);
   const [selectedOrigins, setSelectedOrigins] = useState<string[]>([]);
   const [open, setOpen] = useState<boolean>(false);
-  const [dateFrom, setDateFrom] = useState<Date | null>(null);
-  const [dateTo, setDateTo] = useState<Date | null>(null);
   const [openStartDate, setOpenStartDate] = useState<boolean>(false);
   const [openEndDate, setOpenEndDate] = useState<boolean>(false);
 
@@ -75,6 +86,11 @@ export const PaymentFilters = ({
       target: { value },
     } = event;
     setSelectedStatuses(value);
+    setOperationStatusesFilter(
+      operationStatuses
+        .filter((os) => value.includes(os.description))
+        .map((oss) => oss.code)
+    );
   };
 
   const handleOriginsSelect = (event: any) => {
@@ -82,83 +98,81 @@ export const PaymentFilters = ({
       target: { value },
     } = event;
     setSelectedOrigins(value);
+    setOperationOriginsFilter(
+      operationOrigins
+        .filter((oo) => value.includes(oo.description))
+        .map((ooo) => ooo.code)
+    );
   };
 
   const handleApply = async () => {
-    setLoading(true);
-
-    const statuses = filterStatuses
-      .filter((fs) => selectedStatuses.includes(fs.description))
-      .map((fs1) => fs1.code);
-
-    const origins = filterOrigins
-      .filter((fo) => selectedOrigins.includes(fo.description))
-      .map((fo1) => fo1.code);
-
-    const payops = await getPaymentOperationsByFilter({
-      statuses,
-      origins,
+    getOperations({
+      page: 1,
+      pageSize,
       dateFrom,
       dateTo,
+      search,
+      origins: operationOriginsFilter,
+      statuses: operationStatusesFilter,
     });
-    setPaymentOperationsContext(payops);
-    setPaymentOperationsFilteredContext(payops);
-    setLoading(false);
-    setActualPageContext(1);
   };
 
   const handleSelectAllOrigins = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.checked) {
       setSelectedOrigins(
-        filterOrigins.map((po) => po.description).concat(["all-origins"])
+        operationOrigins.map((oo) => oo.description).concat(["all-origins"])
       );
+      setOperationOriginsFilter(null);
     } else {
       setSelectedOrigins([]);
+      setOperationOriginsFilter([]);
     }
   };
 
   const handleSelectAllStatuses = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.checked) {
       setSelectedStatuses(
-        filterStatuses.map((po) => po.description).concat(["all-statuses"])
+        operationStatuses.map((oo) => oo.description).concat(["all-statuses"])
       );
+      setOperationStatusesFilter(null);
     } else {
       setSelectedStatuses([]);
+      setOperationStatusesFilter([]);
     }
   };
 
   const handleDownloadExcel = () => {
-    const data = paymentOperationsFilter.map((payop) => {
-      return {
-        fecha_creacion: moment
-          .tz(payop.createdAt, "America/Argentina/Buenos_Aires")
-          .format(),
-        origen: payop.origin.description,
-        estado: payop.status.description,
-        fecha_pago: payop.result?.payment?.date,
-        estado_pago: payop.result?.payment?.description,
-        numero_pago: payop.result?.payment?.reference,
-        susbtotal: payop.subtotal,
-        total: payop.transaction_amount,
-        nombre: payop.partner.name,
-        apellido: payop.partner.lastName,
-        nro_documento: payop.partner.dni,
-        tipo_documento: payop.partner.tpdId,
-        nro_telefono: payop.partner.phone_number,
-        sexo: payop.partner.sex,
-        fec_nacimiento: payop.partner.birthday,
-      };
-    });
-    let ws = XLSX.utils.json_to_sheet(data);
-    let wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, "sheet");
-    XLSX.writeFile(wb, `operaciones.xlsx`);
+    // const data = paymentOperationsFilter.map((payop) => {
+    //   return {
+    //     fecha_creacion: moment
+    //       .tz(payop.createdAt, "America/Argentina/Buenos_Aires")
+    //       .format(),
+    //     origen: payop.origin.description,
+    //     estado: payop.status.description,
+    //     fecha_pago: payop.result?.payment?.date,
+    //     estado_pago: payop.result?.payment?.description,
+    //     numero_pago: payop.result?.payment?.reference,
+    //     susbtotal: payop.subtotal,
+    //     total: payop.transaction_amount,
+    //     nombre: payop.partner.name,
+    //     apellido: payop.partner.lastName,
+    //     nro_documento: payop.partner.dni,
+    //     tipo_documento: payop.partner.tpdId,
+    //     nro_telefono: payop.partner.phone_number,
+    //     sexo: payop.partner.sex,
+    //     fec_nacimiento: payop.partner.birthday,
+    //   };
+    // });
+    // let ws = XLSX.utils.json_to_sheet(data);
+    // let wb = XLSX.utils.book_new();
+    // XLSX.utils.book_append_sheet(wb, ws, "sheet");
+    // XLSX.writeFile(wb, `operaciones.xlsx`);
   };
 
   const iconFilter = () => {
     return (
       <>
-        {initComp ? (
+        {true ? (
           <KeyboardArrowDownIcon htmlColor="var(--color-primary)" />
         ) : (
           <CircularProgress className="filter-circular-progress" />
@@ -168,39 +182,35 @@ export const PaymentFilters = ({
   };
 
   const resetFilters = async () => {
-    setLoading(true);
-    const payops = await getPaymentOperationsByFilter({
-      statuses: [EPaymentOperationStatus.Terminated],
-    }); // Init with terminated payments only
-
-    setPaymentOperationsContext(payops);
-    setPaymentOperationsFilteredContext(payops);
-    setSelectedStatuses([
-      filterStatuses.find(
-        (po) => po.code === EPaymentOperationStatus.Terminated
-      )?.description || "",
-    ]);
-    setSelectedOrigins(
-      filterOrigins.map((po) => po.description).concat(["all-origins"])
-    );
-    setDateTo(null);
     setDateFrom(null);
-    setLoading(false);
-    setActualPageContext(1);
+    setDateTo(null);
+    setSearch("");
+    setOperationOriginsFilter(null);
+    setOperationStatusesFilter([EPaymentOperationStatus.Terminated]);
+    getOperations({
+      page: 1,
+      pageSize,
+      dateFrom: null,
+      dateTo: null,
+      origins: null,
+      search: "",
+      statuses: [EPaymentOperationStatus.Terminated],
+    });
   };
 
   useEffect(() => {
-    if (initComp) {
-      setSelectedStatuses([
-        filterStatuses.find(
-          (po) => po.code === EPaymentOperationStatus.Terminated
-        )?.description || "",
-      ]);
-      setSelectedOrigins(
-        filterOrigins.map((po) => po.description).concat(["all-origins"])
-      );
-    }
-  }, [initComp, filterOrigins, filterStatuses]);
+    setSelectedStatuses([
+      operationStatuses.find(
+        (po) => po.code === EPaymentOperationStatus.Terminated
+      )?.description || "",
+    ]);
+  }, [operationStatuses]);
+
+  useEffect(() => {
+    setSelectedOrigins(
+      operationOrigins.map((po) => po.description).concat(["all-origins"])
+    );
+  }, [operationOrigins]);
 
   return (
     <>
@@ -212,7 +222,7 @@ export const PaymentFilters = ({
                 id="openOriginSelect"
                 onClick={() => setOpenOriginSelect(true)}
                 className="select-button"
-                disabled={!initComp}
+                disabled={false}
               >
                 Origen
                 {iconFilter()}
@@ -238,7 +248,7 @@ export const PaymentFilters = ({
                   />
                 </MenuItem>
                 <Divider />
-                {filterOrigins.map((filOri) => (
+                {operationOrigins.map((filOri) => (
                   <MenuItem key={filOri.code} value={filOri.description}>
                     <ListItemText primary={filOri.description} />
                     <Checkbox
@@ -252,7 +262,7 @@ export const PaymentFilters = ({
                 id="openStatusSelect"
                 onClick={() => setOpenStatusSelect(true)}
                 className="select-button"
-                disabled={!initComp}
+                disabled={false}
               >
                 Estado
                 {iconFilter()}
@@ -279,7 +289,7 @@ export const PaymentFilters = ({
                   />
                 </MenuItem>
                 <Divider />
-                {filterStatuses.map((filSta) => (
+                {operationStatuses.map((filSta) => (
                   <MenuItem key={filSta.code} value={filSta.description}>
                     <ListItemText primary={filSta.description} />
                     <Checkbox
@@ -293,7 +303,7 @@ export const PaymentFilters = ({
                 id="openStarDate"
                 onClick={() => setOpenStartDate(true)}
                 className="select-button"
-                disabled={!initComp}
+                disabled={false}
               >
                 {dateFrom
                   ? `Desde: ${moment
@@ -318,7 +328,7 @@ export const PaymentFilters = ({
                 id="openEndDate"
                 onClick={() => setOpenEndDate(true)}
                 className="select-button"
-                disabled={!initComp}
+                disabled={false}
               >
                 {dateTo
                   ? `Hasta: ${moment
@@ -361,7 +371,7 @@ export const PaymentFilters = ({
                 variant="contained"
                 disableElevation
                 className="select-button select-button-apply"
-                disabled={!initComp}
+                disabled={false}
               >
                 Aplicar
               </Button>
@@ -380,12 +390,16 @@ export const PaymentFilters = ({
           >
             <div>
               Total de Operaciones:
-              <Chip label={total} size="small" className="chip-container" />
+              <Chip
+                label={totalCount}
+                size="small"
+                className="chip-container"
+              />
             </div>
             <div>
               Total Recaudado:
               <Chip
-                label={currencyFormat(getTotalAmount())}
+                label={currencyFormat(totalAmount)}
                 size="small"
                 className="chip-container"
               />

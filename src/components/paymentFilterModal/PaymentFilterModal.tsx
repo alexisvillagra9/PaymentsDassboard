@@ -12,10 +12,9 @@ import {
 import _ from "lodash";
 import moment from "moment-timezone";
 import "moment/locale/es";
-import React, { useContext } from "react";
+import { useContext } from "react";
 import { Line } from "react-chartjs-2";
 import { AuthContext } from "../../context/auth/authContext";
-import { GeneralContext } from "../../context/general/generalContext";
 import "./PaymentFilterModal.css";
 export const PaymentFilterModal = ({
   open,
@@ -35,13 +34,14 @@ export const PaymentFilterModal = ({
   const {
     user: { username },
   } = useContext(AuthContext);
-  const { paymentOperationsFiltered: payOpsFilteredContext } =
-    useContext(GeneralContext);
+  // const { paymentOperationsFiltered: payOpsFilteredContext } =
+  //   useContext(GeneralContext);
 
   const getGroupedDate = () => {
-    const data = [...(payOpsFilteredContext || [])].sort((a, b) => {
-      return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
-    });
+    // const data = [].sort((a, b) => {
+    //   return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
+    // });
+    const data: any[] = [];
 
     let groupedResults = _(data)
       .map((item) => {

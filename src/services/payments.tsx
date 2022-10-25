@@ -5,6 +5,8 @@ import { IPaymentOperationOrigin } from "../models/apis/wallet/paymentOperationO
 import { IPaymentOperationStatus } from "../models/apis/wallet/paymentOperationStatus";
 import { IMercadopagoPayment } from "../models/apis/mercadopago/payment";
 import { IPaymentOperationLifecycle } from "../models/apis/wallet/paymentOperationLifecycle";
+import { IPaymentOperationFilter } from "../models/apis/wallet/paymentOperationFilter";
+import { IPaymentOperationResult } from "../models/apis/wallet/paymentOperationResult";
 
 const environment = "P";
 const WALLET_URI =
@@ -27,32 +29,43 @@ export const getPaymentOperationById = async (
 };
 
 export const getPaymentOperationsByFilter = async (
-  filters: any = {}
-): Promise<IPaymentOperation[]> => {
+  filters: IPaymentOperationFilter
+): Promise<IPaymentOperationResult> => {
   try {
-    let { dateFrom, dateTo }: { dateFrom: Date; dateTo: Date } = filters;
+    let { dateFrom, dateTo, page, pageSize, search, statuses, origins } =
+      filters;
 
     // Fix Filter by date
     if (dateFrom) {
       dateFrom.setHours(0);
       dateFrom.setMinutes(0);
       dateFrom.setSeconds(0);
-      filters = { ...filters, dateFrom };
     }
 
     if (dateTo) {
       dateTo.setHours(23);
       dateTo.setMinutes(59);
       dateTo.setSeconds(59);
-      filters = { ...filters, dateTo };
     }
 
-    const res = await axios.post(
-      `${WALLET_URI}/payment-operation/filters`,
-      filters
+    const res = await axios.get(
+      `${WALLET_URI}/payment-operation/admin/list?page=${page}` +
+        `&pageSize=${pageSize}&search=${
+          search || ""
+        }&sort=createdAt&sortCriteria=desc` +
+        `&statuses=${
+          statuses ? encodeURIComponent(JSON.stringify(statuses)) : ""
+        }` +
+        `&origins=${
+          origins ? encodeURIComponent(JSON.stringify(origins)) : ""
+        }` +
+        `&dateFrom=${dateFrom?.getTime() || ""}&dateTo=${
+          dateTo?.getTime() || ""
+        }`
     );
-    let { data: paymentOperations = [] }: { data: IPaymentOperation[] } = res;
-    return paymentOperations;
+    let { data: paymentOperationResult }: { data: IPaymentOperationResult } =
+      res;
+    return paymentOperationResult;
   } catch (error) {
     console.log(JSON.stringify(error));
     throw error;
