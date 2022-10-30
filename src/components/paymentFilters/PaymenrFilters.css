@@ -45,3 +45,9 @@
   color: var(--color-primary) !important;
   margin-left: 0.5rem;
 }
+.filter-circular-progress-excel {
+  width: 1.7rem !important;
+  height: 1.7rem !important;
+  margin: 0.3rem;
+  color: var(--color-primary) !important;
+}

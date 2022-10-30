@@ -1,3 +1,6 @@
+import { CancelTokenSource } from "axios";
+import { Dispatch, SetStateAction } from "react";
+
 export interface IPaymentOperationFilter {
   page: string | number;
   pageSize: string | number;
@@ -8,4 +11,6 @@ export interface IPaymentOperationFilter {
   origins?: string[] | null;
   dateFrom?: Date | null;
   dateTo?: Date | null;
+  cancelRequests?: CancelTokenSource;
+  loadingPO?: boolean;
 }

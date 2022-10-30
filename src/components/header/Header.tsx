@@ -55,11 +55,15 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 export const Header = ({
+  search,
   openDrawer,
   setOpenDrawer,
+  setSearch,
 }: {
+  search: string;
   openDrawer: boolean;
   setOpenDrawer: Dispatch<SetStateAction<boolean>>;
+  setSearch: Dispatch<SetStateAction<string>>;
 }) => {
   const { user, dispatch } = useContext(AuthContext);
   const navigate = useNavigate();
@@ -76,6 +80,7 @@ export const Header = ({
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const filterString = `${event.currentTarget.value}`.toUpperCase();
+    setSearch(filterString);
   };
 
   return (
@@ -113,6 +118,7 @@ export const Header = ({
             <SearchIcon />
           </SearchIconWrapper>
           <StyledInputBase
+            value={search}
             placeholder="Buscar"
             inputProps={{ "aria-label": "search" }}
             onChange={(e) => handleSearch(e)}

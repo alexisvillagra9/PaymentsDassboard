@@ -1,12 +1,12 @@
 import axios from "axios";
+import { IMercadopagoPayment } from "../models/apis/mercadopago/payment";
 import { IPaymentOperation } from "../models/apis/wallet/paymentOperation";
 import { IPaymentOperationAttempt } from "../models/apis/wallet/paymentOperationAttempts";
-import { IPaymentOperationOrigin } from "../models/apis/wallet/paymentOperationOrigin";
-import { IPaymentOperationStatus } from "../models/apis/wallet/paymentOperationStatus";
-import { IMercadopagoPayment } from "../models/apis/mercadopago/payment";
-import { IPaymentOperationLifecycle } from "../models/apis/wallet/paymentOperationLifecycle";
 import { IPaymentOperationFilter } from "../models/apis/wallet/paymentOperationFilter";
+import { IPaymentOperationLifecycle } from "../models/apis/wallet/paymentOperationLifecycle";
+import { IPaymentOperationOrigin } from "../models/apis/wallet/paymentOperationOrigin";
 import { IPaymentOperationResult } from "../models/apis/wallet/paymentOperationResult";
+import { IPaymentOperationStatus } from "../models/apis/wallet/paymentOperationStatus";
 
 const environment = "P";
 const WALLET_URI =

@@ -28,11 +28,13 @@ body {
   --color-primary: #009ee3;
   --color-success: #2fa84f;
   --color-error: #b30000;
+  --color-info: #7b1fa2;
   --color-warn: #ffa63a;
   --color-default: #5e5e63;
 
   --background-success: #dcf7e3;
   --background-error: #ffe5e5;
+  --background-info: #fbd8ff;
   --background-primary: #dddddd;
   --background-secondary: #e5f7ff;
   --background-warn: #ffeed6;

@@ -1,31 +1,26 @@
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
+import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined";
+import CheckCircleOutlineOutlinedIcon from "@mui/icons-material/CheckCircleOutlineOutlined";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import FormatListBulletedOutlinedIcon from "@mui/icons-material/FormatListBulletedOutlined";
+import StoreOutlinedIcon from "@mui/icons-material/StoreOutlined";
 import PublishedWithChangesOutlinedIcon from "@mui/icons-material/PublishedWithChangesOutlined";
 import ReplayOutlinedIcon from "@mui/icons-material/ReplayOutlined";
 import Accordion from "@mui/material/Accordion";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import Typography from "@mui/material/Typography";
-import React from "react";
-import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined";
-import CheckCircleOutlineOutlinedIcon from "@mui/icons-material/CheckCircleOutlineOutlined";
 import { FaRegHandshake } from "react-icons/fa";
 import { GrCycle } from "react-icons/gr";
 import { EAccordionPanel } from "../../helpers/enums";
-import { IMercadopagoPayment } from "../../models/apis/mercadopago/payment";
-import { IOperationItem } from "../../models/apis/wallet/operationItem";
-import { IPartnerOperation } from "../../models/apis/wallet/partnerOperation";
-import { IPaymentOperationAttempt } from "../../models/apis/wallet/paymentOperationAttempts";
-import { IResult } from "../../models/apis/wallet/result";
+import { IPaymentDetailAccordion } from "../../models/app/payment/paymentDetailAccordion";
 import { PaymentDetailAttempts } from "../paymentDetailAttempts/PaymentDetailAttempts";
 import { PaymentDetailItems } from "../paymentDetailItems/PaymentDetailItems";
+import { PaymentDetailLifecycle } from "../paymentDetailLifecycle/paymentDetailLifecycle";
 import { PaymentDetailMercadopago } from "../paymentDetailMercadopago/PaymentDetailMercadopago";
 import { PaymentDetailPartner } from "../paymentDetailPartner/PaymentDetailPartner";
 import { PaymentDetailStatus } from "../paymentDetailStatus/PaymentDetailStatus";
 import "./PaymentDetailAccordion.css";
-import { IPaymentOperationLifecycle } from "../../models/apis/wallet/paymentOperationLifecycle";
-import { PaymentDetailLifecycle } from "../paymentDetailLifecycle/paymentDetailLifecycle";
 
 export const PaymentDetailAccordion = ({
   panelId,
@@ -35,6 +30,7 @@ export const PaymentDetailAccordion = ({
   items,
   subtotal,
   transaction_amount,
+  pointOfSale,
   partner,
   result,
   attempts,
@@ -42,22 +38,7 @@ export const PaymentDetailAccordion = ({
   lifecycle,
   lifecycleLoading,
   paymentMercadopago,
-}: {
-  panelId: string;
-  title: string;
-  handleChange: (panel: string) => any;
-  defaultExpanded: boolean;
-  items?: IOperationItem[];
-  subtotal?: number;
-  transaction_amount?: number;
-  partner?: IPartnerOperation;
-  result?: IResult;
-  attempts?: IPaymentOperationAttempt[];
-  attemptsLoading?: boolean;
-  lifecycle?: IPaymentOperationLifecycle[];
-  lifecycleLoading?: boolean;
-  paymentMercadopago?: IMercadopagoPayment | null;
-}) => {
+}: IPaymentDetailAccordion) => {
   const getEqualAmounts = () => {
     return (
       (transaction_amount || 0) ===
@@ -97,6 +78,23 @@ export const PaymentDetailAccordion = ({
             {getHeaderIcon()}
             {title}
           </Typography>
+          {pointOfSale ? (
+            <Typography
+              sx={{
+                width: "fit-content",
+                flexShrink: 0,
+                backgroundColor: "var(--background-info) !important",
+                color: "var(--color-info) !important",
+              }}
+              borderRadius={"8px"}
+              padding={"0.3rem"}
+              marginLeft={"0.5rem"}
+              className="accordion-title-acc"
+            >
+              <StoreOutlinedIcon />
+              {pointOfSale.description}
+            </Typography>
+          ) : null}
           {panelId === EAccordionPanel.mercadopago && (
             <Typography
               sx={{ width: "fit-content", flexShrink: 0 }}

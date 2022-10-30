@@ -17,21 +17,14 @@ import MenuItem from "@mui/material/MenuItem";
 import Paper from "@mui/material/Paper";
 import Select from "@mui/material/Select";
 import Stack from "@mui/material/Stack";
+import { Box } from "@mui/system";
 import moment from "moment-timezone";
 import "moment/locale/es";
-import {
-  ChangeEvent,
-  Dispatch,
-  SetStateAction,
-  useEffect,
-  useState,
-} from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { FaRegFileExcel } from "react-icons/fa";
 import { EPaymentOperationStatus } from "../../helpers/enums";
 import { currencyFormat } from "../../helpers/general";
-import { IPaymentOperationFilter } from "../../models/apis/wallet/paymentOperationFilter";
-import { IPaymentOperationOrigin } from "../../models/apis/wallet/paymentOperationOrigin";
-import { IPaymentOperationStatus } from "../../models/apis/wallet/paymentOperationStatus";
+import { IPaymentFilter } from "../../models/app/payment/paymentFilter";
 import { PaymentFilterModal } from "../paymentFilterModal/PaymentFilterModal";
 import "./PaymenrFilters.css";
 
@@ -46,30 +39,15 @@ export const PaymentFilters = ({
   search,
   dateTo,
   dateFrom,
+  loadingPOExcel,
   setDateTo,
   setDateFrom,
   setOperationOriginsFilter,
   setOperationStatusesFilter,
   setSearch,
   getOperations,
-}: {
-  totalCount: number;
-  totalAmount: number;
-  pageSize: number;
-  operationStatuses: IPaymentOperationStatus[];
-  operationOrigins: IPaymentOperationOrigin[];
-  operationStatusesFilter: string[] | null;
-  operationOriginsFilter: string[] | null;
-  search: string;
-  dateTo: Date | null;
-  dateFrom: Date | null;
-  setDateTo: Dispatch<SetStateAction<Date | null>>;
-  setDateFrom: Dispatch<SetStateAction<Date | null>>;
-  setOperationOriginsFilter: Dispatch<SetStateAction<string[] | null>>;
-  setOperationStatusesFilter: Dispatch<SetStateAction<string[] | null>>;
-  setSearch: Dispatch<SetStateAction<string>>;
-  getOperations: (e: IPaymentOperationFilter) => void;
-}) => {
+  downloadExcel,
+}: IPaymentFilter) => {
   const [openOriginSelect, setOpenOriginSelect] = useState(false);
   const [openStatusSelect, setOpenStatusSelect] = useState(false);
   const [selectedStatuses, setSelectedStatuses] = useState<string[]>([]);
@@ -86,11 +64,25 @@ export const PaymentFilters = ({
       target: { value },
     } = event;
     setSelectedStatuses(value);
+  };
+
+  const onCloseStatuses = () => {
+    // console.log("llega aca");
     setOperationStatusesFilter(
       operationStatuses
-        .filter((os) => value.includes(os.description))
+        .filter((os) => selectedStatuses.includes(os.description))
         .map((oss) => oss.code)
     );
+    setOpenStatusSelect(false);
+  };
+
+  const onCloseOrigins = () => {
+    setOperationOriginsFilter(
+      operationOrigins
+        .filter((os) => selectedOrigins.includes(os.description))
+        .map((oss) => oss.code)
+    );
+    setOpenOriginSelect(false);
   };
 
   const handleOriginsSelect = (event: any) => {
@@ -98,11 +90,6 @@ export const PaymentFilters = ({
       target: { value },
     } = event;
     setSelectedOrigins(value);
-    setOperationOriginsFilter(
-      operationOrigins
-        .filter((oo) => value.includes(oo.description))
-        .map((ooo) => ooo.code)
-    );
   };
 
   const handleApply = async () => {
@@ -122,10 +109,8 @@ export const PaymentFilters = ({
       setSelectedOrigins(
         operationOrigins.map((oo) => oo.description).concat(["all-origins"])
       );
-      setOperationOriginsFilter(null);
     } else {
       setSelectedOrigins([]);
-      setOperationOriginsFilter([]);
     }
   };
 
@@ -134,39 +119,9 @@ export const PaymentFilters = ({
       setSelectedStatuses(
         operationStatuses.map((oo) => oo.description).concat(["all-statuses"])
       );
-      setOperationStatusesFilter(null);
     } else {
       setSelectedStatuses([]);
-      setOperationStatusesFilter([]);
     }
-  };
-
-  const handleDownloadExcel = () => {
-    // const data = paymentOperationsFilter.map((payop) => {
-    //   return {
-    //     fecha_creacion: moment
-    //       .tz(payop.createdAt, "America/Argentina/Buenos_Aires")
-    //       .format(),
-    //     origen: payop.origin.description,
-    //     estado: payop.status.description,
-    //     fecha_pago: payop.result?.payment?.date,
-    //     estado_pago: payop.result?.payment?.description,
-    //     numero_pago: payop.result?.payment?.reference,
-    //     susbtotal: payop.subtotal,
-    //     total: payop.transaction_amount,
-    //     nombre: payop.partner.name,
-    //     apellido: payop.partner.lastName,
-    //     nro_documento: payop.partner.dni,
-    //     tipo_documento: payop.partner.tpdId,
-    //     nro_telefono: payop.partner.phone_number,
-    //     sexo: payop.partner.sex,
-    //     fec_nacimiento: payop.partner.birthday,
-    //   };
-    // });
-    // let ws = XLSX.utils.json_to_sheet(data);
-    // let wb = XLSX.utils.book_new();
-    // XLSX.utils.book_append_sheet(wb, ws, "sheet");
-    // XLSX.writeFile(wb, `operaciones.xlsx`);
   };
 
   const iconFilter = () => {
@@ -199,18 +154,56 @@ export const PaymentFilters = ({
   };
 
   useEffect(() => {
-    setSelectedStatuses([
-      operationStatuses.find(
-        (po) => po.code === EPaymentOperationStatus.Terminated
-      )?.description || "",
-    ]);
+    let selStatuses: string[] = ["all-statuses"];
+    if (operationStatusesFilter)
+      selStatuses = (operationStatuses || [])
+        .filter((os) => operationStatusesFilter.includes(os.code))
+        .map((oos) => oos.description);
+    setSelectedStatuses(selStatuses);
   }, [operationStatuses]);
 
   useEffect(() => {
-    setSelectedOrigins(
-      operationOrigins.map((po) => po.description).concat(["all-origins"])
-    );
+    let selOrigins: string[] = ["all-origins"];
+    if (operationOriginsFilter)
+      selOrigins = (operationOrigins || [])
+        .filter((os) => operationOriginsFilter.includes(os.code))
+        .map((oos) => oos.description);
+    setSelectedOrigins(selOrigins);
   }, [operationOrigins]);
+
+  const ExcelIcon = () => {
+    return (
+      <>
+        {loadingPOExcel ? (
+          <Box position="relative" display="inline-flex">
+            <CircularProgress className="filter-circular-progress-excel" />
+            <Box
+              top={0}
+              left={0}
+              bottom={0}
+              right={0}
+              position="absolute"
+              display="flex"
+              alignItems="center"
+              justifyContent="center"
+            >
+              <FaRegFileExcel size="0.9rem" />
+            </Box>
+          </Box>
+        ) : (
+          <IconButton
+            className="icon-button"
+            aria-label="Descargar Excel"
+            size="medium"
+            onClick={downloadExcel}
+            disabled={loadingPOExcel}
+          >
+            <FaRegFileExcel size="1.3rem" />
+          </IconButton>
+        )}
+      </>
+    );
+  };
 
   return (
     <>
@@ -230,7 +223,7 @@ export const PaymentFilters = ({
               <Select
                 multiple
                 input={<Input id="select-multiple-origin" />}
-                onClose={() => setOpenOriginSelect(false)}
+                onClose={onCloseOrigins}
                 onChange={handleOriginsSelect}
                 style={{ display: "none" }}
                 open={openOriginSelect}
@@ -271,7 +264,7 @@ export const PaymentFilters = ({
                 multiple
                 input={<Input id="select-multiple-statuses" />}
                 onChange={handleStatusesSelect}
-                onClose={() => setOpenStatusSelect(false)}
+                onClose={onCloseStatuses}
                 style={{ display: "none" }}
                 open={openStatusSelect}
                 value={selectedStatuses}
@@ -418,14 +411,7 @@ export const PaymentFilters = ({
             >
               <BarChartOutlinedIcon />
             </IconButton>
-            <IconButton
-              className="icon-button"
-              aria-label="Descargar Excel"
-              size="medium"
-              onClick={handleDownloadExcel}
-            >
-              <FaRegFileExcel size="1.3rem" />
-            </IconButton>
+            <ExcelIcon />
           </Stack>
         </Stack>
         <PaymentFilterModal open={open} handleClose={handleClose} />

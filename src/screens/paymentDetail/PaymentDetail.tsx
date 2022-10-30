@@ -1,27 +1,27 @@
 import Paper from "@mui/material/Paper";
+import Skeleton from "@mui/material/Skeleton";
 import Stack from "@mui/material/Stack";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { PaymentDetailAccordion } from "../../components/paymentDetailAccordion/PaymentDetailAccordion";
 import { PaymentDetailHeader } from "../../components/paymentDetailHeader/PaymentDetailHeader";
+import { IMercadopagoPayment } from "../../models/apis/mercadopago/payment";
+import { IPointOfSale } from "../../models/apis/store/pointOfSale";
 import { IPaymentOperation } from "../../models/apis/wallet/paymentOperation";
 import { IPaymentOperationAttempt } from "../../models/apis/wallet/paymentOperationAttempts";
-import {
-  getPaymentOperationAttempts,
-  getPaymentOperationById,
-} from "../../services/payments";
-import "./PaymentDetail.css";
-import Skeleton from "@mui/material/Skeleton";
+import { IPaymentOperationLifecycle } from "../../models/apis/wallet/paymentOperationLifecycle";
 import {
   getPaymentMercadopagoById,
+  getPaymentOperationAttempts,
+  getPaymentOperationById,
   getPaymentOperationLifecycle,
 } from "../../services/payments";
-import { IMercadopagoPayment } from "../../models/apis/mercadopago/payment";
-import { IPaymentOperationLifecycle } from "../../models/apis/wallet/paymentOperationLifecycle";
+import "./PaymentDetail.css";
 
-export const PaymentDetail = () => {
+export const PaymentDetail = ({ currentView }: { currentView: string }) => {
   const [loadAttempts, setLoadAttempts] = useState(true);
   const [loadLifecycle, setLoadLoadLifecycle] = useState(true);
+  const [pointOfSale, setPointOfSale] = useState<IPointOfSale | null>(null);
   const [attempts, setAttempts] = useState<IPaymentOperationAttempt[]>([]);
   const [lifecycle, setLifecycle] = useState<IPaymentOperationLifecycle[]>([]);
   const [mercadopagoPayment, setMercadopagoPayment] =
@@ -101,8 +101,12 @@ export const PaymentDetail = () => {
 
   useEffect(() => {
     if (paymentOperation) {
-      const { result: { payment: { reference: mpPaymentID = "" } = {} } = {} } =
-        paymentOperation;
+      const {
+        result: { payment: { reference: mpPaymentID = "" } = {} } = {},
+        point_of_sale,
+      } = paymentOperation;
+
+      setPointOfSale(point_of_sale);
 
       // console.log(mpPaymentID);
       getPaymentMercadopago(mpPaymentID);
@@ -132,6 +136,7 @@ export const PaymentDetail = () => {
               items={paymentOperation.items}
               subtotal={paymentOperation.subtotal}
               transaction_amount={paymentOperation.transaction_amount}
+              pointOfSale={pointOfSale}
             ></PaymentDetailAccordion>
             <PaymentDetailAccordion
               panelId="partner"

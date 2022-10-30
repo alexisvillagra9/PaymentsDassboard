@@ -4,9 +4,9 @@ import CreditScoreOutlinedIcon from "@mui/icons-material/CreditScoreOutlined";
 import EventAvailableOutlinedIcon from "@mui/icons-material/EventAvailableOutlined";
 import HowToRegOutlinedIcon from "@mui/icons-material/HowToRegOutlined";
 import ModelTrainingOutlinedIcon from "@mui/icons-material/ModelTrainingOutlined";
-import SellOutlinedIcon from "@mui/icons-material/SellOutlined";
 import PaidOutlinedIcon from "@mui/icons-material/PaidOutlined";
 import QrCodeScannerOutlinedIcon from "@mui/icons-material/QrCodeScannerOutlined";
+import SellOutlinedIcon from "@mui/icons-material/SellOutlined";
 import SimCardOutlinedIcon from "@mui/icons-material/SimCardOutlined";
 import Avatar from "@mui/material/Avatar";
 import Chip from "@mui/material/Chip";
@@ -23,6 +23,7 @@ import {
   paymentStatusColor,
   paymentStatusDesc,
 } from "../../helpers/payments";
+import { IPointOfSale } from "../../models/apis/store/pointOfSale";
 import { IPartnerOperation } from "../../models/apis/wallet/partnerOperation";
 import { IPaymentOperationOrigin } from "../../models/apis/wallet/paymentOperationOrigin";
 import { IPaymentOperationStatus } from "../../models/apis/wallet/paymentOperationStatus";
@@ -33,6 +34,7 @@ export const PaymentListItem = ({
   origin: { code: originCode, description: originDesciption },
   status: { code: statusCode, description: statusDesciption },
   partner: { name, lastName, dni },
+  point_of_sale,
   result: { payment: { code: resultPaymentCode } = {} } = {},
   transaction_amount,
   createdAt,
@@ -40,11 +42,14 @@ export const PaymentListItem = ({
   origin: IPaymentOperationOrigin;
   status: IPaymentOperationStatus;
   partner: IPartnerOperation;
+  point_of_sale: IPointOfSale;
   result: IResult;
   transaction_amount: number;
   createdAt: Date;
 }) => {
-  const title = `${originDesciption} - ${name} ${lastName}`;
+  const title = `${originDesciption} - ${name} ${lastName} ${
+    point_of_sale ? ` - ${point_of_sale.description}` : ""
+  }`;
   const susbtitle = moment
     .tz(createdAt, "America/Argentina/Buenos_Aires")
     .format("DD MMMM YYYY, HH:mm:ss");
