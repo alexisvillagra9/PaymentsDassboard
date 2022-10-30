@@ -154,7 +154,9 @@ export const PaymentFilters = ({
   };
 
   useEffect(() => {
-    let selStatuses: string[] = ["all-statuses"];
+    let selStatuses: string[] = operationStatuses
+      .map((os) => os.description)
+      .concat(["all-statuses"]);
     if (operationStatusesFilter)
       selStatuses = (operationStatuses || [])
         .filter((os) => operationStatusesFilter.includes(os.code))
@@ -163,7 +165,9 @@ export const PaymentFilters = ({
   }, [operationStatuses]);
 
   useEffect(() => {
-    let selOrigins: string[] = ["all-origins"];
+    let selOrigins: string[] = operationOrigins
+      .map((oo) => oo.description)
+      .concat(["all-origins"]);
     if (operationOriginsFilter)
       selOrigins = (operationOrigins || [])
         .filter((os) => operationOriginsFilter.includes(os.code))
