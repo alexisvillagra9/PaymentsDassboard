@@ -7,7 +7,7 @@ export const PaymentRoutes = (paymentRouteProps: IPaymentRoute) => {
   const { currentView } = paymentRouteProps;
 
   const { pathname, search } = useLocation();
-  console.log(pathname, search);
+  // console.log(pathname, search);
 
   return (
     <Routes>
