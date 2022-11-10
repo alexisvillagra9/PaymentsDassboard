@@ -2,6 +2,8 @@ import ArrowBackIosOutlinedIcon from "@mui/icons-material/ArrowBackIosOutlined";
 import CheckBoxOutlinedIcon from "@mui/icons-material/CheckBoxOutlined";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import PaidOutlinedIcon from "@mui/icons-material/PaidOutlined";
+import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
+import { Dialog, DialogTitle } from "@mui/material";
 import Button from "@mui/material/Button";
 import Chip from "@mui/material/Chip";
 import IconButton from "@mui/material/IconButton";
@@ -10,7 +12,7 @@ import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import moment from "moment-timezone";
 import "moment/locale/es";
-import React, { useState } from "react";
+import { useState } from "react";
 import { FaRegHandshake } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import {
@@ -37,13 +39,25 @@ export const PaymentDetailHeader = ({
 }) => {
   const navigate = useNavigate();
   const [copied, setCopied] = useState(false);
+  const [open, setOpen] = useState(false);
 
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
   const handleCopy = () => {
     navigator.clipboard.writeText(paymentReference);
     setCopied(true);
   };
   return (
     <>
+      <Dialog onClose={handleClose} open={open}>
+        <DialogTitle>Cambiar Estado</DialogTitle>
+        <Stack></Stack>
+      </Dialog>
       <Paper className="paper-container-detail" elevation={0}>
         <Stack
           gap="0.75rem"
@@ -121,15 +135,25 @@ export const PaymentDetailHeader = ({
                 .format("DD MMMM YYYY, HH:mm:ss")}
             </div>
           </Stack>
-          <IconButton
-            color="primary"
-            aria-label="upload picture"
-            component="span"
-            sx={{ alignSelf: "baseline" }}
-            onClick={() => navigate(-1)}
-          >
-            <ArrowBackIosOutlinedIcon htmlColor="var(--color-primary)" />
-          </IconButton>
+          <Stack></Stack>
+          <Stack flexDirection="row">
+            <IconButton
+              color="primary"
+              aria-label="upload picture"
+              component="span"
+              onClick={() => handleClickOpen()}
+            >
+              <SettingsOutlinedIcon htmlColor="var(--color-primary)" />
+            </IconButton>
+            <IconButton
+              color="primary"
+              aria-label="upload picture"
+              component="span"
+              onClick={() => navigate(-1)}
+            >
+              <ArrowBackIosOutlinedIcon htmlColor="var(--color-primary)" />
+            </IconButton>
+          </Stack>
         </Stack>
       </Paper>
     </>

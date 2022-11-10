@@ -129,6 +129,7 @@ export const AppRoutes = () => {
         sexo: payop.partner.sex,
         fec_nacimiento: payop.partner.birthday,
         punto_venta: payop?.point_of_sale?.description,
+        email: payop?.partner.email,
       };
     });
     let ws = XLSX.utils.json_to_sheet(data);
