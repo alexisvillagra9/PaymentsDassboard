@@ -130,6 +130,7 @@ export const AppRoutes = () => {
         fec_nacimiento: payop.partner.birthday,
         punto_venta: payop?.point_of_sale?.description,
         email: payop?.partner.email,
+        ciudadId: payop?.partner.localityId,
       };
     });
     let ws = XLSX.utils.json_to_sheet(data);
