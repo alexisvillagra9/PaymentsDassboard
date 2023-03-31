@@ -75,6 +75,7 @@ export const File = () => {
                 display: "flex",
                 alignItems: "center",
                 justifyItems: "center",
+                flexWrap: "wrap",
                 gap: 3,
               }}
             >
