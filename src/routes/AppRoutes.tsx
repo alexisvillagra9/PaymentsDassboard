@@ -1,10 +1,16 @@
 import HomeIcon from "@mui/icons-material/Home";
-import { Container, Divider, Drawer, ListItemIcon } from "@mui/material";
+import FileCopy from "@mui/icons-material/FileCopy";
+import {
+  Container,
+  Divider,
+  Drawer,
+  ListItemButton,
+  ListItemIcon,
+} from "@mui/material";
 import Box from "@mui/material/Box";
-import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 import { styled } from "@mui/material/styles";
-import axios, { CancelTokenSource } from "axios";
+// import axios, { CancelTokenSource } from "axios";
 import moment from "moment-timezone";
 import "moment/locale/es";
 import { useEffect, useState } from "react";
@@ -30,9 +36,9 @@ import { PublicRoute } from "./PublicRoute";
 export const AppRoutes = () => {
   const [openDrawer, setOpenDrawer] = useState(false);
 
-  const [cancelRequests] = useState<CancelTokenSource>(
-    axios.CancelToken.source()
-  );
+  // const [cancelRequests] = useState<CancelTokenSource>(
+  //   axios.CancelToken.source()
+  // );
 
   const [currentView, setCurrentView] = useState("payments");
   const [totalCount, setTotalCount] = useState(0);
@@ -238,20 +244,33 @@ export const AppRoutes = () => {
           onClose={() => setOpenDrawer(false)}
         >
           <Offset />
-          <ListItem
-            button
+          <ListItemButton
             key={1}
             component={Link}
             to={"/home"}
             onClick={() => setOpenDrawer(false)}
-            sx={{ color: "var(--color-primary)!important" }}
+            sx={{ color: "var(--color-primary)!important", flex: 0 }}
             color="primary"
           >
             <ListItemIcon style={{ color: "unset" }}>
               <HomeIcon />
             </ListItemIcon>
             <ListItemText primary="Inicio" />
-          </ListItem>
+          </ListItemButton>
+          <Divider />
+          <ListItemButton
+            key={2}
+            component={Link}
+            to={"/files"}
+            onClick={() => setOpenDrawer(false)}
+            sx={{ color: "var(--color-primary)!important", flex: 0 }}
+            color="primary"
+          >
+            <ListItemIcon style={{ color: "unset" }}>
+              <FileCopy />
+            </ListItemIcon>
+            <ListItemText primary="Archivos" />
+          </ListItemButton>
           <Divider />
         </Drawer>
         <Main open={openDrawer}>
