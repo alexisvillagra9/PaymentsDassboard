@@ -74,7 +74,7 @@ export const File = () => {
               sx={{
                 display: "flex",
                 alignItems: "center",
-                justifyItems: "center",
+                justifyContent: "center",
                 flexWrap: "wrap",
                 gap: 3,
               }}
