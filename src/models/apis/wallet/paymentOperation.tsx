@@ -1,6 +1,7 @@
 import { IPointOfSale } from "../store/pointOfSale";
 import { IOperationItem } from "../wallet/operationItem";
 import { IFeesPayment } from "./feesPayment";
+import { IGateway } from "./gateway";
 import { IPartnerOperation } from "./partnerOperation";
 import { IPaymentOperationOrigin } from "./paymentOperationOrigin";
 import { IPaymentOperationStatus } from "./paymentOperationStatus";
@@ -16,6 +17,7 @@ export interface IPaymentOperation {
   result?: IResult;
   origin: IPaymentOperationOrigin;
   status: IPaymentOperationStatus;
+  gateway: IGateway;
   subtotal: number;
   transaction_amount: number;
   redirect: IRedirect;

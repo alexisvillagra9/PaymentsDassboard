@@ -19,3 +19,9 @@
   /* background-color: var(--background-secondary) !important;
   color: var(--color-primary) !important; */
 }
+
+.gateway-icon {
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+}

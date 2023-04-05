@@ -37,6 +37,11 @@ export enum EPaymentOperationLifecycleType {
   ErrHermesImp = "EIH",
 }
 
+export enum EGateway {
+  MERCADOPAGO = "MPA",
+  MACRO = "MAC",
+}
+
 export enum EPaymentStatus {
   Success = "OK",
   Pending = "PEN",

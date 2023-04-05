@@ -16,7 +16,7 @@ import Stack from "@mui/material/Stack";
 import moment from "moment-timezone";
 import "moment/locale/es";
 import { FaRegHandshake } from "react-icons/fa";
-import { EPaymentOperationOrigin } from "../../helpers/enums";
+import { EGateway, EPaymentOperationOrigin } from "../../helpers/enums";
 import { currencyFormat } from "../../helpers/general";
 import {
   operationStatusColor,
@@ -24,15 +24,18 @@ import {
   paymentStatusDesc,
 } from "../../helpers/payments";
 import { IPointOfSale } from "../../models/apis/store/pointOfSale";
+import { IGateway } from "../../models/apis/wallet/gateway";
 import { IPartnerOperation } from "../../models/apis/wallet/partnerOperation";
 import { IPaymentOperationOrigin } from "../../models/apis/wallet/paymentOperationOrigin";
 import { IPaymentOperationStatus } from "../../models/apis/wallet/paymentOperationStatus";
 import { IResult } from "../../models/apis/wallet/result";
 import "./PaymentListItem.css";
+import { Tooltip } from "@mui/material";
 
 export const PaymentListItem = ({
   origin: { code: originCode, description: originDesciption },
   status: { code: statusCode, description: statusDesciption },
+  gateway: { code: gatewayCode, description: gatewayDescription },
   partner: { name, lastName, dni },
   point_of_sale,
   result: { payment: { code: resultPaymentCode } = {} } = {},
@@ -41,6 +44,7 @@ export const PaymentListItem = ({
 }: {
   origin: IPaymentOperationOrigin;
   status: IPaymentOperationStatus;
+  gateway: IGateway;
   partner: IPartnerOperation;
   point_of_sale: IPointOfSale;
   result: IResult;
@@ -86,6 +90,37 @@ export const PaymentListItem = ({
     </>
   );
 
+  const iconGatewaySelect = (size: number | string) => {
+    return (
+      <>
+        {gatewayCode === EGateway.MERCADOPAGO && (
+          <Tooltip title="Pago realizado con Mercadopago">
+            <div
+              className="gateway-icon"
+              style={{
+                height: size,
+                width: size,
+                backgroundImage: "url('/images/icons/mercadopago.svg')",
+              }}
+            ></div>
+          </Tooltip>
+        )}
+        {gatewayCode === EGateway.MACRO && (
+          <Tooltip title="Pago realizado con Macro Click">
+            <div
+              className="gateway-icon"
+              style={{
+                height: size,
+                width: size,
+                backgroundImage: "url('/images/icons/macro.png')",
+              }}
+            ></div>
+          </Tooltip>
+        )}
+      </>
+    );
+  };
+
   return (
     <>
       <ListItemAvatar>
@@ -110,6 +145,7 @@ export const PaymentListItem = ({
           gap="0.5rem"
           flexWrap="wrap"
           justifyContent="flex-end"
+          alignItems="center"
         >
           {/* <Chip label="Small" size="small" /> */}
           <Chip
@@ -128,6 +164,7 @@ export const PaymentListItem = ({
               icon={<FaRegHandshake style={{ color: "unset" }} />}
             />
           )}
+          {iconGatewaySelect("1.4rem")}
         </Stack>
       </Stack>
     </>
