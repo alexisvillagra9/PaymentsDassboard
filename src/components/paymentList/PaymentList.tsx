@@ -76,7 +76,7 @@ export const PaymentList = ({
                   <PaymentListItem
                     origin={origin}
                     status={status}
-                    gateway={gateway}
+                    gateway={gateway || undefined}
                     partner={partner}
                     result={result}
                     transaction_amount={transaction_amount}

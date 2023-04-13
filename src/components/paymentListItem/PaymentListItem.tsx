@@ -35,7 +35,7 @@ import { Tooltip } from "@mui/material";
 export const PaymentListItem = ({
   origin: { code: originCode, description: originDesciption },
   status: { code: statusCode, description: statusDesciption },
-  gateway: { code: gatewayCode, description: gatewayDescription },
+  gateway: { code: gatewayCode, description: gatewayDescription } = {},
   partner: { name, lastName, dni },
   point_of_sale,
   result: { payment: { code: resultPaymentCode } = {} } = {},
