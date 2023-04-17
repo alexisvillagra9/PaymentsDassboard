@@ -54,6 +54,7 @@ export enum EAccordionPanel {
   status = "status",
   attempts = "attempts",
   mercadopago = "mercadopago",
+  macropago = "macropago",
   lifecycle = "lifecycle",
 }
 

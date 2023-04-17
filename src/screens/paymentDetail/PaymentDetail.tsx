@@ -5,12 +5,15 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { PaymentDetailAccordion } from "../../components/paymentDetailAccordion/PaymentDetailAccordion";
 import { PaymentDetailHeader } from "../../components/paymentDetailHeader/PaymentDetailHeader";
+import { EGateway } from "../../helpers/enums";
+import { IMacroPayment } from "../../models/apis/macro/payment";
 import { IMercadopagoPayment } from "../../models/apis/mercadopago/payment";
 import { IPointOfSale } from "../../models/apis/store/pointOfSale";
 import { IPaymentOperation } from "../../models/apis/wallet/paymentOperation";
 import { IPaymentOperationAttempt } from "../../models/apis/wallet/paymentOperationAttempts";
 import { IPaymentOperationLifecycle } from "../../models/apis/wallet/paymentOperationLifecycle";
 import {
+  getPaymentMacroByExternalReference,
   getPaymentMercadopagoById,
   getPaymentOperationAttempts,
   getPaymentOperationById,
@@ -22,10 +25,12 @@ export const PaymentDetail = ({ currentView }: { currentView: string }) => {
   const [loadAttempts, setLoadAttempts] = useState(true);
   const [loadLifecycle, setLoadLoadLifecycle] = useState(true);
   const [pointOfSale, setPointOfSale] = useState<IPointOfSale | null>(null);
+  const [gatewayCode, setGatewayCode] = useState<string>("");
   const [attempts, setAttempts] = useState<IPaymentOperationAttempt[]>([]);
   const [lifecycle, setLifecycle] = useState<IPaymentOperationLifecycle[]>([]);
   const [mercadopagoPayment, setMercadopagoPayment] =
     useState<IMercadopagoPayment | null>(null);
+  const [macroPayment, setMacroPayment] = useState<IMacroPayment[]>([]);
   const [paymentOperation, setPaymentOperation] =
     useState<IPaymentOperation | null>();
 
@@ -50,6 +55,16 @@ export const PaymentDetail = ({ currentView }: { currentView: string }) => {
   const getPaymentMercadopago = async (paymentId: string | number) => {
     const payMP = await getPaymentMercadopagoById(paymentId);
     setMercadopagoPayment(payMP);
+  };
+
+  const getPaymentsMacro = async (external_references: string[]) => {
+    const pPaysMacro = external_references.map(async (er) => {
+      const pay = await getPaymentMacroByExternalReference(er);
+      return pay;
+    });
+    const paysMacro = await Promise.all(pPaysMacro);
+    const filteredPayMacro = paysMacro.filter((pm) => pm) as IMacroPayment[];
+    setMacroPayment(filteredPayMacro);
   };
 
   const handleChange = (panel: string) => (event: React.SyntheticEvent) => {
@@ -102,14 +117,21 @@ export const PaymentDetail = ({ currentView }: { currentView: string }) => {
   useEffect(() => {
     if (paymentOperation) {
       const {
+        external_references,
         result: { payment: { reference: mpPaymentID = "" } = {} } = {},
         point_of_sale,
+        gateway: { code: gatewayCodeOp = "" },
       } = paymentOperation;
+
+      setGatewayCode(gatewayCodeOp);
 
       setPointOfSale(point_of_sale);
 
       // console.log(mpPaymentID);
-      getPaymentMercadopago(mpPaymentID);
+      if (gatewayCodeOp === EGateway.MERCADOPAGO)
+        getPaymentMercadopago(mpPaymentID);
+      if (gatewayCodeOp === EGateway.MACRO)
+        getPaymentsMacro(external_references);
     }
   }, [paymentOperation]);
 
@@ -168,14 +190,26 @@ export const PaymentDetail = ({ currentView }: { currentView: string }) => {
               attempts={attempts}
               attemptsLoading={loadAttempts}
             ></PaymentDetailAccordion>
-            <PaymentDetailAccordion
-              panelId="mercadopago"
-              title="Mercadopago"
-              handleChange={handleChange}
-              defaultExpanded={false}
-              transaction_amount={paymentOperation.transaction_amount}
-              paymentMercadopago={mercadopagoPayment}
-            ></PaymentDetailAccordion>
+            {gatewayCode === EGateway.MERCADOPAGO && (
+              <PaymentDetailAccordion
+                panelId="mercadopago"
+                title="Mercadopago"
+                handleChange={handleChange}
+                defaultExpanded={false}
+                transaction_amount={paymentOperation.transaction_amount}
+                paymentMercadopago={mercadopagoPayment}
+              ></PaymentDetailAccordion>
+            )}
+            {gatewayCode === EGateway.MACRO && (
+              <PaymentDetailAccordion
+                panelId="macropago"
+                title="Macro"
+                handleChange={handleChange}
+                defaultExpanded={false}
+                transaction_amount={paymentOperation.transaction_amount}
+                paymentsMacro={macroPayment}
+              ></PaymentDetailAccordion>
+            )}
           </Stack>
         ) : (
           <SkeletonDetail />

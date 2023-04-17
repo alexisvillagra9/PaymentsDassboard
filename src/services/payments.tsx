@@ -7,6 +7,7 @@ import { IPaymentOperationLifecycle } from "../models/apis/wallet/paymentOperati
 import { IPaymentOperationOrigin } from "../models/apis/wallet/paymentOperationOrigin";
 import { IPaymentOperationResult } from "../models/apis/wallet/paymentOperationResult";
 import { IPaymentOperationStatus } from "../models/apis/wallet/paymentOperationStatus";
+import { IMacroPayment } from "../models/apis/macro/payment";
 
 const environment = "P";
 const WALLET_URI =
@@ -148,6 +149,22 @@ export const getPaymentMercadopagoById = async (
       `${WALLET_URI}/mercadopago/payments/${paymentId}`
     );
     let { data: payment }: { data: IMercadopagoPayment } = res;
+
+    return payment;
+  } catch (error) {
+    console.log(JSON.stringify(error));
+    throw error;
+  }
+};
+
+export const getPaymentMacroByExternalReference = async (
+  paymentId: number | string
+): Promise<IMacroPayment | null> => {
+  try {
+    const res = await axios.get<IMacroPayment | null>(
+      `${WALLET_URI}/macro/payments/${paymentId}`
+    );
+    let { data: payment } = res;
 
     return payment;
   } catch (error) {

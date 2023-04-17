@@ -21,6 +21,7 @@ import { PaymentDetailMercadopago } from "../paymentDetailMercadopago/PaymentDet
 import { PaymentDetailPartner } from "../paymentDetailPartner/PaymentDetailPartner";
 import { PaymentDetailStatus } from "../paymentDetailStatus/PaymentDetailStatus";
 import "./PaymentDetailAccordion.css";
+import { PaymentDetailMacro } from "../paymentDetailMacro/paymentDetailMacro";
 
 export const PaymentDetailAccordion = ({
   panelId,
@@ -38,6 +39,7 @@ export const PaymentDetailAccordion = ({
   lifecycle,
   lifecycleLoading,
   paymentMercadopago,
+  paymentsMacro,
 }: IPaymentDetailAccordion) => {
   const getEqualAmounts = () => {
     return (
@@ -48,12 +50,19 @@ export const PaymentDetailAccordion = ({
 
   const getHeaderIcon = () => {
     let iconTag = null;
-    if (panelId === "items") iconTag = <FormatListBulletedOutlinedIcon />;
-    if (panelId === "partner") iconTag = <AccountCircleOutlinedIcon />;
-    if (panelId === "status") iconTag = <PublishedWithChangesOutlinedIcon />;
-    if (panelId === "attempts") iconTag = <ReplayOutlinedIcon />;
-    if (panelId === "lifecycle") iconTag = <GrCycle size="1.4rem" />;
-    if (panelId === "mercadopago") iconTag = <FaRegHandshake size="1.5rem" />;
+    if (panelId === EAccordionPanel.items)
+      iconTag = <FormatListBulletedOutlinedIcon />;
+    if (panelId === EAccordionPanel.partner)
+      iconTag = <AccountCircleOutlinedIcon />;
+    if (panelId === EAccordionPanel.status)
+      iconTag = <PublishedWithChangesOutlinedIcon />;
+    if (panelId === EAccordionPanel.attempts) iconTag = <ReplayOutlinedIcon />;
+    if (panelId === EAccordionPanel.lifecycle)
+      iconTag = <GrCycle size="1.4rem" />;
+    if (panelId === EAccordionPanel.mercadopago)
+      iconTag = <FaRegHandshake size="1.5rem" />;
+    if (panelId === EAccordionPanel.macropago)
+      iconTag = <FaRegHandshake size="1.5rem" />;
     return iconTag;
   };
   return (
@@ -146,6 +155,10 @@ export const PaymentDetailAccordion = ({
           {panelId === EAccordionPanel.mercadopago && (
             <PaymentDetailMercadopago payment={paymentMercadopago || null} />
           )}
+          {panelId === EAccordionPanel.macropago &&
+            paymentsMacro?.map((pay) => (
+              <PaymentDetailMacro payment={pay || null} />
+            ))}
         </AccordionDetails>
       </Accordion>
     </div>

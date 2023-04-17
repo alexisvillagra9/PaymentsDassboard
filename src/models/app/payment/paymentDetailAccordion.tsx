@@ -1,3 +1,4 @@
+import { IMacroPayment } from "../../apis/macro/payment";
 import { IMercadopagoPayment } from "../../apis/mercadopago/payment";
 import { IPointOfSale } from "../../apis/store/pointOfSale";
 import { IOperationItem } from "../../apis/wallet/operationItem";
@@ -21,5 +22,6 @@ export interface IPaymentDetailAccordion {
   lifecycle?: IPaymentOperationLifecycle[];
   lifecycleLoading?: boolean;
   paymentMercadopago?: IMercadopagoPayment | null;
+  paymentsMacro?: IMacroPayment[];
   pointOfSale?: IPointOfSale | null;
 }

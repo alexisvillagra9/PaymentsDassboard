@@ -21,6 +21,7 @@ export interface IPaymentOperation {
   subtotal: number;
   transaction_amount: number;
   redirect: IRedirect;
+  external_references: string[];
   createdAt: Date;
   updatedAt: Date;
 }
