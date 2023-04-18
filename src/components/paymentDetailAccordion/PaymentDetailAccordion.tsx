@@ -3,9 +3,9 @@ import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined";
 import CheckCircleOutlineOutlinedIcon from "@mui/icons-material/CheckCircleOutlineOutlined";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import FormatListBulletedOutlinedIcon from "@mui/icons-material/FormatListBulletedOutlined";
-import StoreOutlinedIcon from "@mui/icons-material/StoreOutlined";
 import PublishedWithChangesOutlinedIcon from "@mui/icons-material/PublishedWithChangesOutlined";
 import ReplayOutlinedIcon from "@mui/icons-material/ReplayOutlined";
+import StoreOutlinedIcon from "@mui/icons-material/StoreOutlined";
 import Accordion from "@mui/material/Accordion";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import AccordionSummary from "@mui/material/AccordionSummary";
@@ -17,11 +17,11 @@ import { IPaymentDetailAccordion } from "../../models/app/payment/paymentDetailA
 import { PaymentDetailAttempts } from "../paymentDetailAttempts/PaymentDetailAttempts";
 import { PaymentDetailItems } from "../paymentDetailItems/PaymentDetailItems";
 import { PaymentDetailLifecycle } from "../paymentDetailLifecycle/paymentDetailLifecycle";
+import { PaymentDetailMacro } from "../paymentDetailMacro/paymentDetailMacro";
 import { PaymentDetailMercadopago } from "../paymentDetailMercadopago/PaymentDetailMercadopago";
 import { PaymentDetailPartner } from "../paymentDetailPartner/PaymentDetailPartner";
 import { PaymentDetailStatus } from "../paymentDetailStatus/PaymentDetailStatus";
 import "./PaymentDetailAccordion.css";
-import { PaymentDetailMacro } from "../paymentDetailMacro/paymentDetailMacro";
 
 export const PaymentDetailAccordion = ({
   panelId,
@@ -42,10 +42,11 @@ export const PaymentDetailAccordion = ({
   paymentsMacro,
 }: IPaymentDetailAccordion) => {
   const getEqualAmounts = () => {
-    return (
-      (transaction_amount || 0) ===
-      (paymentMercadopago?.transaction_amount || 0)
-    );
+    return panelId === EAccordionPanel.macropago
+      ? (transaction_amount || 0) ===
+          paymentsMacro?.reduce((pre, cur) => pre + cur.montoBruto, 0)
+      : (transaction_amount || 0) ===
+          (paymentMercadopago?.transaction_amount || 0);
   };
 
   const getHeaderIcon = () => {
@@ -104,7 +105,8 @@ export const PaymentDetailAccordion = ({
               {pointOfSale.description}
             </Typography>
           ) : null}
-          {panelId === EAccordionPanel.mercadopago && (
+          {(panelId === EAccordionPanel.mercadopago ||
+            panelId === EAccordionPanel.macropago) && (
             <Typography
               sx={{ width: "fit-content", flexShrink: 0 }}
               borderRadius="8px"
@@ -157,7 +159,10 @@ export const PaymentDetailAccordion = ({
           )}
           {panelId === EAccordionPanel.macropago &&
             paymentsMacro?.map((pay) => (
-              <PaymentDetailMacro payment={pay || null} />
+              <PaymentDetailMacro
+                key={pay.transaccionComercioId}
+                payment={pay || null}
+              />
             ))}
         </AccordionDetails>
       </Accordion>

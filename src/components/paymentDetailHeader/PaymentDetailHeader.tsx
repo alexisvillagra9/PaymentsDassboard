@@ -100,7 +100,7 @@ export const PaymentDetailHeader = ({
                   onClick={handleCopy}
                   onMouseOver={() => setCopied(false)}
                 >
-                  {`MP#: ${paymentReference}`}
+                  {`#${paymentReference}`}
                 </Button>
               )}
               <Stack

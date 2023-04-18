@@ -24,7 +24,7 @@ export const PaymentDetailMacro = ({
   payment: IMacroPayment | null;
 }) => {
   const {
-    monto = 0,
+    monto = "0",
     montoBruto = 0,
     montoDescuento = 0,
     medioPagoNombre = "",
@@ -95,7 +95,9 @@ export const PaymentDetailMacro = ({
               <ListItemText primary="Total" />
               <Stack spacing={1} alignItems="flex-end" marginLeft="0.5rem">
                 <Chip
-                  label={currencyFormat(+monto)}
+                  label={currencyFormat(
+                    +monto.replace(".", "").replace(",", ".")
+                  )}
                   size="small"
                   className="chip-container"
                 />
