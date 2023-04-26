@@ -137,6 +137,7 @@ export const AppRoutes = () => {
         punto_venta: payop?.point_of_sale?.description,
         email: payop?.partner.email,
         ciudadId: payop?.partner.localityId,
+        pasarela:payop?.gateway.description
       };
     });
     let ws = XLSX.utils.json_to_sheet(data);
