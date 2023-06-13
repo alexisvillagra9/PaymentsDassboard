@@ -120,8 +120,8 @@ export const AppRoutes = () => {
         fecha_creacion: moment
           .tz(payop.createdAt, "America/Argentina/Buenos_Aires")
           .format(),
-        origen: payop.origin.description,
-        estado: payop.status.description,
+        origen: payop?.origin?.description,
+        estado: payop?.status?.description,
         fecha_pago: payop.result?.payment?.date,
         estado_pago: payop.result?.payment?.description,
         numero_pago: payop.result?.payment?.reference,
@@ -137,7 +137,7 @@ export const AppRoutes = () => {
         punto_venta: payop?.point_of_sale?.description,
         email: payop?.partner.email,
         ciudadId: payop?.partner.localityId,
-        pasarela:payop?.gateway.description
+        pasarela:payop?.gateway?.description
       };
     });
     let ws = XLSX.utils.json_to_sheet(data);
