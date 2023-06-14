@@ -120,8 +120,9 @@ export const PaymentDetail = ({ currentView }: { currentView: string }) => {
         external_references,
         result: { payment: { reference: mpPaymentID = "" } = {} } = {},
         point_of_sale,
-        gateway: { code: gatewayCodeOp = "" },
+        gateway,
       } = paymentOperation;
+      const { code: gatewayCodeOp = "" } = gateway;
 
       setGatewayCode(gatewayCodeOp);
 
