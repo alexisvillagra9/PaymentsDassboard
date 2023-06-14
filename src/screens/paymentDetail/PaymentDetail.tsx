@@ -122,7 +122,7 @@ export const PaymentDetail = ({ currentView }: { currentView: string }) => {
         point_of_sale,
         gateway,
       } = paymentOperation;
-      const { code: gatewayCodeOp = "" } = gateway;
+      const { code: gatewayCodeOp = "" } = gateway || {};
 
       setGatewayCode(gatewayCodeOp);
 
