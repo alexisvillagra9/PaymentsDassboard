@@ -5,6 +5,7 @@ export enum EPaymentOperationOrigin {
   SubscriptionToAD = "ADA",
   QRPayment = "QRP",
   ExtraordinaryPayment = "PEC",
+  Contribution = "PAP",
   LocationBuy = "CDU",
   Reactivate = "RIP",
   ActivateChip = "ACH",

@@ -31,6 +31,7 @@ import { IPaymentOperationStatus } from "../../models/apis/wallet/paymentOperati
 import { IResult } from "../../models/apis/wallet/result";
 import "./PaymentListItem.css";
 import { Tooltip } from "@mui/material";
+import { CardGiftcard } from "@mui/icons-material";
 
 export const PaymentListItem = ({
   origin: { code: originCode, description: originDesciption },
@@ -86,6 +87,9 @@ export const PaymentListItem = ({
       )}
       {originCode === EPaymentOperationOrigin.ExtraordinaryPayment && (
         <SellOutlinedIcon></SellOutlinedIcon>
+      )}
+      {originCode === EPaymentOperationOrigin.Contribution && (
+        <CardGiftcard></CardGiftcard>
       )}
     </>
   );
