@@ -25,6 +25,7 @@ import { IPaymentOperationStatus } from "../models/apis/wallet/paymentOperationS
 import { IPaymentRoute } from "../models/app/payment/paymentRoute";
 import { Login } from "../screens/login/Login";
 import {
+  getPaymentOperationGateways,
   getPaymentOperationOrigins,
   getPaymentOperationsByFilter,
   getPaymentOperationStatuses,
@@ -32,6 +33,7 @@ import {
 import { PaymentRoutes } from "./PaymentRoutes";
 import { PrivateRoute } from "./PrivateRoute";
 import { PublicRoute } from "./PublicRoute";
+import { IPaymentOperationGateway } from "../models/apis/wallet/paymentOperationGateway";
 
 export const AppRoutes = () => {
   const [openDrawer, setOpenDrawer] = useState(false);
@@ -62,19 +64,27 @@ export const AppRoutes = () => {
   const [operationOrigins, setOperationOrigins] = useState<
     IPaymentOperationOrigin[]
   >([]);
+  const [operationGateways, setOperationGateways] = useState<
+    IPaymentOperationGateway[]
+  >([]);
   const [operationStatusesFilter, setOperationStatusesFilter] = useState<
     string[] | null
   >([EPaymentOperationStatus.Terminated]);
   const [operationOriginsFilter, setOperationOriginsFilter] = useState<
     string[] | null
   >(null);
+  const [operationGatewaysFilter, setOperationGatewaysFilter] = useState<
+    string[] | null
+  >(null);
 
   const getFilters = async () => {
     const pStatuses = getPaymentOperationStatuses();
     const pOrigins = getPaymentOperationOrigins();
-    const [sts, ors] = await Promise.all([pStatuses, pOrigins]);
+    const pGateways = getPaymentOperationGateways();
+    const [sts, ors, gtw] = await Promise.all([pStatuses, pOrigins, pGateways]);
     setOperationStatuses(sts);
     setOperationOrigins(ors);
+    setOperationGateways(gtw);
   };
 
   const getOperations = async (filters: IPaymentOperationFilter) => {
@@ -137,7 +147,7 @@ export const AppRoutes = () => {
         punto_venta: payop?.point_of_sale?.description,
         email: payop?.partner.email,
         ciudadId: payop?.partner.localityId,
-        pasarela:payop?.gateway?.description
+        pasarela: payop?.gateway?.description,
       };
     });
     let ws = XLSX.utils.json_to_sheet(data);
@@ -152,8 +162,10 @@ export const AppRoutes = () => {
     totalAmount,
     operationStatuses,
     operationOrigins,
+    operationGateways,
     operationStatusesFilter,
     operationOriginsFilter,
+    operationGatewaysFilter,
     search,
     dateFrom,
     dateTo,
@@ -170,6 +182,7 @@ export const AppRoutes = () => {
     setDateTo,
     setOperationOriginsFilter,
     setOperationStatusesFilter,
+    setOperationGatewaysFilter,
     setSearch,
     setSelectedOrigins,
     setSelectedStatuses,

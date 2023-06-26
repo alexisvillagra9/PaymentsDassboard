@@ -9,6 +9,7 @@ export interface IPaymentOperationFilter {
   sortCriteria?: string;
   statuses?: string[] | null;
   origins?: string[] | null;
+  gateways?: string[] | null;
   dateFrom?: Date | null;
   dateTo?: Date | null;
   cancelRequests?: CancelTokenSource;

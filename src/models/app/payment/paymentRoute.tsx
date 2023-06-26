@@ -3,6 +3,7 @@ import { IPaymentOperation } from "../../apis/wallet/paymentOperation";
 import { IPaymentOperationFilter } from "../../apis/wallet/paymentOperationFilter";
 import { IPaymentOperationOrigin } from "../../apis/wallet/paymentOperationOrigin";
 import { IPaymentOperationStatus } from "../../apis/wallet/paymentOperationStatus";
+import { IPaymentOperationGateway } from "../../apis/wallet/paymentOperationGateway";
 
 export interface IPaymentRoute {
   totalCount: number;
@@ -12,8 +13,10 @@ export interface IPaymentRoute {
   pageSize: number;
   operationStatuses: IPaymentOperationStatus[];
   operationOrigins: IPaymentOperationOrigin[];
+  operationGateways: IPaymentOperationGateway[];
   operationStatusesFilter: string[] | null;
   operationOriginsFilter: string[] | null;
+  operationGatewaysFilter: string[] | null;
   search: string;
   dateTo: Date | null;
   dateFrom: Date | null;
@@ -27,6 +30,7 @@ export interface IPaymentRoute {
   setDateFrom: Dispatch<SetStateAction<Date | null>>;
   setOperationOriginsFilter: Dispatch<SetStateAction<string[] | null>>;
   setOperationStatusesFilter: Dispatch<SetStateAction<string[] | null>>;
+  setOperationGatewaysFilter: Dispatch<SetStateAction<string[] | null>>;
   setSearch: Dispatch<SetStateAction<string>>;
   setSelectedOrigins: Dispatch<SetStateAction<string[]>>;
   setSelectedStatuses: Dispatch<SetStateAction<string[]>>;

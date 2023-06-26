@@ -8,6 +8,7 @@ import { IPaymentOperationOrigin } from "../models/apis/wallet/paymentOperationO
 import { IPaymentOperationResult } from "../models/apis/wallet/paymentOperationResult";
 import { IPaymentOperationStatus } from "../models/apis/wallet/paymentOperationStatus";
 import { IMacroPayment } from "../models/apis/macro/payment";
+import { IPaymentOperationGateway } from "../models/apis/wallet/paymentOperationGateway";
 
 const environment = "P";
 const WALLET_URI =
@@ -33,8 +34,16 @@ export const getPaymentOperationsByFilter = async (
   filters: IPaymentOperationFilter
 ): Promise<IPaymentOperationResult> => {
   try {
-    let { dateFrom, dateTo, page, pageSize, search, statuses, origins } =
-      filters;
+    let {
+      dateFrom,
+      dateTo,
+      page,
+      pageSize,
+      search,
+      statuses,
+      origins,
+      gateways,
+    } = filters;
 
     // Fix Filter by date
     if (dateFrom) {
@@ -59,6 +68,9 @@ export const getPaymentOperationsByFilter = async (
         }` +
         `&origins=${
           origins ? encodeURIComponent(JSON.stringify(origins)) : ""
+        }` +
+        `&gateways=${
+          gateways ? encodeURIComponent(JSON.stringify(gateways)) : ""
         }` +
         `&dateFrom=${dateFrom?.getTime() || ""}&dateTo=${
           dateTo?.getTime() || ""
@@ -135,6 +147,22 @@ export const getPaymentOperationStatuses = async (): Promise<
     }: { data: IPaymentOperationStatus[] } = res;
 
     return paymentOperationStatuses;
+  } catch (error) {
+    console.log(JSON.stringify(error));
+    throw error;
+  }
+};
+
+export const getPaymentOperationGateways = async (): Promise<
+  IPaymentOperationStatus[]
+> => {
+  try {
+    const res = await axios.get(`${WALLET_URI}/payment-operation/gateways/all`);
+    let {
+      data: paymentOperationGateways = [],
+    }: { data: IPaymentOperationGateway[] } = res;
+
+    return paymentOperationGateways;
   } catch (error) {
     console.log(JSON.stringify(error));
     throw error;

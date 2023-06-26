@@ -34,8 +34,10 @@ export const PaymentFilters = ({
   pageSize,
   operationStatuses,
   operationOrigins,
+  operationGateways,
   operationStatusesFilter,
   operationOriginsFilter,
+  operationGatewaysFilter,
   search,
   dateTo,
   dateFrom,
@@ -44,14 +46,17 @@ export const PaymentFilters = ({
   setDateFrom,
   setOperationOriginsFilter,
   setOperationStatusesFilter,
+  setOperationGatewaysFilter,
   setSearch,
   getOperations,
   downloadExcel,
 }: IPaymentFilter) => {
   const [openOriginSelect, setOpenOriginSelect] = useState(false);
   const [openStatusSelect, setOpenStatusSelect] = useState(false);
+  const [openGatewaySelect, setOpenGatewaySelect] = useState(false);
   const [selectedStatuses, setSelectedStatuses] = useState<string[]>([]);
   const [selectedOrigins, setSelectedOrigins] = useState<string[]>([]);
+  const [selectedGateways, setSelectedGateways] = useState<string[]>([]);
   const [open, setOpen] = useState<boolean>(false);
   const [openStartDate, setOpenStartDate] = useState<boolean>(false);
   const [openEndDate, setOpenEndDate] = useState<boolean>(false);
@@ -85,11 +90,27 @@ export const PaymentFilters = ({
     setOpenOriginSelect(false);
   };
 
+  const onCloseGateways = () => {
+    setOperationGatewaysFilter(
+      operationGateways
+        .filter((os) => selectedGateways.includes(os.description))
+        .map((oss) => oss.code)
+    );
+    setOpenGatewaySelect(false);
+  };
+
   const handleOriginsSelect = (event: any) => {
     const {
       target: { value },
     } = event;
     setSelectedOrigins(value);
+  };
+
+  const handleGatewaysSelect = (event: any) => {
+    const {
+      target: { value },
+    } = event;
+    setSelectedGateways(value);
   };
 
   const handleApply = async () => {
@@ -101,6 +122,7 @@ export const PaymentFilters = ({
       search,
       origins: operationOriginsFilter,
       statuses: operationStatusesFilter,
+      gateways: operationGatewaysFilter,
     });
   };
 
@@ -111,6 +133,16 @@ export const PaymentFilters = ({
       );
     } else {
       setSelectedOrigins([]);
+    }
+  };
+
+  const handleSelectAllGateways = (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.target.checked) {
+      setSelectedGateways(
+        operationGateways.map((oo) => oo.description).concat(["all-gateways"])
+      );
+    } else {
+      setSelectedGateways([]);
     }
   };
 
@@ -148,6 +180,7 @@ export const PaymentFilters = ({
       dateFrom: null,
       dateTo: null,
       origins: null,
+      gateways: null,
       search: "",
       statuses: [EPaymentOperationStatus.Terminated],
     });
@@ -174,6 +207,17 @@ export const PaymentFilters = ({
         .map((oos) => oos.description);
     setSelectedOrigins(selOrigins);
   }, [operationOrigins]);
+
+  useEffect(() => {
+    let selGateways: string[] = operationGateways
+      .map((og) => og.description)
+      .concat(["all-gateways"]);
+    if (operationGatewaysFilter)
+      selGateways = (operationGateways || [])
+        .filter((og) => operationGatewaysFilter.includes(og.code))
+        .map((oog) => oog.description);
+    setSelectedGateways(selGateways);
+  }, [operationGateways]);
 
   const ExcelIcon = () => {
     return (
@@ -250,6 +294,46 @@ export const PaymentFilters = ({
                     <ListItemText primary={filOri.description} />
                     <Checkbox
                       checked={selectedOrigins.includes(filOri.description)}
+                      className="checkbox-filter"
+                    />
+                  </MenuItem>
+                ))}
+              </Select>
+              <Button
+                id="openGatewaySelect"
+                onClick={() => setOpenGatewaySelect(true)}
+                className="select-button"
+                disabled={false}
+              >
+                Pasarela
+                {iconFilter()}
+              </Button>
+              <Select
+                multiple
+                input={<Input id="select-multiple-gateway" />}
+                onClose={onCloseGateways}
+                onChange={handleGatewaysSelect}
+                style={{ display: "none" }}
+                open={openGatewaySelect}
+                value={selectedGateways}
+                MenuProps={{
+                  anchorEl: document.getElementById("openGatewaySelect"),
+                }}
+              >
+                <MenuItem key={"PAS"} value={"all-gateways"}>
+                  <ListItemText primary={"Todos"} />
+                  <Checkbox
+                    checked={selectedGateways.includes("all-gateways")}
+                    className="checkbox-filter"
+                    onChange={handleSelectAllGateways}
+                  />
+                </MenuItem>
+                <Divider />
+                {operationGateways.map((filGat) => (
+                  <MenuItem key={filGat.code} value={filGat.description}>
+                    <ListItemText primary={filGat.description} />
+                    <Checkbox
+                      checked={selectedGateways.includes(filGat.description)}
                       className="checkbox-filter"
                     />
                   </MenuItem>
