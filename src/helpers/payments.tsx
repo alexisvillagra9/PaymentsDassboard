@@ -1,11 +1,20 @@
+import AddLocationOutlinedIcon from "@mui/icons-material/AddLocationOutlined";
 import AttachMoneyOutlinedIcon from "@mui/icons-material/AttachMoneyOutlined";
+import CreditCardOutlinedIcon from "@mui/icons-material/CreditCardOutlined";
+import CreditScoreOutlinedIcon from "@mui/icons-material/CreditScoreOutlined";
 import DoDisturbOutlinedIcon from "@mui/icons-material/DoDisturbOutlined";
 import DoneAllOutlinedIcon from "@mui/icons-material/DoneAllOutlined";
+import EventAvailableOutlinedIcon from "@mui/icons-material/EventAvailableOutlined";
+import HowToRegOutlinedIcon from "@mui/icons-material/HowToRegOutlined";
+import ModelTrainingOutlinedIcon from "@mui/icons-material/ModelTrainingOutlined";
 import MoneyOffCsredOutlinedIcon from "@mui/icons-material/MoneyOffCsredOutlined";
 import PriceCheckOutlinedIcon from "@mui/icons-material/PriceCheckOutlined";
+import QrCodeScannerOutlinedIcon from "@mui/icons-material/QrCodeScannerOutlined";
 import QueryBuilderOutlinedIcon from "@mui/icons-material/QueryBuilderOutlined";
 import RemoveDoneOutlinedIcon from "@mui/icons-material/RemoveDoneOutlined";
 import ReplayIcon from "@mui/icons-material/Replay";
+import SellOutlinedIcon from "@mui/icons-material/SellOutlined";
+import SimCardOutlinedIcon from "@mui/icons-material/SimCardOutlined";
 import StartIcon from "@mui/icons-material/Start";
 import {
   TbDatabase,
@@ -15,9 +24,11 @@ import {
 } from "react-icons/tb";
 import {
   EPaymentOperationLifecycleType,
+  EPaymentOperationOrigin,
   EPaymentOperationStatus,
   EPaymentStatus,
 } from "./enums";
+import { CardGiftcard } from "@mui/icons-material";
 
 export const operationStatusColor = (statusCode: string) => {
   let colorStyle = {
@@ -114,4 +125,41 @@ export const getIconAndColorLifecycle = (type: string) => {
   if (type === EPaymentOperationLifecycleType.InitRetry)
     iconsAndColors = [<StartIcon />, "default"];
   return iconsAndColors;
+};
+
+export const iconByOperationOrigin = (originCode: string) => {
+  return (
+    <>
+      {originCode === EPaymentOperationOrigin.RegistreNewPartner && (
+        <HowToRegOutlinedIcon></HowToRegOutlinedIcon>
+      )}
+      {originCode === EPaymentOperationOrigin.PaymentOfFees && (
+        <EventAvailableOutlinedIcon></EventAvailableOutlinedIcon>
+      )}
+      {originCode === EPaymentOperationOrigin.Subscription && (
+        <CreditCardOutlinedIcon></CreditCardOutlinedIcon>
+      )}
+      {originCode === EPaymentOperationOrigin.SubscriptionToAD && (
+        <CreditScoreOutlinedIcon></CreditScoreOutlinedIcon>
+      )}
+      {originCode === EPaymentOperationOrigin.QRPayment && (
+        <QrCodeScannerOutlinedIcon></QrCodeScannerOutlinedIcon>
+      )}
+      {originCode === EPaymentOperationOrigin.LocationBuy && (
+        <AddLocationOutlinedIcon></AddLocationOutlinedIcon>
+      )}
+      {originCode === EPaymentOperationOrigin.Reactivate && (
+        <ModelTrainingOutlinedIcon></ModelTrainingOutlinedIcon>
+      )}
+      {originCode === EPaymentOperationOrigin.ActivateChip && (
+        <SimCardOutlinedIcon></SimCardOutlinedIcon>
+      )}
+      {originCode === EPaymentOperationOrigin.ExtraordinaryPayment && (
+        <SellOutlinedIcon></SellOutlinedIcon>
+      )}
+      {originCode === EPaymentOperationOrigin.Contribution && (
+        <CardGiftcard></CardGiftcard>
+      )}
+    </>
+  );
 };

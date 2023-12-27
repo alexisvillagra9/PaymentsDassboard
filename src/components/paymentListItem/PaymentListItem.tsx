@@ -1,13 +1,4 @@
-import AddLocationOutlinedIcon from "@mui/icons-material/AddLocationOutlined";
-import CreditCardOutlinedIcon from "@mui/icons-material/CreditCardOutlined";
-import CreditScoreOutlinedIcon from "@mui/icons-material/CreditScoreOutlined";
-import EventAvailableOutlinedIcon from "@mui/icons-material/EventAvailableOutlined";
-import HowToRegOutlinedIcon from "@mui/icons-material/HowToRegOutlined";
-import ModelTrainingOutlinedIcon from "@mui/icons-material/ModelTrainingOutlined";
-import PaidOutlinedIcon from "@mui/icons-material/PaidOutlined";
-import QrCodeScannerOutlinedIcon from "@mui/icons-material/QrCodeScannerOutlined";
-import SellOutlinedIcon from "@mui/icons-material/SellOutlined";
-import SimCardOutlinedIcon from "@mui/icons-material/SimCardOutlined";
+import { Tooltip } from "@mui/material";
 import Avatar from "@mui/material/Avatar";
 import Chip from "@mui/material/Chip";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
@@ -16,9 +7,10 @@ import Stack from "@mui/material/Stack";
 import moment from "moment-timezone";
 import "moment/locale/es";
 import { FaRegHandshake } from "react-icons/fa";
-import { EGateway, EPaymentOperationOrigin } from "../../helpers/enums";
+import { EGateway } from "../../helpers/enums";
 import { currencyFormat } from "../../helpers/general";
 import {
+  iconByOperationOrigin,
   operationStatusColor,
   paymentStatusColor,
   paymentStatusDesc,
@@ -30,8 +22,7 @@ import { IPaymentOperationOrigin } from "../../models/apis/wallet/paymentOperati
 import { IPaymentOperationStatus } from "../../models/apis/wallet/paymentOperationStatus";
 import { IResult } from "../../models/apis/wallet/result";
 import "./PaymentListItem.css";
-import { Tooltip } from "@mui/material";
-import { CardGiftcard } from "@mui/icons-material";
+import PaidOutlinedIcon from '@mui/icons-material/PaidOutlined';
 
 export const PaymentListItem = ({
   origin: { code: originCode, description: originDesciption },
@@ -58,41 +49,6 @@ export const PaymentListItem = ({
   const susbtitle = moment
     .tz(createdAt, "America/Argentina/Buenos_Aires")
     .format("DD MMMM YYYY, HH:mm:ss");
-
-  const iconSelect = (
-    <>
-      {originCode === EPaymentOperationOrigin.RegistreNewPartner && (
-        <HowToRegOutlinedIcon></HowToRegOutlinedIcon>
-      )}
-      {originCode === EPaymentOperationOrigin.PaymentOfFees && (
-        <EventAvailableOutlinedIcon></EventAvailableOutlinedIcon>
-      )}
-      {originCode === EPaymentOperationOrigin.Subscription && (
-        <CreditCardOutlinedIcon></CreditCardOutlinedIcon>
-      )}
-      {originCode === EPaymentOperationOrigin.SubscriptionToAD && (
-        <CreditScoreOutlinedIcon></CreditScoreOutlinedIcon>
-      )}
-      {originCode === EPaymentOperationOrigin.QRPayment && (
-        <QrCodeScannerOutlinedIcon></QrCodeScannerOutlinedIcon>
-      )}
-      {originCode === EPaymentOperationOrigin.LocationBuy && (
-        <AddLocationOutlinedIcon></AddLocationOutlinedIcon>
-      )}
-      {originCode === EPaymentOperationOrigin.Reactivate && (
-        <ModelTrainingOutlinedIcon></ModelTrainingOutlinedIcon>
-      )}
-      {originCode === EPaymentOperationOrigin.ActivateChip && (
-        <SimCardOutlinedIcon></SimCardOutlinedIcon>
-      )}
-      {originCode === EPaymentOperationOrigin.ExtraordinaryPayment && (
-        <SellOutlinedIcon></SellOutlinedIcon>
-      )}
-      {originCode === EPaymentOperationOrigin.Contribution && (
-        <CardGiftcard></CardGiftcard>
-      )}
-    </>
-  );
 
   const iconGatewaySelect = (size: number | string) => {
     return (
@@ -128,7 +84,9 @@ export const PaymentListItem = ({
   return (
     <>
       <ListItemAvatar>
-        <Avatar className="payment-avatar">{iconSelect}</Avatar>
+        <Avatar className="payment-avatar">
+          {iconByOperationOrigin(originCode)}
+        </Avatar>
       </ListItemAvatar>
       <ListItemText
         primary={title}

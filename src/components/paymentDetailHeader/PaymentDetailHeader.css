@@ -25,3 +25,12 @@
 .go-back {
   align-self: baseline;
 }
+
+.payment-avatar-op {
+  border: 0.1rem solid var(--color-primary) !important;
+  height: 2rem !important;
+  width: 2rem !important;
+  background-color: var(--background-secondary) !important;
+  color: var(--color-primary) !important;
+  margin-right: 1rem;
+}

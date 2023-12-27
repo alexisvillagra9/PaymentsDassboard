@@ -149,6 +149,8 @@ export const PaymentDetail = ({ currentView }: { currentView: string }) => {
               statusDescription={paymentOperation.status.description}
               resultPaymentCode={paymentOperation.result?.payment?.code}
               statusCode={paymentOperation.status.code}
+              originCode={paymentOperation.origin.code}
+              originDescription={paymentOperation.origin.description}
               createdAt={paymentOperation.createdAt}
             ></PaymentDetailHeader>
             <PaymentDetailAccordion

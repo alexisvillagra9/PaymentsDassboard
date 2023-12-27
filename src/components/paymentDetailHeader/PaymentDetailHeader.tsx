@@ -3,7 +3,7 @@ import CheckBoxOutlinedIcon from "@mui/icons-material/CheckBoxOutlined";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import PaidOutlinedIcon from "@mui/icons-material/PaidOutlined";
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
-import { Dialog, DialogTitle } from "@mui/material";
+import { Avatar, Dialog, DialogTitle } from "@mui/material";
 import Button from "@mui/material/Button";
 import Chip from "@mui/material/Chip";
 import IconButton from "@mui/material/IconButton";
@@ -16,6 +16,7 @@ import { useState } from "react";
 import { FaRegHandshake } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import {
+  iconByOperationOrigin,
   operationStatusColor,
   paymentStatusColor,
   paymentStatusDesc,
@@ -28,6 +29,8 @@ export const PaymentDetailHeader = ({
   statusDescription,
   resultPaymentCode,
   statusCode,
+  originCode,
+  originDescription,
   createdAt,
 }: {
   paymentOperationId: string;
@@ -35,6 +38,8 @@ export const PaymentDetailHeader = ({
   statusDescription: string;
   resultPaymentCode: string | undefined;
   statusCode: string;
+  originCode: string;
+  originDescription: string;
   createdAt: Date;
 }) => {
   const navigate = useNavigate();
@@ -65,15 +70,36 @@ export const PaymentDetailHeader = ({
           alignItems="center"
           flexWrap="wrap"
         >
-          <Typography
-            sx={{ width: "fit-content!important", flexShrink: 0, margin: 0 }}
-            borderRadius={"8px"}
-            padding={"0.3rem"}
-            className="accordion-title"
+          <Stack
+            gap="0.5rem"
+            flexDirection="column"
+            alignItems="left"
+            flexWrap="wrap"
+            justifyContent="space-between"
           >
-            <PaidOutlinedIcon />
-            {"Operacion"}
-          </Typography>
+            <Typography
+              sx={{ width: "fit-content!important", flexShrink: 0, margin: 0 }}
+              borderRadius={"8px"}
+              padding={"0.3rem"}
+              className="accordion-title"
+            >
+              <PaidOutlinedIcon />
+              {"Operacion"}
+            </Typography>
+            <Typography
+              sx={{
+                width: "fit-content!important",
+                flexShrink: 0,
+                margin: 0,
+              }}
+              borderRadius={"8px"}
+              padding={"0.3rem"}
+              className="accordion-title"
+            >
+              {iconByOperationOrigin(originCode)}
+              {originDescription}
+            </Typography>
+          </Stack>
           <Stack
             gap="0.5rem"
             flexDirection="row"
