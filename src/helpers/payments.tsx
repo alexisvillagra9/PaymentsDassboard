@@ -15,6 +15,7 @@ import RemoveDoneOutlinedIcon from "@mui/icons-material/RemoveDoneOutlined";
 import ReplayIcon from "@mui/icons-material/Replay";
 import SellOutlinedIcon from "@mui/icons-material/SellOutlined";
 import SimCardOutlinedIcon from "@mui/icons-material/SimCardOutlined";
+import Stadium from "@mui/icons-material/Stadium";
 import StartIcon from "@mui/icons-material/Start";
 import {
   TbDatabase,
@@ -153,6 +154,9 @@ export const iconByOperationOrigin = (originCode: string) => {
       )}
       {originCode === EPaymentOperationOrigin.ActivateChip && (
         <SimCardOutlinedIcon></SimCardOutlinedIcon>
+      )}
+      {originCode === EPaymentOperationOrigin.InternationalSubscription && (
+        <Stadium></Stadium>
       )}
       {originCode === EPaymentOperationOrigin.ExtraordinaryPayment && (
         <SellOutlinedIcon></SellOutlinedIcon>

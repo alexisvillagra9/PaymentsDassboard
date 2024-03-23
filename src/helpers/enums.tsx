@@ -9,6 +9,7 @@ export enum EPaymentOperationOrigin {
   LocationBuy = "CDU",
   Reactivate = "RIP",
   ActivateChip = "ACH",
+  InternationalSubscription = "CAI",
 }
 
 export enum EPaymentOperationStatus {
