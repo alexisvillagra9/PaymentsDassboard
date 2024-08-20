@@ -29,7 +29,7 @@ export const PaymentDetailItems = ({
         </ListItem>
         <Divider></Divider>
         {items.map((item, idx) => {
-          const { title, quantity, unit_price } = item;
+          const { title, quantity, unit_price = 0 } = item;
           return (
             <ListItem key={idx} className={"item-list-item list-item-detail"}>
               <Stack direction="row" width="100%">
